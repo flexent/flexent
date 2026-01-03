@@ -10,7 +10,9 @@
         "packages/*"
     ],
     "scripts": {
-        "clean": "npm run clean --workspaces --if-present",
+        "clean": "run-s clean:workspaces clean:ts",
+        "clean:workspaces": "npm run clean --workspaces --if-present",
+        "clean:ts": "rm -rf packages/*/{out,*.tsbuildinfo}",
         "dev": "npm run clean && run-p dev:*",
         "dev:ts": "tsc -b -w",
         "compile:ts": "tsc -b",

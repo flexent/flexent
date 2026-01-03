@@ -1,9 +1,6 @@
-import { matchPath } from '@luminable/pathmatcher';
-
 import { HttpContext } from './HttpContext.js';
 import { HttpDict } from './HttpDict.js';
 import { HttpHandler, HttpHandlerFn, HttpNext } from './HttpHandler.js';
-import { HttpRoute } from './HttpRoute.js';
 
 export const TypedArray = Object.getPrototypeOf(Uint8Array);
 
@@ -47,21 +44,5 @@ export function compose(fns: HttpHandlerFn[]): HttpHandlerFn {
             await fn(ctx, () => dispatch(index + 1));
         };
         return await dispatch(0);
-    };
-}
-
-export function createRouteHandler(route: HttpRoute): HttpHandlerFn {
-    return async (ctx, next) => {
-        const [routeMethod, routePath, routeHandler] = route;
-        const methodMatch = routeMethod === '*' || routeMethod === ctx.method;
-        if (!methodMatch) {
-            return next();
-        }
-        const pathParams = matchPath(routePath, ctx.url.pathname);
-        if (!pathParams) {
-            return next();
-        }
-        Object.assign(ctx.params, pathParams);
-        await routeHandler(ctx, next);
     };
 }
