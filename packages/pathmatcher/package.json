@@ -1,7 +1,7 @@
 {
-    "name": "@luminable/metrics",
+    "name": "@luminable/pathmatcher",
     "version": "1.0.0",
-    "description": "Idiomatic API for collecting application metrics",
+    "description": "Path matching utils for pathname-based routing",
     "type": "module",
     "sideEffects": false,
     "exports": {
@@ -12,9 +12,5 @@
     ],
     "scripts": {
         "test": "NODE_ENV=test mocha"
-    },
-    "dependencies": {
-        "mesh-decorators": "^1.3.2",
-        "mesh-ioc": "^4.1.1"
     }
 }

@@ -1,3 +1,4 @@
+export * from './ConsoleLogger.js';
 export * from './formatters/DefaultLogFormatter.js';
 export * from './formatters/StructuredLogFormatter.js';
 export * from './Logger.js';

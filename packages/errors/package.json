@@ -1,0 +1,13 @@
+{
+    "name": "@luminable/errors",
+    "version": "1.0.0",
+    "description": "Generic error classes with standardized name, message and status code",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ]
+}

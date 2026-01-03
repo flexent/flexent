@@ -1,0 +1,28 @@
+{
+    "name": "@luminable/http-server",
+    "version": "1.0.0",
+    "description": "Idiomatic HTTP server API",
+    "type": "module",
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
+    "dependencies": {
+        "@luminable/errors": "^1.0.0",
+        "@luminable/logger": "^1.0.0",
+        "@luminable/metrics": "^1.0.0",
+        "@luminable/pathmatcher": "^1.0.0",
+        "mesh-config": "^1.3.0",
+        "mesh-decorators": "^1.3.2",
+        "mesh-ioc": "^4.1.1",
+        "nanoevent": "^1.0.0"
+    },
+    "devDependencies": {
+        "dotenv": "^17.2.3"
+    }
+}

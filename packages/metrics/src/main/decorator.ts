@@ -3,11 +3,11 @@ import { Mesh } from 'mesh-ioc';
 
 import { BaseMetric } from './BaseMetric.js';
 
-export const metric = createMemberDecorator('@nodescript/metric');
+export const metric = createMemberDecorator('@luminable/metric');
 
 export function findMetrics(mesh: Mesh): BaseMetric[] {
     const metrics: BaseMetric[] = [];
-    const refs = findMembers('@nodescript/metric', mesh);
+    const refs = findMembers('@luminable/metric', mesh);
 
     for (const { target, memberName } of refs) {
         const value = target[memberName];
