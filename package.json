@@ -15,7 +15,11 @@
         "dev:ts": "tsc -b -w",
         "compile:ts": "tsc -b",
         "lint": "eslint . --fix",
-        "test": "npm run test --workspaces --if-present"
+        "test": "npm run test --workspaces --if-present",
+        "version": "run-s version:bump",
+        "version:bump": "node ./bump-version.mjs && git add **/package.json",
+        "postversion": "run-s publish:* && git push origin $(git branch --show-current) --tags",
+        "publish:logger": "npm publish -w @luminable/logger"
     },
     "devDependencies": {
         "@fastify/pre-commit": "^2.2.1",

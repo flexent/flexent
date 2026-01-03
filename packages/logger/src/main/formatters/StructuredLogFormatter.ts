@@ -10,14 +10,14 @@ export interface StructuredLogEntry {
 
 export type StructuredLogSeverity = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR';
 
-export type StructuredLogHttpRequest = {
+export interface StructuredLogHttpRequest {
     requestMethod: string;
     requestUrl: string;
     status: number;
     userAgent?: string;
     referer?: string;
     latency?: string;
-};
+}
 
 /**
  * Formats logs in JSON format understood by Cloud Logging.
@@ -101,4 +101,3 @@ export class StructuredLogFormatter implements LogFormatter {
     }
 
 }
-

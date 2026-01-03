@@ -1,5 +1,5 @@
 import { sharedConfigs } from '@luminable/eslint-config';
 
-export default {
+export default [
     ...sharedConfigs,
-};
+];

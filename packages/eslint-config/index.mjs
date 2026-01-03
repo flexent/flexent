@@ -1,39 +1,17 @@
 import eslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
 
-export const typescriptRules = {
-    '@stylistic/arrow-parens': ['error', 'as-needed'],
-    '@stylistic/comma-dangle': 'off',
-    '@stylistic/indent': ['error', 4, { ignoredNodes: ['PropertyDefinition[decorators]', 'TSUnionType', 'TSIntersectionType', 'TSConditionalType', 'TSTypeReference', 'Decorator'], SwitchCase: 1, FunctionExpression: { parameters: 'off' } }],
-    '@stylistic/no-floating-decimal': 'off',
-    '@stylistic/operator-linebreak': ['error', 'after'],
-    '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'always', switches: 'never' }],
-    '@stylistic/yield-star-spacing': ['error', 'after'],
-    '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-    '@typescript-eslint/class-literal-property-style': 'off',
-    '@typescript-eslint/no-empty-function': 'off',
-    '@typescript-eslint/no-empty-object-type': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    'curly': ['error', 'all'],
-    'eol-last': 'error',
-    'eqeqeq': ['error', 'always', { null: 'never' }],
-    'indent': 'off',
-    'no-console': ['error', { 'allow': ['warn', 'info', 'error'] }],
-    'no-empty': ['error', { allowEmptyCatch: true }],
-};
-
-export const javascriptRules = {
-    '@typescript-eslint/no-require-imports': 'off',
-};
-
 export const sharedConfigs = [
+
     // Global ignores
     {
         ignores: [
+            '**/node_modules',
             '**/out',
             '**/dist',
             '**/.*',
@@ -44,6 +22,7 @@ export const sharedConfigs = [
     eslint.configs.recommended,
     ...typescriptEslint.configs.recommended,
     ...typescriptEslint.configs.stylistic,
+    importPlugin.flatConfigs.typescript,
 
     // Stylistic
     stylistic.configs.customize({
@@ -53,6 +32,36 @@ export const sharedConfigs = [
         quotes: 'single',
         semi: true,
     }),
+
+    // TypeScript
+    {
+        rules: {
+            '@stylistic/arrow-parens': ['error', 'as-needed'],
+            '@stylistic/comma-dangle': 'off',
+            '@stylistic/indent': ['error', 4, { ignoredNodes: ['PropertyDefinition[decorators]', 'TSUnionType', 'TSIntersectionType', 'TSConditionalType', 'TSTypeReference', 'Decorator'], SwitchCase: 1, FunctionExpression: { parameters: 'off' } }],
+            '@stylistic/no-floating-decimal': 'off',
+            '@stylistic/operator-linebreak': ['error', 'after'],
+            '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'always', switches: 'never' }],
+            '@stylistic/yield-star-spacing': ['error', 'after'],
+            '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
+            '@typescript-eslint/class-literal-property-style': 'off',
+            '@typescript-eslint/no-empty-function': 'off',
+            '@typescript-eslint/no-empty-object-type': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+            'curly': ['error', 'all'],
+            'eol-last': 'error',
+            'eqeqeq': ['error', 'always', { null: 'never' }],
+            'indent': 'off',
+            'no-console': ['error', { 'allow': ['warn', 'info', 'error'] }],
+            'no-empty': ['error', { allowEmptyCatch: true }],
+            'import/no-extraneous-dependencies': 'error',
+        },
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
 
     // Sorted imports
     {
@@ -64,6 +73,7 @@ export const sharedConfigs = [
             'simple-import-sort/exports': 'error',
         },
     },
+
     // Unused imports
     {
         plugins: {
@@ -85,22 +95,6 @@ export const sharedConfigs = [
                 },
             ]
         }
-    },
-
-    // TypeScript Overrides
-    {
-        rules: typescriptRules,
-        languageOptions: {
-            globals: {
-                ...globals.node,
-            },
-        },
-    },
-
-    // Plain JS Overrides
-    {
-        files: ['**/*.js', '**/*.cjs'],
-        rules: javascriptRules,
     },
 
     // Test overrides

@@ -6,11 +6,11 @@ export enum LogLevel {
     MUTE = 'mute',
 }
 
-export type LogPayload = {
+export interface LogPayload {
     level: LogLevel;
     message: string;
     data?: LogData;
-};
+}
 
 export type LogData = Record<string, any>;
 

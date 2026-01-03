@@ -1,5 +1,5 @@
-import { DefaultLogFormatter } from "./formatters/DefaultLogFormatter.js";
-import { LOG_LEVELS, LogData, LogFormatter, LoggerLike, LogLevel, LogPayload } from "./types.js";
+import { DefaultLogFormatter } from './formatters/DefaultLogFormatter.js';
+import { LOG_LEVELS, LogData, LogFormatter, LoggerLike, LogLevel, LogPayload } from './types.js';
 
 /**
  * Standard logger supports conditional log suppressing based on logger level.
@@ -42,4 +42,5 @@ export abstract class Logger implements LoggerLike {
             this.level = level as LogLevel;
         }
     }
+
 }

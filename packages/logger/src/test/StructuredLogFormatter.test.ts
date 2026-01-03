@@ -1,6 +1,6 @@
-import assert from "node:assert";
-import { LogLevel, StructuredLogFormatter } from "../main/index.js";
+import assert from 'node:assert';
 
+import { LogLevel, StructuredLogFormatter } from '../main/index.js';
 
 describe('StructuredLogFormatter', () => {
 
