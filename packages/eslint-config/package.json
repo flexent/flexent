@@ -1,0 +1,21 @@
+{
+    "name": "@luminable/eslint-config",
+    "version": "1.0.0",
+    "description": "Luminable ESLint Config",
+    "type": "module",
+    "exports": {
+        ".": "./index.mjs"
+    },
+    "files": [
+        "index.mjs"
+    ],
+    "dependencies": {
+        "@eslint/js": "^9.39.2",
+        "@stylistic/eslint-plugin": "^5.6.1",
+        "@stylistic/eslint-plugin-ts": "^4.4.1",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "eslint-plugin-unused-imports": "^4.3.0",
+        "typescript-eslint": "^8.51.0"
+    }
+}

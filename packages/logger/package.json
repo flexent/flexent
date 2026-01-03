@@ -1,0 +1,15 @@
+{
+    "name": "@luminable/logger",
+    "version": "^1.0.0",
+    "description": "Idiomatic logger supporting custom formatting and transports",
+    "type": "module",
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    }
+}

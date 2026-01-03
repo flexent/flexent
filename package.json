@@ -1,0 +1,30 @@
+{
+    "name": "@luminable/monorepo",
+    "version": "1.0.0",
+    "description": "Luminable Framework",
+    "type": "module",
+    "private": true,
+    "license": "ISC",
+    "author": "Boris Okunskiy",
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "clean": "npm run clean --workspaces --if-present",
+        "dev": "npm run clean && run-p dev:*",
+        "dev:ts": "tsc -b -w",
+        "compile:ts": "tsc -b",
+        "lint": "eslint . --fix",
+        "test": "npm run test --workspaces --if-present"
+    },
+    "devDependencies": {
+        "@fastify/pre-commit": "^2.2.1",
+        "@luminable/eslint-config": "file:packages/eslint-config",
+        "@types/mocha": "^10.0.10",
+        "@types/node": "^25.0.3",
+        "eslint": "^9.39.2",
+        "mocha": "^11.7.5",
+        "npm-run-all": "^4.1.5",
+        "typescript": "^5.9.3"
+    }
+}
