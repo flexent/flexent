@@ -1,4 +1,4 @@
-# Standard HTTP Server
+# @luminable/http-server
 
 **Status: alpha. Actively developed, new releases may break things.**
 

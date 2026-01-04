@@ -9,6 +9,9 @@
     "workspaces": [
         "packages/*"
     ],
+    "pre-commit": [
+        "lint"
+    ],
     "scripts": {
         "clean": "run-s clean:workspaces clean:ts",
         "clean:workspaces": "npm run clean --workspaces --if-present",

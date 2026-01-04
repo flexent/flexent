@@ -1,4 +1,4 @@
-# Metrics
+# @luminable/metrics
 
 Idiomatic API for collecting application metrics.
 

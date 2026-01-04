@@ -1,7 +1,7 @@
 import { createMemberDecorator, findMembers } from 'mesh-decorators';
 import { Mesh } from 'mesh-ioc';
 
-const DECORATOR_NAME = '@luminable/http/status-check';
+const DECORATOR_NAME = '@luminable/http/statusCheck';
 
 export const statusCheck = createMemberDecorator(DECORATOR_NAME);
 

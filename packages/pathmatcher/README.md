@@ -1,4 +1,4 @@
-# Pathmatcher
+# @luminable/pathmatcher
 
 Path matching utils for pathname-based routing.
 
