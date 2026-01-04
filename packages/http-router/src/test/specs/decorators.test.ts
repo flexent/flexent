@@ -8,17 +8,21 @@ describe('decorators', () => {
 
     it('defines routes and middlewares', () => {
         const allRoutes = getAllRoutes(HelloRouter);
-        assert.strictEqual(allRoutes.length, 3);
+        assert.strictEqual(allRoutes.length, 4);
         assert.strictEqual(allRoutes[0].role, 'middleware');
         assert.strictEqual(allRoutes[0].method, '*');
-        assert.strictEqual(allRoutes[0].summary, 'Hello middleware');
-        assert.strictEqual(allRoutes[1].role, 'endpoint');
-        assert.strictEqual(allRoutes[1].method, 'GET');
-        assert.strictEqual(allRoutes[1].path, '/hello');
-        assert.strictEqual(allRoutes[1].summary, '');
+        assert.strictEqual(allRoutes[0].summary, 'Hello one');
+        assert.strictEqual(allRoutes[1].role, 'middleware');
+        assert.strictEqual(allRoutes[1].method, '*');
+        assert.strictEqual(allRoutes[1].summary, 'Hello two');
         assert.strictEqual(allRoutes[2].role, 'endpoint');
-        assert.strictEqual(allRoutes[2].method, 'POST');
+        assert.strictEqual(allRoutes[2].method, 'GET');
         assert.strictEqual(allRoutes[2].path, '/hello');
+        assert.strictEqual(allRoutes[2].summary, '');
+        assert.strictEqual(allRoutes[3].role, 'endpoint');
+        assert.strictEqual(allRoutes[3].method, 'POST');
+        assert.strictEqual(allRoutes[3].path, '/hello');
+        assert.strictEqual(allRoutes[3].summary, '');
     });
 
     it('registers inherited routes and middlewares in correct order', () => {

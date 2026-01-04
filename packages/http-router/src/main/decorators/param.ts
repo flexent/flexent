@@ -19,8 +19,16 @@ export function QueryParam(name: string, spec: ParamSpec) {
     return createParamDecorator('query', name, spec);
 }
 
+export function HeaderParam(name: string, spec: ParamSpec) {
+    return createParamDecorator('header', name, spec);
+}
+
 export function BodyParam(name: string, spec: ParamSpec) {
     return createParamDecorator('body', name, spec);
+}
+
+export function BodyJson(spec: ParamSpec) {
+    return createParamDecorator('bodyJson', '', spec);
 }
 
 function createParamDecorator(source: ParamSource, name: string, spec: ParamSpec) {
@@ -44,7 +52,7 @@ function createParamDecorator(source: ParamSource, name: string, spec: ParamSpec
             required,
             deprecated,
         });
-        params.sort((a, b) => a.index - b.index);
+        params.sort((a, b) => a.index > b.index ? 1 : -1);
         Reflect.defineMetadata(PARAMS_KEY, params, target, methodKey);
     };
 }

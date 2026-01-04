@@ -1,8 +1,6 @@
 import 'reflect-metadata';
 
-import { InitializationError } from '@luminable/errors';
 import { parsePath } from '@luminable/pathmatcher';
-import { Schema } from 'airtight';
 import { Constructor } from 'mesh-ioc';
 import { addClassMetadata, getClassMetadata } from 'reflect-utils';
 
@@ -52,18 +50,12 @@ export function getMiddlewareRoutes(routerClass: Constructor<any>): RouteDefinit
 }
 
 function createRouteDecorator(method: RouteMethod, role: RouteRole, spec: RouteSpec) {
-    return (target: any, methodKey: string) => {
-        const params = getParamDefinitions(target, methodKey);
-        const bodyParams = params.filter(p => p.source === 'body');
-        if (spec.requestBodySchema && bodyParams.length > 0) {
-            throw new InitializationError(`${method} ${spec.path}: cannot use both BodyParam and requestBodySchema`);
-        }
+    return (target: any, memberKey: string) => {
+        const params = getParamDefinitions(target, memberKey);
         const path = spec.path ?? '*';
         const pathTokens = parsePath(path);
-        const requestBodySchema = spec.requestBodySchema ?
-            new Schema(spec.requestBodySchema) :
-            undefined;
         const routeDef: RouteDefinition = {
+            memberKey,
             role,
             method,
             path,
@@ -71,7 +63,6 @@ function createRouteDecorator(method: RouteMethod, role: RouteRole, spec: RouteS
             deprecated: spec.deprecated ?? false,
             pathTokens,
             params,
-            requestBodySchema,
             responses: spec.responses ?? {},
         };
         addClassMetadata(ROUTES_KEY, target, routeDef);

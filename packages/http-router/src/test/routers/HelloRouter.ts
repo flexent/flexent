@@ -7,9 +7,14 @@ export class HelloRouter {
 
     @dep() private ctx!: HttpContext;
 
-    @Middleware({ summary: 'Hello middleware' })
-    async fooMiddleware() {
-        this.ctx.addResponseHeader('x-middleware', 'hello');
+    @Middleware({ summary: 'Hello one' })
+    async middlewareOne() {
+        this.ctx.addResponseHeader('x-middleware', 'one');
+    }
+
+    @Middleware({ summary: 'Hello two' })
+    async middlewareTwo() {
+        this.ctx.addResponseHeader('x-middleware', 'two');
     }
 
     @Get({ path: '/hello' })

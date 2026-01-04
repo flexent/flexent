@@ -3,9 +3,10 @@ import { Schema, SchemaDef } from 'airtight';
 
 export type RouteRole = 'endpoint' | 'middleware';
 export type RouteMethod = '*' | 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-export type ParamSource = 'path' | 'query' | 'body';
+export type ParamSource = 'path' | 'query' | 'header' | 'body' | 'bodyJson';
 
 export interface RouteDefinition {
+    memberKey: string;
     role: RouteRole;
     method: RouteMethod;
     path: string;
@@ -13,7 +14,6 @@ export interface RouteDefinition {
     deprecated: boolean;
     pathTokens: PathToken[];
     params: ParamDefinition[];
-    requestBodySchema?: Schema<any>;
     responses: Record<number, ResponseSpec>;
 }
 
