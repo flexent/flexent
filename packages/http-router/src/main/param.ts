@@ -44,6 +44,7 @@ function createParamDecorator(source: ParamSource, name: string, spec: ParamSpec
             required,
             deprecated,
         });
+        params.sort((a, b) => a.index - b.index);
         Reflect.defineMetadata(PARAMS_KEY, params, target, methodKey);
     };
 }

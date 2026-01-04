@@ -18,7 +18,7 @@ export interface RouteDefinition {
 }
 
 export interface RouteSpec {
-    path: string;
+    path?: string;
     summary?: string;
     deprecated?: boolean;
     requestBodySchema?: SchemaDef<any>;
