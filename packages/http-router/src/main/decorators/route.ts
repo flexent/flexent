@@ -6,8 +6,8 @@ import { Schema } from 'airtight';
 import { Constructor } from 'mesh-ioc';
 import { addClassMetadata, getClassMetadata } from 'reflect-utils';
 
+import { RouteDefinition, RouteMethod, RouteRole, RouteSpec } from '../types.js';
 import { getParamDefinitions } from './param.js';
-import { RouteDefinition, RouteMethod, RouteRole, RouteSpec } from './types.js';
 
 const ROUTES_KEY = Symbol.for('@luminable/http/routes');
 

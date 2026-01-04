@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 
-import { getAllRoutes } from '../../main/route.js';
+import { getAllRoutes } from '../../main/index.js';
 import { HelloRouter } from '../routers/HelloRouter.js';
 import { InheritedRouter } from '../routers/InheritedRouter.js';
 

@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { InitializationError } from '@luminable/errors';
 import { Schema } from 'airtight';
 
-import { ParamDefinition, ParamSource, ParamSpec } from './types.js';
+import { ParamDefinition, ParamSource, ParamSpec } from '../types.js';
 
 const PARAMS_KEY = Symbol.for('@luminable/http/params');
 

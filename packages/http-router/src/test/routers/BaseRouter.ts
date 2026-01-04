@@ -1,7 +1,7 @@
 import { HttpContext } from '@luminable/http-server';
 import { dep } from 'mesh-ioc';
 
-import { Get, Middleware } from '../../main/route.js';
+import { Get, Middleware } from '../../main/index.js';
 
 export class BaseRouter {
 
