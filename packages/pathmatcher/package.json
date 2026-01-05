@@ -1,6 +1,6 @@
 {
     "name": "@luminable/pathmatcher",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Path matching utils for pathname-based routing",
     "type": "module",
     "sideEffects": false,
