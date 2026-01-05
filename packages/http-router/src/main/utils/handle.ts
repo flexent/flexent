@@ -1,4 +1,3 @@
-import { MissingRequiredParameterError } from '@luminable/errors';
 import { HttpContext } from '@luminable/http-server';
 
 import { ParamDefinition, RouteDefinition } from '../types.js';
@@ -77,12 +76,6 @@ export async function assembleRouteParams(route: RouteDefinition, ctx: HttpConte
 }
 
 export function convertParamValue(param: ParamDefinition, value: any, coerceString: boolean) {
-    if (value == null) {
-        if (param.required) {
-            throw new MissingRequiredParameterError(`Missing required parameter: ${param.name}`);
-        }
-        return undefined;
-    }
     if (coerceString) {
         // Only attempt JSON parse if the target type is not string
         if (param.schema.schema.type !== 'string') {

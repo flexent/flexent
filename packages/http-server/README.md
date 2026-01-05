@@ -8,8 +8,7 @@ Minimal Http Server, based on [Mesh IoC](https://github.com/MeshIoC/mesh-ioc).
 
 - 🗜 Minimal abstraction over native APIs
 - 🧩 Composable handlers
-- 📦 Routing and standard handlers included
-- ☢️ Heavily opinionated!
+- 📦 Standard handlers included
 
 ## Usage
 
@@ -29,11 +28,20 @@ export class FooHandler implements HttpHandler {
 }
 ```
 
+A handler can be created from  `async (ctx: HttpContext, next: HttpNext) => Promise<void>` function:
+
+```ts
+const handler = createHandler(async (ctx: HttpContext, next: HttpNext) => {
+    ctx.status = 200;
+    ctx.responseBody = 'Hello, world!';
+}); // returns HttpHandler
+```
+
 ### Chains
 
 Multiple handlers are composed into chains.
 
-Chains are also handlers, so request processing can be hierarchical.
+Chains are also handlers, so request processing can be hierarchic.
 
 ```ts
 export class AppHandler extends HttpChain {
@@ -48,6 +56,16 @@ export class AppHandler extends HttpChain {
         this.baz,
     ];
 }
+```
+
+A chain can also be created explicitly:
+
+```ts
+const chain = createChain([
+    this.foo,
+    this.bar,
+    this.baz,
+]); // returns HttpHandler
 ```
 
 ### Http Server

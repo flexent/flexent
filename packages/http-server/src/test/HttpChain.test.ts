@@ -7,6 +7,9 @@ import { runtime } from './runtime.js';
 
 describe('HttpChain', () => {
 
+    beforeEach(() => runtime.beforeEach());
+    afterEach(() => runtime.afterEach());
+
     it('calls middlware in order', async () => {
         class Handler extends HttpChain {
             @dep() foo!: FooMiddleware;

@@ -17,7 +17,7 @@ import { resolveRouterBindings } from './utils/resolve.js';
  *
  * Chain-friendly: if nothing matches, next() is called to allow other handlers to execute.
  */
-export class AppRouterHandler implements HttpHandler {
+export class RouteHandler implements HttpHandler {
 
     @dep() private mesh!: Mesh;
 

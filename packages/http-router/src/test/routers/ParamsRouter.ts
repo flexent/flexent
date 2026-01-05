@@ -92,4 +92,25 @@ export class ParamsRouter {
         return body;
     }
 
+    @Get({ path: '/params/optional' })
+    async optionalParams(
+        @QueryParam('str', { schema: { type: 'string', optional: true } }) str?: string,
+    ) {
+        return { str };
+    }
+
+    @Get({ path: '/params/nullable' })
+    async nullableParams(
+        @QueryParam('str', { schema: { type: 'string', nullable: true } }) str: string | null,
+    ) {
+        return { str };
+    }
+
+    @Get({ path: '/params/default' })
+    async defaultParams(
+        @QueryParam('str', { schema: { type: 'string', default: 'Hello' } }) str: string,
+    ) {
+        return { str };
+    }
+
 }

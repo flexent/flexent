@@ -19,7 +19,7 @@ import { handleRouter } from './utils/handle.js';
  *
  * Chain-friendly: if nothing matches, next() is called to allow other handlers to execute.
  */
-export class StandaloneHttpRouter implements HttpHandler {
+export class HttpRouter implements HttpHandler {
 
     async handle(ctx: HttpContext, next: HttpNext) {
         const routes = getAllRoutes(this.constructor as Constructor<any>);

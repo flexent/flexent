@@ -25,13 +25,17 @@ export function searchParamsToDict(search: URLSearchParams): HttpDict {
     return dict;
 }
 
-export function composeHandlers(handlers: HttpHandler[]): HttpHandler {
+export function createHandler(fn: HttpHandlerFn): HttpHandler {
+    return {
+        handle: fn,
+    };
+}
+
+export function createChain(handlers: HttpHandler[]): HttpHandler {
     const fns = handlers.map<HttpHandlerFn>(_ => {
         return (ctx, next) => _.handle(ctx, next);
     });
-    return {
-        handle: compose(fns),
-    };
+    return createHandler(compose(fns));
 }
 
 export function compose(fns: HttpHandlerFn[]): HttpHandlerFn {

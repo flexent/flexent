@@ -28,7 +28,6 @@ export interface RouteSpec {
 export interface ParamDefinition {
     index: number;
     name: string;
-    required: boolean;
     source: ParamSource;
     schema: Schema<any>;
     description: string;
@@ -38,7 +37,6 @@ export interface ParamDefinition {
 export interface ParamSpec {
     schema?: SchemaDef<any>;
     description?: string;
-    required?: boolean;
     deprecated?: boolean;
 }
 

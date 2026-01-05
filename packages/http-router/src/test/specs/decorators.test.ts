@@ -53,12 +53,10 @@ describe('decorators', () => {
         assert.strictEqual(createRoute.params[0].source, 'body');
         assert.strictEqual(createRoute.params[0].index, 0);
         assert.strictEqual(createRoute.params[0].schema.schema.type, 'string');
-        assert.strictEqual(createRoute.params[0].required, true);
         assert.strictEqual(createRoute.params[1].name, 'age');
         assert.strictEqual(createRoute.params[1].source, 'query');
         assert.strictEqual(createRoute.params[1].index, 1);
         assert.strictEqual(createRoute.params[1].schema.schema.type, 'number');
-        assert.strictEqual(createRoute.params[1].required, false);
     });
 
 });

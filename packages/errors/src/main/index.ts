@@ -25,8 +25,6 @@ export class ClientError extends BaseError {
 
 }
 
-export class MissingRequiredParameterError extends ClientError {}
-
 export class NotFoundError extends BaseError {
 
     override status = 404;

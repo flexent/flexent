@@ -1,6 +1,6 @@
 import { HttpContext } from './HttpContext.js';
 import { HttpHandler, HttpNext } from './HttpHandler.js';
-import { composeHandlers } from './util.js';
+import { createChain } from './util.js';
 
 export abstract class HttpChain implements HttpHandler {
 
@@ -10,7 +10,7 @@ export abstract class HttpChain implements HttpHandler {
 
     async handle(ctx: HttpContext, next: HttpNext) {
         if (!this.composed) {
-            this.composed = composeHandlers(this.handlers);
+            this.composed = createChain(this.handlers);
         }
         return await this.composed.handle(ctx, next);
     }

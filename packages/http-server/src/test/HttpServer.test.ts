@@ -6,6 +6,9 @@ import { runtime } from './runtime.js';
 
 describe('HttpServer', () => {
 
+    beforeEach(() => runtime.beforeEach());
+    afterEach(() => runtime.afterEach());
+
     it('listens on port specified in config', async () => {
         await runtime.server.start();
         const addr = runtime.server.getServer()?.address() as any;

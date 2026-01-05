@@ -31,13 +31,12 @@ export class HelloRouter {
         })
         name: string,
         @QueryParam('age', {
-            required: false,
             schema: { type: 'number' },
         })
-        age?: number,
+        age: number,
     ) {
         return {
-            hello: name,
+            name,
             age,
         };
     }

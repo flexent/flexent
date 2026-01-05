@@ -1,13 +1,13 @@
-import { ConsoleLogger, Logger, LogLevel } from '@luminable/logger';
+import { Logger } from '@luminable/logger';
 import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh, ServiceConstructor } from 'mesh-ioc';
 
 import { HttpContext, HttpHandler, HttpNext, HttpServer } from '../main/index.js';
 import { BarMiddleware, CatchMiddleware, EndpointHandler, FooMiddleware, ThrowMiddleware } from './handlers.js';
+import { TestLogger } from './TestLogger.js';
 
-dotenv.config();
-dotenv.config({ path: '.env.test' });
+dotenv.config({ path: '.env.test', quiet: true });
 
 export class TestHttpServer extends HttpServer {
 
@@ -32,7 +32,8 @@ export class TestRuntime {
         this.mesh = new Mesh('App');
         this.requestScope = new Mesh('Request', this.mesh);
         this.mesh.connect(this);
-        this.mesh.service(Logger, ConsoleLogger);
+        this.mesh.service(TestLogger);
+        this.mesh.alias(Logger, TestLogger);
         this.mesh.service(Config, ProcessEnvConfig);
         this.mesh.service(TestHttpServer);
         this.mesh.alias(HttpServer, TestHttpServer);
@@ -41,7 +42,6 @@ export class TestRuntime {
         this.requestScope.service(CatchMiddleware);
         this.requestScope.service(ThrowMiddleware);
         this.requestScope.service(EndpointHandler);
-        this.logger.level = this.config.getString('LOG_LEVEL', 'mute') as LogLevel;
         this.events = [];
     }
 

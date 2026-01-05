@@ -37,7 +37,6 @@ function createParamDecorator(source: ParamSource, name: string, spec: ParamSpec
         const {
             description = '',
             schema,
-            required = true,
             deprecated = false,
         } = spec;
         if (params.find(p => p.name === name)) {
@@ -49,7 +48,6 @@ function createParamDecorator(source: ParamSource, name: string, spec: ParamSpec
             name,
             description,
             schema: new Schema(schema ?? { type: 'any' }),
-            required,
             deprecated,
         });
         params.sort((a, b) => a.index > b.index ? 1 : -1);
