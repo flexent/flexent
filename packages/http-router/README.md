@@ -104,7 +104,7 @@ export FooRouter extends HttpRouter {
 }
 ```
 
-This way routers can be composed into chains as per usual.
+This way routers can be composed into chains as per usual, to have more granular control over the order in which route handlers are called.
 
 ```ts
 export class AppHandler extends HttpChain {
@@ -120,3 +120,26 @@ export class AppHandler extends HttpChain {
     ];
 }
 ```
+
+Note: RouteHandler is generally more efficient because it can skip instantiating routers that do not match the request (see below).
+
+## Routing rules
+
+- There are two types of routes:
+
+    1. **Endpoints** are defined with `@Get`, `@Post`, `@Put`, `@Delete`, `@Patch` decorators.
+    2. **Middlewares** are defined with `@Middleware` decorator.
+
+- On each request a *single* endpoint is matched.
+
+- If an endpoint matches:
+
+    - Middlewares from the same class are executed, in the order they are defined.
+    - `next()` is not called, so any other remaining handlers in the chain are skipped.
+
+- If no endpoints match:
+
+    - No middlewares are executed, even if they match.
+    - `next()` is called to allow other handlers to execute.
+    - As an additional optimization, if `RouteHandler` is used, it will only instantiate a router class with matching endpoint.
+
