@@ -1,6 +1,7 @@
 import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
 import { dep, Mesh } from 'mesh-ioc';
 
+import { RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 import { matchEndpoint } from './utils/match.js';
 import { resolveRouterBindings } from './utils/resolve.js';
@@ -20,6 +21,7 @@ import { resolveRouterBindings } from './utils/resolve.js';
 export class RouteHandler implements HttpHandler {
 
     @dep() private mesh!: Mesh;
+    @dep({ optional: true }) private routeMetrics!: RouteMetrics;
 
     async handle(ctx: HttpContext, next: HttpNext) {
         const routerBindings = resolveRouterBindings(this.mesh);
@@ -29,9 +31,11 @@ export class RouteHandler implements HttpHandler {
             if (!match) {
                 continue;
             }
+            const startedAt = Date.now();
             const instance = this.mesh.resolve(router.bindingKey);
             const handled = await handleRouter(instance, router.routes, ctx);
             if (handled) {
+                this.routeMetrics?.logLatency(handled, startedAt);
                 return;
             }
         }

@@ -14,7 +14,7 @@
         "test": "NODE_ENV=test mocha"
     },
     "peerDependencies": {
-        "mesh-decorators": "^1.3.2",
-        "mesh-ioc": "^4.1.1"
+        "mesh-decorators": "^1.3.4",
+        "mesh-ioc": "^4.2.0"
     }
 }

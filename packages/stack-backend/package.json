@@ -1,0 +1,22 @@
+{
+    "name": "@luminable/stack-backend",
+    "version": "1.0.1",
+    "description": "Backend conventions",
+    "type": "module",
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "peerDependencies": {
+        "@luminable/errors": "1.0.1",
+        "@luminable/http-router": "1.0.1",
+        "@luminable/http-server": "1.0.1",
+        "@luminable/logger": "1.0.1",
+        "dotenv": "^17.2.3",
+        "mesh-config": "^1.3.2",
+        "mesh-ioc": "^4.2.0",
+        "reflect-metadata": "^0.2.2"
+    }
+}

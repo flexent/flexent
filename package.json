@@ -1,7 +1,7 @@
 {
     "name": "@luminable/monorepo",
     "version": "1.0.1",
-    "description": "Luminable Framework",
+    "description": "Luminable — frameworkless OOP toolkit for building scalable applications",
     "type": "module",
     "private": true,
     "license": "ISC",
@@ -24,7 +24,7 @@
         "version": "run-s version:bump",
         "version:bump": "node ./tools/bump-version.mjs && git add **/package.json",
         "postversion": "npm run publish:workspaces && git push origin $(git branch --show-current) --tags",
-        "publish:workspaces": "npm publish $(node ./tools/ls-publish-workspaces.mjs)"
+        "publish:workspaces": "npm publish $(node ./tools/ls-publish-workspaces.mjs) --access=public"
     },
     "devDependencies": {
         "@fastify/pre-commit": "^2.2.1",

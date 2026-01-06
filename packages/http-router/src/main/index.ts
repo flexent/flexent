@@ -2,6 +2,7 @@ export * from './decorators/param.js';
 export * from './decorators/route.js';
 export * from './HttpRouter.js';
 export * from './RouteHandler.js';
+export * from './RouteMetrics.js';
 export * from './types.js';
 export * from './utils/handle.js';
 export * from './utils/match.js';

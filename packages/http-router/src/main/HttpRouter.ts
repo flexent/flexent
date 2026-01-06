@@ -1,7 +1,8 @@
 import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
-import { Constructor } from 'mesh-ioc';
+import { Constructor, dep } from 'mesh-ioc';
 
 import { getAllRoutes } from './decorators/route.js';
+import { RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 
 /**
@@ -21,10 +22,14 @@ import { handleRouter } from './utils/handle.js';
  */
 export class HttpRouter implements HttpHandler {
 
+    @dep({ optional: true }) private routeMetrics!: RouteMetrics;
+
     async handle(ctx: HttpContext, next: HttpNext) {
+        const startedAt = Date.now();
         const routes = getAllRoutes(this.constructor as Constructor<any>);
         const handled = await handleRouter(this, routes, ctx);
         if (handled) {
+            this.routeMetrics?.logLatency(handled, startedAt);
             return;
         }
         return await next();

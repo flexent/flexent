@@ -7,5 +7,6 @@
         { "path": "./packages/pathmatcher" },
         { "path": "./packages/http-server" },
         { "path": "./packages/http-router" },
+        { "path": "./packages/stack-backend" },
     ]
 }

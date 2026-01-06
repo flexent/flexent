@@ -7,24 +7,24 @@ export async function handleRouter(
     instance: any,
     routes: RouteDefinition[],
     ctx: HttpContext
-) {
+): Promise<RouteDefinition | null> {
     const endpoint = matchEndpoint(routes, ctx.method, ctx.path);
     if (!endpoint) {
-        return false;
+        return null;
     }
     const middlewares = routes.filter(r => r.role === 'middleware');
     const routesToExecute = [...middlewares, endpoint];
     for (const route of routesToExecute) {
         await handleSingleRoute(instance, route, ctx);
     }
-    return true;
+    return endpoint;
 }
 
 export async function handleSingleRoute(
     instance: any,
     route: RouteDefinition,
     ctx: HttpContext
-) {
+): Promise<boolean> {
     const match = matchRoute(route, ctx.method, ctx.path);
     if (!match) {
         return false;
