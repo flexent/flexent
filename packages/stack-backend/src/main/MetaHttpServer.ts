@@ -1,6 +1,8 @@
-import { createChain, HttpContext, HttpErrorHandler, HttpMetricsHandler, HttpNext, HttpServer, HttpStatusHandler } from '@luminable/http-server';
+import { HttpServer } from '@luminable/http-server';
 import { config } from 'mesh-config';
-import { dep } from 'mesh-ioc';
+import { Mesh } from 'mesh-ioc';
+
+import { MetaScope } from './MetaScope.js';
 
 /**
  * Serves application metadata over HTTP.
@@ -16,10 +18,6 @@ export class MetaHttpServer extends HttpServer {
     @config({ default: 8081 })
     META_HTTP_PORT!: number;
 
-    @dep() protected errorHandler!: HttpErrorHandler;
-    @dep() protected metricsHandler!: HttpMetricsHandler;
-    @dep() protected statusHandler!: HttpStatusHandler;
-
     constructor() {
         super();
         this.config.port = this.META_HTTP_PORT;
@@ -30,14 +28,8 @@ export class MetaHttpServer extends HttpServer {
         this.config.tlsCiphers = '';
     }
 
-    protected handler = createChain([
-        this.errorHandler,
-        this.metricsHandler,
-        this.statusHandler,
-    ]);
-
-    async handle(ctx: HttpContext, next: HttpNext) {
-        return await this.handler.handle(ctx, next);
+    createScope(parent: Mesh) {
+        return new MetaScope(parent);
     }
 
 }

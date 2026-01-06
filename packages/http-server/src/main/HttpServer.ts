@@ -3,11 +3,12 @@ import { Logger } from '@luminable/logger';
 import * as http from 'http';
 import * as https from 'https';
 import { config } from 'mesh-config';
-import { dep } from 'mesh-ioc';
+import { dep, Mesh } from 'mesh-ioc';
 import { Socket } from 'net';
 
 import { HttpContext } from './HttpContext.js';
-import { HttpNext } from './HttpHandler.js';
+import { HttpHandler } from './HttpHandler.js';
+import { HttpNext } from './types.js';
 
 export interface HttpServerConfig {
     port: number;
@@ -35,6 +36,7 @@ export abstract class HttpServer {
     @config({ default: '' }) HTTP_TLS_CIPHERS!: string;
 
     @dep() logger!: Logger;
+    @dep() mesh!: Mesh;
 
     protected config: HttpServerConfig;
     protected server: http.Server | https.Server | null = null;
@@ -55,7 +57,7 @@ export abstract class HttpServer {
         };
     }
 
-    abstract handle(ctx: HttpContext, next: HttpNext): Promise<void>;
+    abstract createScope(parent: Mesh): Mesh;
 
     async start() {
         if (this.server) {
@@ -94,6 +96,12 @@ export abstract class HttpServer {
         await closePromise;
         clearTimeout(timeout);
         this.server = null;
+    }
+
+    async handle(ctx: HttpContext, next: HttpNext) {
+        const scope = this.createScope(this.mesh);
+        scope.constant(HttpContext, ctx);
+        await scope.resolve(HttpHandler).handle(ctx, next);
     }
 
     getServer() {

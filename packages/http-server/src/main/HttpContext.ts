@@ -2,8 +2,8 @@ import { InvalidStateError, RequestSizeExceededError } from '@luminable/errors';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Stream } from 'stream';
 
-import { HttpDict } from './HttpDict.js';
 import { HttpServerConfig } from './HttpServer.js';
+import { HttpDict } from './types.js';
 import { RequestBodyType, searchParamsToDict, TypedArray } from './util.js';
 
 export type HttpResponseBody = Stream | Buffer | ArrayBuffer | Uint8Array | string | object | undefined;

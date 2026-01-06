@@ -72,7 +72,7 @@ export async function assembleRouteParams(route: RouteDefinition, ctx: HttpConte
             }
         }
     }
-    return result;
+    return [...result, ctx];
 }
 
 export function convertParamValue(param: ParamDefinition, value: any, coerceString: boolean) {

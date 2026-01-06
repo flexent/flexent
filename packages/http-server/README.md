@@ -8,7 +8,7 @@ Minimal Http Server, based on [Mesh IoC](https://github.com/MeshIoC/mesh-ioc).
 
 - 🗜 Minimal abstraction over native APIs
 - 🧩 Composable handlers
-- 📦 Standard handlers included
+- 📦 Standard handlers included (but not enforced)
 
 ## Usage
 
@@ -18,7 +18,7 @@ Application logic is implemented in HTTP handlers.
 Each handler deals with its subset of domain and delegates processing to others by calling next().
 
 ```ts
-export class FooHandler implements HttpHandler {
+export class FooHandler extends HttpHandler {
 
     async handle(ctx: HttpContext, next: HttpNext) {
         // Call next() to execute the next middleware in chain.
@@ -28,7 +28,7 @@ export class FooHandler implements HttpHandler {
 }
 ```
 
-A handler can be created from  `async (ctx: HttpContext, next: HttpNext) => Promise<void>` function:
+A handler can be created from `async (ctx: HttpContext, next: HttpNext) => Promise<void>` function:
 
 ```ts
 const handler = createHandler(async (ctx: HttpContext, next: HttpNext) => {
@@ -70,19 +70,25 @@ const chain = createChain([
 
 ### Http Server
 
-Http Server instance is configured with a handler.
+Http Server instance listens for requests and delegates them to a handler.
 
-If handlers do not rely on per-request state, a global handler can be used:
+It is configured using `createScope` that creates a new scope (a mesh instance) for each request. By default, it will resolve and delegate processing to `HttpHandler` from that scope.
 
 ```ts
 export class MainHttpServer extends HttpServer {
-
-    @dep() private appHandler!: AppHandler;
-
-    async handle(ctx: HttpContext, next: HttpNext) {
-        await this.appHandler.handle(ctx, next);
+    createScope(parent: Mesh) {
+        return new HttpScope(parent);
     }
+}
+```
 
+```ts
+export class HttpScope {
+    constructor(parent: Mesh) {
+        super('Http', parent);
+        this.service(MyHandler);
+        this.alias(HttpHandler, MyHandler);
+    }
 }
 ```
 
@@ -103,7 +109,6 @@ export class AuthContext {
     setPrincipal(user: User) {
         this.user = user;
     }
-
 }
 ```
 
@@ -119,47 +124,30 @@ export class AuthHandler implements HttpHandler {
         this.auth.setPrincipal(user);
         await next();
     }
-
 }
 ```
 
-```ts
-// scoped/AppHandler.ts
+```ts   
 export class AppHandler extends HttpChain {
-
     @dep() private authHandler!: AuthHandler;
     @dep() private fooHandler!: FooHandler;
 
     handlers = [
-        this.authHandler.
+        this.authHandler,
         this.fooHandler,
     ];
-
 }
 ```
 
 ```ts
-export class MainHttpServer extends HttpServer {
-
-    @dep() private mesh!: Mesh;
-
-    private createHttpScope() {
-        // Allow request scoped instances to resolve global ones
-        const mesh = new Mesh('Request', this.mesh);
-        mesh.service(AuthContext);
-        mesh.service(AuthHandler);
-        mesh.service(FooHandler);
-        return mesh;
+export class HttpScope extends Mesh {
+    constructor(parent: Mesh) {
+        super('Http', parent);
+        this.service(AuthContext);
+        this.service(AuthHandler);
+        this.service(FooHandler);
+        this.constant(HttpHandler, AppHandler);
     }
-
-    async handle(ctx: HttpContext, next: HttpNext) {
-        const scope = this.createRequestScope();
-        // Allow request-scoped instances to @dep() private ctx!: HttpContext
-        scope.constant(HttpContext, ctx);
-        const handler = scope.resolve(AppHandler);
-        await handler.handle(ctx, next);
-    }
-
 }
 ```
 

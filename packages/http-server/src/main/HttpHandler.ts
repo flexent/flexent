@@ -1,9 +1,8 @@
 import { HttpContext } from './HttpContext.js';
+import { HttpNext } from './types.js';
 
-export type HttpNext = () => Promise<void>;
+export abstract class HttpHandler {
 
-export type HttpHandlerFn = (ctx: HttpContext, next: HttpNext) => Promise<void>;
+    abstract handle(ctx: HttpContext, next: HttpNext): Promise<void>;
 
-export interface HttpHandler {
-    handle(ctx: HttpContext, next: HttpNext): Promise<void>;
 }

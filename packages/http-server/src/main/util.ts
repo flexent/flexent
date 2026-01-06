@@ -1,6 +1,6 @@
 import { HttpContext } from './HttpContext.js';
-import { HttpDict } from './HttpDict.js';
-import { HttpHandler, HttpHandlerFn, HttpNext } from './HttpHandler.js';
+import { HttpHandler } from './HttpHandler.js';
+import { HttpDict, HttpHandlerFn, HttpNext } from './types.js';
 
 export const TypedArray = Object.getPrototypeOf(Uint8Array);
 
@@ -35,10 +35,10 @@ export function createChain(handlers: HttpHandler[]): HttpHandler {
     const fns = handlers.map<HttpHandlerFn>(_ => {
         return (ctx, next) => _.handle(ctx, next);
     });
-    return createHandler(compose(fns));
+    return createHandler(composeHandlers(fns));
 }
 
-export function compose(fns: HttpHandlerFn[]): HttpHandlerFn {
+export function composeHandlers(fns: HttpHandlerFn[]): HttpHandlerFn {
     return async (ctx: HttpContext, next: HttpNext) => {
         const dispatch = async (index: number) => {
             if (index >= fns.length) {

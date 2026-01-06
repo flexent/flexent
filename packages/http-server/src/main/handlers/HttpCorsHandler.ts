@@ -1,7 +1,5 @@
+import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
 import { config } from 'mesh-config';
-
-import { HttpContext } from '../HttpContext.js';
-import { HttpHandler, HttpNext } from '../HttpHandler.js';
 
 /**
  * Sets Access-Control-* headers and responds to CORS preflight requests.

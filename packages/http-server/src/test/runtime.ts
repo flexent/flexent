@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh, ServiceConstructor } from 'mesh-ioc';
 
-import { HttpContext, HttpHandler, HttpNext, HttpServer } from '../main/index.js';
+import { HttpHandler, HttpServer } from '../main/index.js';
 import { BarMiddleware, CatchMiddleware, EndpointHandler, FooMiddleware, ThrowMiddleware } from './handlers.js';
 import { TestLogger } from './TestLogger.js';
 
@@ -11,9 +11,8 @@ dotenv.config({ path: '.env.test', quiet: true });
 
 export class TestHttpServer extends HttpServer {
 
-    async handle(ctx: HttpContext, next: HttpNext): Promise<void> {
-        const handler = runtime.requestScope.resolve<HttpHandler>('Handler');
-        await handler.handle(ctx, next);
+    createScope() {
+        return runtime.requestScope;
     }
 
 }
@@ -30,13 +29,13 @@ export class TestRuntime {
 
     async beforeEach() {
         this.mesh = new Mesh('App');
-        this.requestScope = new Mesh('Request', this.mesh);
         this.mesh.connect(this);
         this.mesh.service(TestLogger);
         this.mesh.alias(Logger, TestLogger);
         this.mesh.service(Config, ProcessEnvConfig);
         this.mesh.service(TestHttpServer);
         this.mesh.alias(HttpServer, TestHttpServer);
+        this.requestScope = new Mesh('Request', this.mesh);
         this.requestScope.service(FooMiddleware);
         this.requestScope.service(BarMiddleware);
         this.requestScope.service(CatchMiddleware);
@@ -58,7 +57,7 @@ export class TestRuntime {
     }
 
     setHandler(handler: ServiceConstructor<HttpHandler>) {
-        this.requestScope.service('Handler', handler);
+        this.requestScope.service(HttpHandler, handler);
     }
 
 }

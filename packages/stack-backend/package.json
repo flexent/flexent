@@ -16,6 +16,7 @@
         "@luminable/logger": "1.0.1",
         "dotenv": "^17.2.3",
         "mesh-config": "^1.3.2",
+        "mesh-decorators": "^1.3.4",
         "mesh-ioc": "^4.2.0",
         "reflect-metadata": "^0.2.2"
     }

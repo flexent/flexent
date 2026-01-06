@@ -2,13 +2,14 @@ import 'reflect-metadata';
 
 import { InitializationError } from '@luminable/errors';
 import { RouteMetrics } from '@luminable/http-router';
-import { HttpCorsHandler, HttpErrorHandler, HttpMetricsHandler, HttpStatusHandler } from '@luminable/http-server';
+import { HttpCorsHandler, HttpErrorHandler } from '@luminable/http-server';
 import { Logger } from '@luminable/logger';
 import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
 
 import { MetaHttpServer } from './MetaHttpServer.js';
+import { MetaRouter } from './MetaRouter.js';
 import { ProcessMetrics } from './ProcessMetrics.js';
 import { StandardLogger } from './StandardLogger.js';
 
@@ -37,8 +38,17 @@ export abstract class BaseApp {
         // Global Handlers
         this.mesh.service(HttpCorsHandler);
         this.mesh.service(HttpErrorHandler);
-        this.mesh.service(HttpMetricsHandler);
-        this.mesh.service(HttpStatusHandler);
+    }
+
+    createHttpScope() {
+        const scope = new Mesh('Http', this.mesh);
+        return scope;
+    }
+
+    createMetaScope() {
+        const scope = new Mesh('Meta', this.mesh);
+        this.mesh.service(MetaRouter);
+        return scope;
     }
 
     get envName(): EnvName {
