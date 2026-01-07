@@ -1,6 +1,6 @@
 {
     "name": "@luminable/monorepo",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Luminable — frameworkless OOP toolkit for building scalable applications",
     "private": true,
     "workspaces": [
@@ -18,7 +18,7 @@
         "compile:ts": "tsc -b",
         "lint": "eslint . --fix",
         "test": "npm run test --workspaces --if-present",
-        "version": "run-s version:bump",
+        "version": "run-s clean compile:ts version:bump",
         "version:bump": "node ./tools/bump-version.mjs && git add **/package.json",
         "postversion": "npm run publish:workspaces && git push origin $(git branch --show-current) --tags",
         "publish:workspaces": "npm publish $(node ./tools/ls-publish-workspaces.mjs) --access=public"
