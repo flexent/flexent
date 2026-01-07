@@ -33,7 +33,7 @@ export async function handleSingleRoute(
     const fn = instance[route.memberKey];
     const params = await assembleRouteParams(route, ctx);
     const outcome = await fn.apply(instance, params);
-    if (route.role === 'endpoint') {
+    if (route.role === 'endpoint' && outcome !== undefined) {
         ctx.responseBody = outcome;
     }
     return true;
