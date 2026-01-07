@@ -12,7 +12,7 @@ for await (const workspace of workspaces) {
     const pkgText = await readFile(pkgPath, 'utf-8');
     // Replace in text to maintain the same format
     const replaced = pkgText
-        .replace(/"(@luminable\/.*?)": ".*?"/g, `"$1": "${newVersion}"`)
+        .replace(/"(@luminable\/.*?)": ".*?"/g, `"$1": "^${newVersion}"`)
         .replace(/"version": ".*?"/g, `"version": "${newVersion}"`);
     await writeFile(pkgPath, replaced);
     console.info(`Bumped ${pkgPath} to ${newVersion}`);
