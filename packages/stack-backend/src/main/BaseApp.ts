@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 
 import { RouteMetrics } from '@luminable/http-router';
-import { HttpCorsHandler, HttpErrorHandler, HttpHandler } from '@luminable/http-server';
+import { HttpCorsHandler, HttpErrorHandler, HttpHandler, HttpServer } from '@luminable/http-server';
 import { Logger } from '@luminable/logger';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
@@ -24,6 +24,7 @@ export abstract class BaseApp {
 
     @dep() logger!: Logger;
     @dep() processEnvConfig!: ProcessEnvConfig;
+    @dep() httpServer!: HttpServer;
     @dep() metaHttpServer!: MetaHttpServer;
     @dep() processSignals!: ProcessSignals;
 
@@ -39,6 +40,7 @@ export abstract class BaseApp {
         this.mesh.service(ProcessSignals);
         this.mesh.service(RouteMetrics);
         this.mesh.service(ProcessMetrics);
+        this.mesh.service(HttpServer);
         this.mesh.service(MetaHttpServer);
         // Global Handlers
         this.mesh.service(HttpCorsHandler);
