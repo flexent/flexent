@@ -1,6 +1,6 @@
 {
     "name": "@luminable/stack-backend",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "description": "Backend conventions",
     "type": "module",
     "exports": {
@@ -10,10 +10,10 @@
         "out"
     ],
     "peerDependencies": {
-        "@luminable/errors": "1.0.6",
-        "@luminable/http-router": "1.0.6",
-        "@luminable/http-server": "1.0.6",
-        "@luminable/logger": "1.0.6",
+        "@luminable/errors": "1.0.7",
+        "@luminable/http-router": "1.0.7",
+        "@luminable/http-server": "1.0.7",
+        "@luminable/logger": "1.0.7",
         "dotenv": "^17.2.3",
         "mesh-config": "^1.3.4",
         "mesh-decorators": "^1.3.6",
