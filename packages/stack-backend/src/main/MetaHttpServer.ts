@@ -1,8 +1,6 @@
 import { HttpServer } from '@luminable/http-server';
 import { config } from 'mesh-config';
-import { Mesh } from 'mesh-ioc';
-
-import { MetaScope } from './MetaScope.js';
+import { scope, ScopeProvider } from 'mesh-ioc';
 
 /**
  * Serves application metadata over HTTP.
@@ -18,6 +16,9 @@ export class MetaHttpServer extends HttpServer {
     @config({ default: 8081 })
     META_HTTP_PORT!: number;
 
+    @scope('MetaScope')
+    protected override createScope!: ScopeProvider;
+
     constructor() {
         super();
         this.config.port = this.META_HTTP_PORT;
@@ -26,10 +27,6 @@ export class MetaHttpServer extends HttpServer {
         this.config.tlsKey = '';
         this.config.tlsCa = '';
         this.config.tlsCiphers = '';
-    }
-
-    createScope(parent: Mesh) {
-        return new MetaScope(parent);
     }
 
 }

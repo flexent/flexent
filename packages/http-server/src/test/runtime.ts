@@ -9,17 +9,9 @@ import { TestLogger } from './TestLogger.js';
 
 dotenv.config({ path: '.env.test', quiet: true });
 
-export class TestHttpServer extends HttpServer {
-
-    createScope() {
-        return runtime.requestScope;
-    }
-
-}
-
 export class TestRuntime {
 
-    @dep({ cache: false }) server!: TestHttpServer;
+    @dep({ cache: false }) httpServer!: HttpServer;
     @dep({ cache: false }) logger!: Logger;
     @dep({ cache: false }) config!: Config;
 
@@ -27,29 +19,30 @@ export class TestRuntime {
     requestScope = new Mesh();
     events: string[] = [];
 
-    async beforeEach() {
+    async setup() {
+        dotenv.config({ path: '.env.test', quiet: true });
+        this.events = [];
         this.mesh = new Mesh('App');
         this.mesh.connect(this);
         this.mesh.service(TestLogger);
         this.mesh.alias(Logger, TestLogger);
         this.mesh.service(Config, ProcessEnvConfig);
-        this.mesh.service(TestHttpServer);
-        this.mesh.alias(HttpServer, TestHttpServer);
+        this.mesh.service(HttpServer);
+        this.mesh.scope('HttpScope', () => this.requestScope);
         this.requestScope = new Mesh('Request', this.mesh);
         this.requestScope.service(FooMiddleware);
         this.requestScope.service(BarMiddleware);
         this.requestScope.service(CatchMiddleware);
         this.requestScope.service(ThrowMiddleware);
         this.requestScope.service(EndpointHandler);
-        this.events = [];
     }
 
     async afterEach() {
-        await this.server.stop();
+        await this.httpServer.stop();
     }
 
     get port() {
-        return this.server.HTTP_PORT;
+        return this.httpServer.HTTP_PORT;
     }
 
     getUrl(path = '/') {

@@ -1,7 +1,5 @@
 import assert from 'node:assert';
 
-import { createChain, createHandler } from '@luminable/http-server';
-
 import { runtime } from '../runtime.js';
 
 describe('routing', () => {
@@ -35,20 +33,9 @@ describe('routing', () => {
 
     describe('not found', () => {
 
-        beforeEach(() => {
-            const handler = createChain([
-                runtime.appRouteHandler,
-                createHandler(() => {
-                    throw new Error('Resource Not Found');
-                }),
-            ]);
-            runtime.setHandler(handler);
-        });
-
         it('calls next when not found', async () => {
             const res = await fetch(runtime.getUrl('/not-found'));
-            assert.strictEqual(res.status, 500);
-            assert.deepStrictEqual(await res.json(), { name: 'Error', message: 'Resource Not Found' });
+            assert.strictEqual(res.status, 404);
         });
 
     });

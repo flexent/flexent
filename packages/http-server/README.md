@@ -72,24 +72,33 @@ const chain = createChain([
 
 Http Server instance listens for requests and delegates them to a handler.
 
-It is configured using `createScope` that creates a new scope (a mesh instance) for each request. By default, it will resolve and delegate processing to `HttpHandler` from that scope.
+It is configured using `createScope` that creates a new scope (a mesh instance) for each request. By default, it will resolve `HttpScope` and delegate processing to `HttpHandler` from that scope.
 
 ```ts
-export class MainHttpServer extends HttpServer {
-    createScope(parent: Mesh) {
-        return new HttpScope(parent);
+// Composition root (global scope)
+mesh.service(HttpServer);
+mesh.scope(HttpScope);
+```
+
+```ts
+// Per-request scope
+export class HttpScope {
+    constructor(parent: Mesh) {
+        super('Http', parent);
+        this.service(HttpHandler, MyHandler);
     }
 }
 ```
 
+Alternatively, scope can be created directly in composition root:
+
 ```ts
-export class HttpScope {
-    constructor(parent: Mesh) {
-        super('Http', parent);
-        this.service(MyHandler);
-        this.alias(HttpHandler, MyHandler);
-    }
-}
+mesh.service(HttpServer);
+mesh.scope('HttpScope', () => {
+    const mesh = new Mesh('Http', mesh);
+    mesh.service(HttpHandler, MyHandler);
+    return mesh;
+});
 ```
 
 ### Request Scope
@@ -129,6 +138,7 @@ export class AuthHandler implements HttpHandler {
 
 ```ts   
 export class AppHandler extends HttpChain {
+
     @dep() private authHandler!: AuthHandler;
     @dep() private fooHandler!: FooHandler;
 

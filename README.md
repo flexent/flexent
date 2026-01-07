@@ -177,11 +177,13 @@ export class NotificationsService {
 
 ## Is this the right fit?
 
-Luminable is not for everyone — and that’s intentional. It is most useful if you recognize yourself in one or more of the following situations.
+Luminable is not for everyone — and that’s intentional. It may resonate with you if you recognize yourself in one or more of the following situations.
 
-### You’ve outgrown a traditional framework
+### You’ve outgrown your current framework
 
-You started with a popular framework, were productive early on, and later found yourself working around its assumptions more than benefiting from them — adding layers, escape hatches, and custom glue just to make your application fit.
+It is common to start with a popular framework and get productive very quickly.
+
+Later you find yourself working around its assumptions more than benefiting from them — adding layers, escape hatches, and custom glue just to make your application fit the framework's mold.
 
 You want to be in control of your application architecture, not be limited by the framework’s assumptions.
 

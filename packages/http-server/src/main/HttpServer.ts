@@ -3,7 +3,7 @@ import { Logger } from '@luminable/logger';
 import * as http from 'http';
 import * as https from 'https';
 import { config } from 'mesh-config';
-import { dep, Mesh } from 'mesh-ioc';
+import { dep, Mesh, scope, ScopeProvider } from 'mesh-ioc';
 import { Socket } from 'net';
 
 import { HttpContext } from './HttpContext.js';
@@ -22,7 +22,7 @@ export interface HttpServerConfig {
     tlsCiphers?: string;
 }
 
-export abstract class HttpServer {
+export class HttpServer {
 
     @config({ default: 8080 }) HTTP_PORT!: number;
     @config({ default: '' }) HTTP_ADDRESS!: string;
@@ -35,8 +35,10 @@ export abstract class HttpServer {
     @config({ default: '' }) HTTP_TLS_CA!: string;
     @config({ default: '' }) HTTP_TLS_CIPHERS!: string;
 
-    @dep() logger!: Logger;
-    @dep() mesh!: Mesh;
+    @dep() protected logger!: Logger;
+    @dep() protected mesh!: Mesh;
+
+    @scope('HttpScope') protected createScope!: ScopeProvider;
 
     protected config: HttpServerConfig;
     protected server: http.Server | https.Server | null = null;
@@ -56,8 +58,6 @@ export abstract class HttpServer {
             tlsCiphers: this.HTTP_TLS_CIPHERS || undefined,
         };
     }
-
-    abstract createScope(parent: Mesh): Mesh;
 
     async start() {
         if (this.server) {

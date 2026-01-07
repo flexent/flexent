@@ -1,21 +1,21 @@
 import 'reflect-metadata';
 
-import { InitializationError } from '@luminable/errors';
 import { RouteMetrics } from '@luminable/http-router';
-import { HttpCorsHandler, HttpErrorHandler } from '@luminable/http-server';
+import { HttpCorsHandler, HttpErrorHandler, HttpHandler } from '@luminable/http-server';
 import { Logger } from '@luminable/logger';
-import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
 
+import { MetaHandler } from './MetaHandler.js';
 import { MetaHttpServer } from './MetaHttpServer.js';
 import { MetaRouter } from './MetaRouter.js';
 import { ProcessMetrics } from './ProcessMetrics.js';
+import { ProcessSignals } from './ProcessSignals.js';
 import { StandardLogger } from './StandardLogger.js';
+import { assertMissingDeps } from './utils/deps.js';
+import { configureEnv, getEnvName } from './utils/env.js';
 
 const process = global.process;
-
-export type EnvName = 'development' | 'test' | 'production';
 
 /**
  * Common application setup with Mesh IoC, logger, metrics and start/stop hooks.
@@ -25,6 +25,7 @@ export abstract class BaseApp {
     @dep() logger!: Logger;
     @dep() processEnvConfig!: ProcessEnvConfig;
     @dep() metaHttpServer!: MetaHttpServer;
+    @dep() processSignals!: ProcessSignals;
 
     constructor(readonly mesh: Mesh) {
         this.mesh.connect(this);
@@ -32,12 +33,16 @@ export abstract class BaseApp {
         this.mesh.alias(Config, ProcessEnvConfig);
         this.mesh.service(StandardLogger);
         this.mesh.alias(Logger, StandardLogger);
+        this.mesh.service(ProcessSignals);
         this.mesh.service(RouteMetrics);
         this.mesh.service(ProcessMetrics);
         this.mesh.service(MetaHttpServer);
         // Global Handlers
         this.mesh.service(HttpCorsHandler);
         this.mesh.service(HttpErrorHandler);
+        // Scopes
+        this.mesh.scope('HttpScope', () => this.createHttpScope());
+        this.mesh.scope('MetaScope', () => this.createMetaScope());
     }
 
     createHttpScope() {
@@ -48,17 +53,8 @@ export abstract class BaseApp {
     createMetaScope() {
         const scope = new Mesh('Meta', this.mesh);
         this.mesh.service(MetaRouter);
+        this.mesh.service(HttpHandler, MetaHandler);
         return scope;
-    }
-
-    get envName(): EnvName {
-        if (process.env.NODE_ENV === 'development') {
-            return 'development';
-        }
-        if (process.env.NODE_ENV === 'test') {
-            return 'test';
-        }
-        return 'production';
     }
 
     /**
@@ -66,17 +62,11 @@ export abstract class BaseApp {
      * Called on production startup and during tests.
      */
     async start() {
-        this.logger.info('Starting application', { env: this.envName });
-        dotenv.config({ path: '.env' });
-        if (this.envName === 'development') {
-            dotenv.config({ path: '.env.dev' });
-        }
-        if (this.envName === 'test') {
-            dotenv.config({ path: '.env.test' });
-            dotenv.config({ path: '.env.dev' });
-        }
+        const env = getEnvName();
+        configureEnv(env);
         this.processEnvConfig.refresh();
-        this.assertMissingDeps();
+        this.logger.info('Starting application', { env });
+        assertMissingDeps(this.mesh);
     }
 
     /**
@@ -93,20 +83,8 @@ export abstract class BaseApp {
      */
     async run() {
         try {
-            process.on('uncaughtException', error => {
-                this.logger.error('uncaughtException', { error });
-            });
-            process.on('unhandledRejection', error => {
-                this.logger.error('unhandledRejection', { error });
-            });
-            process.on('SIGTERM', async () => {
-                this.logger.info('Received SIGTERM');
-                await this.shutdown();
-            });
-            process.on('SIGINT', async () => {
-                this.logger.info('Received SIGINT');
-                await this.shutdown();
-            });
+            this.processSignals.installSignalHandlers();
+            this.processSignals.onStopRequested.on(() => this.shutdown(), this);
             await this.start();
         } catch (error) {
             this.logger.error(`Failed to start ${this.constructor.name}`, { error });
@@ -120,19 +98,13 @@ export abstract class BaseApp {
      */
     async shutdown() {
         try {
-            process.removeAllListeners();
+            this.processSignals.uninstallSignalHandlers();
+            this.processSignals.onStopRequested.removeAll(this);
             await this.stop();
             process.exit(0);
         } catch (error) {
             this.logger.error(`Failed to stop ${this.constructor.name}`, { error });
             process.exit(1);
-        }
-    }
-
-    assertMissingDeps() {
-        const missingDepKeys = [...this.mesh.missingDeps()].map(_ => _.key);
-        if (missingDepKeys.length > 0) {
-            throw new InitializationError(`The following class dependencies are not found in application global scope: ${missingDepKeys}`);
         }
     }
 

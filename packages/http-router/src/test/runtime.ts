@@ -1,4 +1,4 @@
-import { HttpHandler } from '@luminable/http-server';
+import { HttpHandler, HttpServer } from '@luminable/http-server';
 import { Logger } from '@luminable/logger';
 import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
@@ -8,15 +8,13 @@ import { RouteHandler } from '../main/RouteHandler.js';
 import { HelloRouter } from './routers/HelloRouter.js';
 import { InheritedRouter } from './routers/InheritedRouter.js';
 import { ParamsRouter } from './routers/ParamsRouter.js';
-import { TestHttpServer } from './TestHttpServer.js';
 import { TestLogger } from './TestLogger.js';
 
 export class TestRuntime {
 
     mesh = new Mesh();
 
-    @dep({ cache: false }) httpServer!: TestHttpServer;
-    @dep({ cache: false }) appRouteHandler!: RouteHandler;
+    @dep({ cache: false }) httpServer!: HttpServer;
 
     async setup() {
         dotenv.config({ path: '.env.test', quiet: true });
@@ -25,12 +23,18 @@ export class TestRuntime {
         this.mesh.service(Config, ProcessEnvConfig);
         this.mesh.service(TestLogger);
         this.mesh.alias(Logger, TestLogger);
-        this.mesh.service(RouteHandler);
-        this.mesh.service(TestHttpServer);
-        this.mesh.service(HelloRouter);
-        this.mesh.service(InheritedRouter);
-        this.mesh.service(ParamsRouter);
-        this.mesh.alias('Handler', RouteHandler);
+        this.mesh.service(HttpServer);
+        this.mesh.scope('HttpScope', () => this.createRequestScope());
+    }
+
+    createRequestScope(): Mesh {
+        const mesh = new Mesh('Request', this.mesh);
+        mesh.service(RouteHandler);
+        mesh.service(HelloRouter);
+        mesh.service(InheritedRouter);
+        mesh.service(ParamsRouter);
+        mesh.alias(HttpHandler, RouteHandler);
+        return mesh;
     }
 
     get port() {
@@ -39,10 +43,6 @@ export class TestRuntime {
 
     getUrl(path = '/') {
         return `http://127.0.0.1:${this.port}${path}`;
-    }
-
-    setHandler(handler: HttpHandler) {
-        this.mesh.constant('Handler', handler);
     }
 
 }

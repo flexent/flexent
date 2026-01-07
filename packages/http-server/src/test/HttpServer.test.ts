@@ -6,17 +6,23 @@ import { runtime } from './runtime.js';
 
 describe('HttpServer', () => {
 
-    beforeEach(() => runtime.beforeEach());
-    afterEach(() => runtime.afterEach());
+    beforeEach(async () => {
+        runtime.setup();
+        await runtime.httpServer.start();
+    });
+
+    afterEach(async () => {
+        await runtime.httpServer.stop();
+    });
 
     it('listens on port specified in config', async () => {
-        await runtime.server.start();
-        const addr = runtime.server.getServer()?.address() as any;
+        await runtime.httpServer.start();
+        const addr = runtime.httpServer.getServer()?.address() as any;
         assert.strictEqual(addr.port, runtime.port);
     });
 
     it('echoes request details', async () => {
-        await runtime.server.start();
+        await runtime.httpServer.start();
         runtime.setHandler(EchoHandler);
         const res = await fetch(runtime.getUrl('/hello?foo=one&bar=two&foo=three'), {
             method: 'post',
@@ -44,7 +50,7 @@ describe('HttpServer', () => {
     });
 
     it('supports binary responses', async () => {
-        await runtime.server.start();
+        await runtime.httpServer.start();
         runtime.setHandler(class {
             async handle(ctx: HttpContext) {
                 ctx.responseBody = new Uint8Array([0, 1, 2, 3, 4]);

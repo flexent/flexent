@@ -4,5 +4,11 @@
         "outDir": "./out",
         "rootDir": "./src"
     },
-    "include": ["src"]
+    "include": ["src"],
+    "references": [
+        { "path": "../logger" },
+        { "path": "../metrics" },
+        { "path": "../pathmatcher" },
+        { "path": "../errors" },
+    ]
 }

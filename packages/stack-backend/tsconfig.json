@@ -4,5 +4,13 @@
         "outDir": "./out",
         "rootDir": "./src"
     },
-    "include": ["src"]
+    "include": ["src"],
+    "references": [
+        { "path": "../http-server" },
+        { "path": "../http-router" },
+        { "path": "../logger" },
+        { "path": "../metrics" },
+        { "path": "../pathmatcher" },
+        { "path": "../errors" },
+    ]
 }

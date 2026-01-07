@@ -7,15 +7,20 @@ import { runtime } from './runtime.js';
 
 describe('HttpChain', () => {
 
-    beforeEach(() => runtime.beforeEach());
-    afterEach(() => runtime.afterEach());
+    beforeEach(async () => {
+        runtime.setup();
+        await runtime.httpServer.start();
+    });
+
+    afterEach(async () => {
+        await runtime.httpServer.stop();
+    });
 
     it('calls middlware in order', async () => {
         class Handler extends HttpChain {
             @dep() foo!: FooMiddleware;
             @dep() bar!: BarMiddleware;
             @dep() endpoint!: EndpointHandler;
-
             handlers = [
                 this.foo,
                 this.bar,
@@ -23,7 +28,7 @@ describe('HttpChain', () => {
             ];
         }
         runtime.setHandler(Handler);
-        await runtime.server.start();
+        await runtime.httpServer.start();
         const res = await fetch(runtime.getUrl());
         assert.strictEqual(res.status, 200);
         assert.strictEqual(await res.text(), 'OK');
@@ -49,7 +54,7 @@ describe('HttpChain', () => {
             ];
         }
         runtime.setHandler(Handler);
-        await runtime.server.start();
+        await runtime.httpServer.start();
         const res = await fetch(runtime.getUrl());
         assert.strictEqual(res.status, 500);
         assert.strictEqual(await res.text(), 'Oops!');
