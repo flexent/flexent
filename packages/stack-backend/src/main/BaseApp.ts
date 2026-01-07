@@ -27,7 +27,10 @@ export abstract class BaseApp {
     @dep() metaHttpServer!: MetaHttpServer;
     @dep() processSignals!: ProcessSignals;
 
-    constructor(readonly mesh: Mesh) {
+    mesh: Mesh;
+
+    constructor() {
+        this.mesh = new Mesh();
         this.mesh.connect(this);
         this.mesh.service(ProcessEnvConfig);
         this.mesh.alias(Config, ProcessEnvConfig);

@@ -2,10 +2,7 @@
     "name": "@luminable/monorepo",
     "version": "1.0.2",
     "description": "Luminable — frameworkless OOP toolkit for building scalable applications",
-    "type": "module",
     "private": true,
-    "license": "ISC",
-    "author": "Boris Okunskiy",
     "workspaces": [
         "packages/*"
     ],
