@@ -8,5 +8,6 @@
         { "path": "./packages/http-server" },
         { "path": "./packages/http-router" },
         { "path": "./packages/stack-backend" },
+        { "path": "./packages/stack-vue" },
     ]
 }

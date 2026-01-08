@@ -1,7 +1,7 @@
 {
     "name": "@luminable/stack-backend",
     "version": "1.0.8",
-    "description": "Backend conventions",
+    "description": "Backend basic setup",
     "type": "module",
     "exports": {
         ".": "./out/main/index.js"
