@@ -1,5 +1,3 @@
-import { configDotenv } from 'dotenv';
-
 export type EnvName = 'development' | 'test' | 'production';
 
 export function getEnvName() {
@@ -13,12 +11,12 @@ export function getEnvName() {
 }
 
 export function configureEnv(env: EnvName) {
-    configDotenv({ path: '.env' });
+    process.loadEnvFile('.env');
     if (env === 'development') {
-        configDotenv({ path: '.env.dev' });
+        process.loadEnvFile('.env.dev');
     }
     if (env === 'test') {
-        configDotenv({ path: '.env.test' });
-        configDotenv({ path: '.env.dev' });
+        process.loadEnvFile('.env.test');
+        process.loadEnvFile('.env.dev');
     }
 }

@@ -1,13 +1,10 @@
 import { Logger } from '@luminable/logger';
-import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh, ServiceConstructor } from 'mesh-ioc';
 
 import { HttpHandler, HttpServer } from '../main/index.js';
 import { BarMiddleware, CatchMiddleware, EndpointHandler, FooMiddleware, ThrowMiddleware } from './handlers.js';
 import { TestLogger } from './TestLogger.js';
-
-dotenv.config({ path: '.env.test', quiet: true });
 
 export class TestRuntime {
 
@@ -20,7 +17,7 @@ export class TestRuntime {
     events: string[] = [];
 
     async setup() {
-        dotenv.config({ path: '.env.test', quiet: true });
+        process.loadEnvFile('.env.test');
         this.events = [];
         this.mesh = new Mesh('App');
         this.mesh.connect(this);

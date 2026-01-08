@@ -1,6 +1,5 @@
 import { HttpHandler, HttpServer } from '@luminable/http-server';
 import { Logger } from '@luminable/logger';
-import dotenv from 'dotenv';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
 
@@ -17,7 +16,7 @@ export class TestRuntime {
     @dep({ cache: false }) httpServer!: HttpServer;
 
     async setup() {
-        dotenv.config({ path: '.env.test', quiet: true });
+        process.loadEnvFile('.env.test');
         this.mesh = new Mesh('Test');
         this.mesh.connect(this);
         this.mesh.service(Config, ProcessEnvConfig);
