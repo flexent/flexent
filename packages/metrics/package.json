@@ -1,6 +1,6 @@
 {
     "name": "@luminable/metrics",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "description": "Idiomatic API for collecting application metrics",
     "type": "module",
     "sideEffects": false,

@@ -1,6 +1,6 @@
 {
     "name": "@luminable/eslint-config",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "description": "Luminable ESLint Config",
     "type": "module",
     "exports": {
