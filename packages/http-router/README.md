@@ -50,7 +50,7 @@ export class HttpScope extends Mesh {
 
     constructor(parent: Mesh) {
         super('Http', parent);
-        this.service(RouteHandler);
+        this.service(HttpRouteHandler);
         this.service(UsersRouter);
     }
 
@@ -66,20 +66,20 @@ export class MainHttpServer extends HttpServer {
 
     async handle(ctx: HttpContext, next: HttpNext) {
         const scope = new HttpScope(this.mesh);
-        await scope.resolve(RouteHandler).handle(ctx, next);
+        await scope.resolve(HttpRouteHandler).handle(ctx, next);
     }
 
 }
 ```
 
-RouteHandler can be part of chain, in that case it is handy to create a dedicated handler:
+HttpRouteHandler can be part of chain, in that case it is handy to create a dedicated handler:
 
 ```ts
 export class AppHandler extends HttpChain {
 
     @dep() private authHandler!: AuthHandler;
     @dep() private errorHandler!: ErrorHandler;
-    @dep() private routeHandler!: RouteHandler;
+    @dep() private routeHandler!: HttpRouteHandler;
 
     handlers = [
         this.errorHandler,
@@ -121,7 +121,7 @@ export class AppHandler extends HttpChain {
 }
 ```
 
-Note: RouteHandler is generally more efficient because it can skip instantiating routers that do not match the request (see below).
+Note: HttpRouteHandler is generally more efficient because it can skip instantiating routers that do not match the request (see below).
 
 ## Routing rules
 

@@ -3,7 +3,7 @@ import { Logger } from '@luminable/logger';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
 
-import { RouteHandler } from '../main/RouteHandler.js';
+import { HttpRouteHandler } from '../main/HttpRouteHandler.js';
 import { HelloRouter } from './routers/HelloRouter.js';
 import { InheritedRouter } from './routers/InheritedRouter.js';
 import { ParamsRouter } from './routers/ParamsRouter.js';
@@ -28,11 +28,11 @@ export class TestRuntime {
 
     createRequestScope(): Mesh {
         const mesh = new Mesh('Request', this.mesh);
-        mesh.service(RouteHandler);
+        mesh.service(HttpRouteHandler);
         mesh.service(HelloRouter);
         mesh.service(InheritedRouter);
         mesh.service(ParamsRouter);
-        mesh.alias(HttpHandler, RouteHandler);
+        mesh.alias(HttpHandler, HttpRouteHandler);
         return mesh;
     }
 
