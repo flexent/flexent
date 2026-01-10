@@ -20,7 +20,7 @@
         "test": "npm run test --workspaces --if-present",
         "version": "run-s clean compile:ts version:bump",
         "version:bump": "node ./tools/bump-version.mjs && git add **/package.json",
-        "postversion": "npm run publish:workspaces && git push origin $(git branch --show-current) --tags",
+        "postversion": "npm run publish:workspaces && git push && git push --tags",
         "publish:workspaces": "npm publish $(node ./tools/ls-publish-workspaces.mjs) --access=public"
     },
     "devDependencies": {
