@@ -1,22 +1,23 @@
 import { invokeInitHandlers } from '@luminable/init-decorator';
 import { Mesh } from 'mesh-ioc';
-import { App as VueApp, Component, createApp, reactive } from 'vue';
+import { App as VueApp, reactive } from 'vue';
 
 import { provideAll } from './utils/provide.js';
 
-export class BaseApp {
+export abstract class BaseApp {
 
     mesh: Mesh;
     vue: VueApp;
-
     mountSelector = '#root';
 
-    constructor(rootComponent: Component) {
+    constructor() {
+        this.vue = this.createVueApp();
         this.mesh = new Mesh();
-        this.vue = createApp(rootComponent);
         this.mesh.use(instance => reactive(instance));
-        this.mesh.constant('vueApp', this.vue);
+        this.mesh.constant('vue', this.vue);
     }
+
+    abstract createVueApp(): VueApp;
 
     async start() {
         provideAll(this.mesh, this.vue);
