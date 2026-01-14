@@ -1,6 +1,6 @@
 {
     "name": "@luminable/errors",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Generic error classes with standardized name, message and status code",
     "type": "module",
     "sideEffects": false,

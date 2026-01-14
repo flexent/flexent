@@ -1,6 +1,6 @@
 {
     "name": "@luminable/init-decorator",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "@init decorator for mesh-ioc",
     "type": "module",
     "exports": {
