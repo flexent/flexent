@@ -3,15 +3,10 @@ import { LogFormatter, LogLevel, LogPayload } from '../types.js';
 export class PrettyLogFormatter implements LogFormatter {
 
     useColors = true;
-    useEmoji = true;
 
     format(payload: LogPayload): LogPayload {
         const [open, close] = this.getLevelColor(payload.level);
-        const emoji = this.getEmoji(payload.level);
         let message = payload.message;
-        if (this.useEmoji) {
-            message = `${emoji} ${message}`;
-        }
         if (this.useColors) {
             message = `${open}${message}${close}`;
         }
@@ -32,20 +27,6 @@ export class PrettyLogFormatter implements LogFormatter {
             case LogLevel.DEBUG:
             default:
                 return ['\x1b[90m', '\x1b[0m'];
-        }
-    }
-
-    getEmoji(level: LogLevel): string {
-        switch (level) {
-            case LogLevel.INFO:
-                return 'ℹ️';
-            case LogLevel.WARN:
-                return '⚠️';
-            case LogLevel.ERROR:
-                return '❌';
-            case LogLevel.DEBUG:
-            default:
-                return '';
         }
     }
 
