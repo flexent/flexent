@@ -1,17 +1,21 @@
 import { DefaultLogFormatter } from './formatters/DefaultLogFormatter.js';
-import { LOG_LEVELS, LogData, LogFormatter, LoggerLike, LogLevel, LogPayload } from './types.js';
+import { ConsoleLogTransport } from './transports/ConsoleLogTransport.js';
+import { LOG_LEVELS, LogData, LogFormatter, LoggerLike, LogLevel, LogPayload, LogTransport } from './types.js';
 
 /**
  * Standard logger supports conditional log suppressing based on logger level.
  *
  * Implementation must specify `write`.
  */
-export abstract class Logger implements LoggerLike {
+export class Logger implements LoggerLike {
 
     level: LogLevel = LogLevel.INFO;
     formatter: LogFormatter = new DefaultLogFormatter();
+    transport: LogTransport = new ConsoleLogTransport();
 
-    abstract write(payload: LogPayload): void;
+    write(payload: LogPayload) {
+        this.transport.write(payload);
+    }
 
     log(level: LogLevel, message: string, data?: LogData) {
         if (level === 'mute' || LOG_LEVELS.indexOf(level) < LOG_LEVELS.indexOf(this.level)) {

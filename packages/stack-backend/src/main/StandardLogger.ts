@@ -1,7 +1,7 @@
-import { ConsoleLogger, DefaultLogFormatter, StructuredLogFormatter } from '@luminable/logger';
+import { Logger, PrettyLogFormatter, StructuredLogFormatter } from '@luminable/logger';
 import { config } from 'mesh-config';
 
-export class StandardLogger extends ConsoleLogger {
+export class StandardLogger extends Logger {
 
     @config({ default: 'info' }) LOG_LEVEL!: string;
     @config({ default: false }) LOG_PRETTY!: boolean;
@@ -15,7 +15,7 @@ export class StandardLogger extends ConsoleLogger {
 
     private createFormatter() {
         if (this.LOG_PRETTY) {
-            return new DefaultLogFormatter();
+            return new PrettyLogFormatter();
         }
         const fmt = new StructuredLogFormatter();
         fmt.includeStack = this.LOG_STACK;

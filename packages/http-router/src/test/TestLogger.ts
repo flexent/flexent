@@ -1,7 +1,7 @@
-import { ConsoleLogger, LogLevel } from '@luminable/logger';
+import { Logger, LogLevel } from '@luminable/logger';
 import { config } from 'mesh-config';
 
-export class TestLogger extends ConsoleLogger {
+export class TestLogger extends Logger {
 
     @config() LOG_LEVEL!: LogLevel;
 

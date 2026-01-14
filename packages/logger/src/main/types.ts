@@ -32,3 +32,7 @@ export interface LoggerLike {
 export interface LogFormatter {
     format(payload: LogPayload): LogPayload;
 }
+
+export interface LogTransport {
+    write(payload: LogPayload): void;
+}
