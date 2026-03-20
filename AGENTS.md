@@ -1,5 +1,3 @@
-# Luminable Agents Guide
-
 Luminable is a frameworkless application toolkit utilizing Object Oriented Programming and Inversion of Control. It contains micro-libraries for common concerns and optional stack modules.
 
 ## Packages

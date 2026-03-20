@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/http-router
-
 ## Purpose
 
 `@luminable/http-router` provides decorator-based routing for HTTP server.

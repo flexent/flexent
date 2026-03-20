@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/pointer
-
 ## Purpose
 
 `@luminable/pointer` provides simple library for getting and setting object values via JSON Pointer or dot-delimited formats.

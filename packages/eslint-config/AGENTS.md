@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/eslint-config
-
 ## Purpose
 
 `@luminable/eslint-config` provides the Luminable ESLint Config.

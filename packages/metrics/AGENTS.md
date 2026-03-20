@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/metrics
-
 ## Purpose
 
 `@luminable/metrics` provides an idiomatic API for collecting application metrics.

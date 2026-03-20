@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/http-server
-
 ## Purpose
 
 `@luminable/http-server` provides an idiomatic HTTP server API.

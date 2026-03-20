@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/pathmatcher
-
 ## Purpose
 
 `@luminable/pathmatcher` provides path matching utils for pathname-based routing.

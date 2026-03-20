@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/errors
-
 ## Purpose
 
 `@luminable/errors` provides generic error classes with standardized name, message and status code.

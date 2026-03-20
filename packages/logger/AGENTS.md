@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/logger
-
 ## Purpose
 
 `@luminable/logger` provides an idiomatic logger API supporting custom formatting and transports.

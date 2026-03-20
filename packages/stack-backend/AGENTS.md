@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/stack-backend
-
 ## Purpose
 
 `@luminable/stack-backend` provides a basic backend setup for Luminable.

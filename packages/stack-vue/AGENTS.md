@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/stack-vue
-
 ## Purpose
 
 `@luminable/stack-vue` provides a basic Vue setup for Luminable.

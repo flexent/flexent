@@ -1,5 +1,3 @@
-# AGENTS Guide: @luminable/init-decorator
-
 ## Purpose
 
 `@luminable/init-decorator` provides the `@init` decorator for `mesh-ioc`.
