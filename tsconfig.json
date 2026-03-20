@@ -5,6 +5,7 @@
         { "path": "./packages/logger" },
         { "path": "./packages/metrics" },
         { "path": "./packages/pathmatcher" },
+        { "path": "./packages/pointer" },
         { "path": "./packages/http-server" },
         { "path": "./packages/http-router" },
         { "path": "./packages/stack-backend" },

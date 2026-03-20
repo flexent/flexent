@@ -1,0 +1,16 @@
+{
+    "name": "@luminable/pointer",
+    "version": "1.2.1",
+    "description": "Simple Object Get/Set via JSON Pointer or dot-delimited formats",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    }
+}
