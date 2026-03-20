@@ -6,9 +6,10 @@
         { "path": "./packages/metrics" },
         { "path": "./packages/pathmatcher" },
         { "path": "./packages/pointer" },
+        { "path": "./packages/protocomm" },
         { "path": "./packages/http-server" },
         { "path": "./packages/http-router" },
         { "path": "./packages/stack-backend" },
-        { "path": "./packages/stack-vue" },
+        { "path": "./packages/stack-vue" }
     ]
 }
