@@ -1,6 +1,6 @@
 {
     "name": "@luminable/pointer",
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "Simple Object Get/Set via JSON Pointer or dot-delimited formats",
     "type": "module",
     "sideEffects": false,
