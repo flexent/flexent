@@ -10,13 +10,24 @@ export function getEnvName() {
     return 'production';
 }
 
+export function loadEnvFile(path: string) {
+    try {
+        process.loadEnvFile(path);
+    } catch (error: any) {
+        if (error?.code === 'ENOENT') {
+            return;
+        }
+        throw error;
+    }
+}
+
 export function configureEnv(env: EnvName) {
-    process.loadEnvFile('.env');
+    loadEnvFile('.env');
     if (env === 'development') {
-        process.loadEnvFile('.env.dev');
+        loadEnvFile('.env.dev');
     }
     if (env === 'test') {
-        process.loadEnvFile('.env.test');
-        process.loadEnvFile('.env.dev');
+        loadEnvFile('.env.test');
+        loadEnvFile('.env.dev');
     }
 }
