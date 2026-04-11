@@ -1,4 +1,5 @@
 import eslint from '@eslint/js';
+import noBlankLinesInBlocks from '@inca/eslint-no-blank-lines-in-blocks';
 import stylistic from '@stylistic/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
@@ -23,6 +24,34 @@ export const sharedConfigs = [
     ...typescriptEslint.configs.recommended,
     ...typescriptEslint.configs.stylistic,
     importPlugin.flatConfigs.typescript,
+
+    {
+        plugins: {
+            '@inca/no-blank-lines-in-blocks': noBlankLinesInBlocks,
+        },
+        rules: {
+            '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': [
+                'error',
+                {
+                    allowSingleBlankLineBeforeComment: true,
+                    enableFix: false,
+                },
+            ],
+        },
+    },
+    {
+        files: ['**/*.ts'],
+        rules: {
+            'max-len': ['error', {
+                code: 120,
+                ignoreUrls: true,
+                ignoreTemplateLiterals: true,
+                ignorePattern: '^import\\s+',
+            }],
+            'max-lines-per-function': ['error', { max: 50 }],
+            'max-statements': ['error', { max: 50 }],
+        },
+    },
 
     // Stylistic
     stylistic.configs.customize({
@@ -102,6 +131,8 @@ export const sharedConfigs = [
         files: ['**/*.test.ts'],
         rules: {
             // To allow Mocha paddings that improve test readability
+            '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': 'off',
+            'max-lines-per-function': 'off',
             '@stylistic/padded-blocks': 'off',
             'no-restricted-properties': [
                 'error',

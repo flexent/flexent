@@ -93,5 +93,4 @@ describe('RPC over EventEmitter', () => {
         });
 
     });
-
 });

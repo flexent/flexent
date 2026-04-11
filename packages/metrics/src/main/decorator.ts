@@ -8,7 +8,6 @@ export const metric = createMemberDecorator('@luminable/metric');
 export function findMetrics(mesh: Mesh): BaseMetric[] {
     const metrics: BaseMetric[] = [];
     const refs = findMembers('@luminable/metric', mesh);
-
     for (const { target, memberName } of refs) {
         const value = target[memberName];
         if (value instanceof BaseMetric) {

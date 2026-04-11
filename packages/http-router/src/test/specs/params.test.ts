@@ -20,7 +20,8 @@ describe('params', () => {
     });
 
     it('captures query parameters', async () => {
-        const res = await fetch(runtime.getUrl('/params/query?str=foo&num=123&bool=true&arr=one&arr=two&obj={"foo":"bar"}'));
+        const url = runtime.getUrl('/params/query?str=foo&num=123&bool=true&arr=one&arr=two&obj={"foo":"bar"}');
+        const res = await fetch(url);
         assert.strictEqual(res.status, 200);
         assert.deepStrictEqual(await res.json(), {
             str: 'foo',
