@@ -11,6 +11,9 @@
     ],
     "peerDependencies": {
         "eslint": ">=9",
-        "eslint-plugin-vue": ">=9"
+        "eslint-plugin-vue": "^10.8.0"
+    },
+    "dependencies": {
+        "vue-eslint-parser": "^10.4.0"
     }
 }

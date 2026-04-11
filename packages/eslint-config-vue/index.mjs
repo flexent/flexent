@@ -1,6 +1,19 @@
+import pluginVue from 'eslint-plugin-vue';
+import vueParser from 'vue-eslint-parser';
+
 export const vueConfigs = [
+    ...pluginVue.configs['flat/recommended'],
     {
         files: ['**/*.vue'],
+        languageOptions: {
+            parser: vueParser,
+            parserOptions: {
+                parser: '@typescript-eslint/parser',
+                ecmaVersion: 2022,
+                sourceType: 'module',
+                modules: true
+            }
+        },
         rules: {
             'vue/attribute-hyphenation': ['error', 'never'],
             'vue/attributes-order': 'error',
