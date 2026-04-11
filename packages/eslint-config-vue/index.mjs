@@ -1,4 +1,5 @@
 import pluginVue from 'eslint-plugin-vue';
+import globals from 'globals';
 import vueParser from 'vue-eslint-parser';
 
 export const vueConfigs = [
@@ -12,7 +13,11 @@ export const vueConfigs = [
                 ecmaVersion: 2022,
                 sourceType: 'module',
                 modules: true
-            }
+            },
+            globals: {
+                ...globals.node,
+                ...globals.browser,
+            },
         },
         rules: {
             'vue/attribute-hyphenation': ['error', 'never'],
