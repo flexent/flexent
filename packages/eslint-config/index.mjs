@@ -72,7 +72,7 @@ export const sharedConfigs = [
             '@stylistic/operator-linebreak': ['error', 'after'],
             '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'always', switches: 'never' }],
             '@stylistic/yield-star-spacing': ['error', 'after'],
-            '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
+            '@typescript-eslint/array-type': 'off',
             '@typescript-eslint/class-literal-property-style': 'off',
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-empty-object-type': 'off',
