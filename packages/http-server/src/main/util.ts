@@ -1,6 +1,6 @@
-import { HttpContext } from './HttpContext.js';
-import { HttpHandler } from './HttpHandler.js';
-import { HttpDict, HttpHandlerFn, HttpNext } from './types.js';
+import { type HttpContext } from './HttpContext.js';
+import { type HttpHandler } from './HttpHandler.js';
+import { type HttpDict, type HttpHandlerFn, type HttpNext } from './types.js';
 
 export const TypedArray = Object.getPrototypeOf(Uint8Array);
 

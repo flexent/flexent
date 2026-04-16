@@ -1,6 +1,6 @@
 import { invokeInitHandlers } from '@luminable/init-decorator';
 import { Mesh } from 'mesh-ioc';
-import { App as VueApp, reactive } from 'vue';
+import { type App as VueApp, reactive } from 'vue';
 
 import { provideAll } from './utils/provide.js';
 

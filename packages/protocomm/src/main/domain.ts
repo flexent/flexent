@@ -1,5 +1,5 @@
-import { ObjectPropsDef } from 'airtight';
-import { Event } from 'nanoevent';
+import { type ObjectPropsDef } from 'airtight';
+import { type Event } from 'nanoevent';
 
 export interface DomainDef<S> {
     name: string;

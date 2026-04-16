@@ -1,5 +1,5 @@
-import { HttpContext } from './HttpContext.js';
-import { HttpNext } from './types.js';
+import { type HttpContext } from './HttpContext.js';
+import { type HttpNext } from './types.js';
 
 export abstract class HttpHandler {
 

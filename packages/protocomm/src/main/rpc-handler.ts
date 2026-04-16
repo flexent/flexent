@@ -1,8 +1,8 @@
 import { Event } from 'nanoevent';
 
-import { DomainMethodStat } from './domain.js';
-import { MethodNotFound, ProtocolIndex } from './protocol.js';
-import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './rpc-messages.js';
+import { type DomainMethodStat } from './domain.js';
+import { MethodNotFound, type ProtocolIndex } from './protocol.js';
+import { type RpcEvent, RpcMethodRequest, type RpcMethodResponse } from './rpc-messages.js';
 
 /**
  * PoC RPC message handler. Can be used to implement server side of RPC communication.

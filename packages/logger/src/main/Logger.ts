@@ -1,6 +1,6 @@
 import { DefaultLogFormatter } from './formatters/DefaultLogFormatter.js';
 import { ConsoleLogTransport } from './transports/ConsoleLogTransport.js';
-import { LOG_LEVELS, LogData, LogFormatter, LoggerLike, LogLevel, LogPayload, LogTransport } from './types.js';
+import { LOG_LEVELS, type LogData, type LogFormatter, type LoggerLike, LogLevel, type LogPayload, type LogTransport } from './types.js';
 
 /**
  * Standard logger supports conditional log suppressing based on logger level.

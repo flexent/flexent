@@ -1,6 +1,6 @@
 import { matchPath } from '@luminable/pathmatcher';
 
-import { RouteDefinition } from '../types.js';
+import { type RouteDefinition } from '../types.js';
 
 export function matchRoute(
     routeDef: RouteDefinition,

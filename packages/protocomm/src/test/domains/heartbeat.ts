@@ -1,8 +1,8 @@
-import { Event } from 'nanoevent';
+import { type Event } from 'nanoevent';
 
-import { DomainDef } from '../../main/domain.js';
-import { GroupSummary, GroupSummarySchema } from '../schema/group-summary.js';
-import { Instance, InstanceSchema } from '../schema/instance.js';
+import { type DomainDef } from '../../main/domain.js';
+import { type GroupSummary, GroupSummarySchema } from '../schema/group-summary.js';
+import { type Instance, InstanceSchema } from '../schema/instance.js';
 
 export interface HeartbeatDomain {
 

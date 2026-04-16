@@ -1,5 +1,5 @@
-import { PathToken } from '@luminable/pathmatcher';
-import { Schema, SchemaDef } from 'airtight';
+import { type PathToken } from '@luminable/pathmatcher';
+import { type Schema, type SchemaDef } from 'airtight';
 
 export type RouteRole = 'endpoint' | 'middleware';
 export type RouteMethod = '*' | 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';

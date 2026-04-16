@@ -1,8 +1,8 @@
-import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
-import { Constructor, dep } from 'mesh-ioc';
+import { type HttpContext, type HttpHandler, type HttpNext } from '@luminable/http-server';
+import { type Constructor, dep } from 'mesh-ioc';
 
 import { getAllRoutes } from './decorators/route.js';
-import { RouteMetrics } from './RouteMetrics.js';
+import { type RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 
 /**

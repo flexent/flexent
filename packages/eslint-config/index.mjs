@@ -19,39 +19,20 @@ export const sharedConfigs = [
         ],
     },
 
+    // Global language options
+    {
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+    },
+
     // Recommended
     eslint.configs.recommended,
     ...typescriptEslint.configs.recommended,
     ...typescriptEslint.configs.stylistic,
     importPlugin.flatConfigs.typescript,
-
-    {
-        plugins: {
-            '@inca/no-blank-lines-in-blocks': noBlankLinesInBlocks,
-        },
-        rules: {
-            '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': [
-                'error',
-                {
-                    allowSingleBlankLineBeforeComment: true,
-                    enableFix: false,
-                },
-            ],
-        },
-    },
-    {
-        files: ['**/*.ts'],
-        rules: {
-            'max-len': ['error', {
-                code: 120,
-                ignoreUrls: true,
-                ignoreTemplateLiterals: true,
-                ignorePattern: '^import\\s+',
-            }],
-            'max-lines-per-function': ['error', { max: 50 }],
-            'max-statements': ['error', { max: 50 }],
-        },
-    },
 
     // Stylistic
     stylistic.configs.customize({
@@ -64,10 +45,33 @@ export const sharedConfigs = [
 
     // TypeScript
     {
+        plugins: {
+            '@inca/no-blank-lines-in-blocks': noBlankLinesInBlocks,
+            'simple-import-sort': simpleImportSort,
+            'unused-imports': unusedImports,
+        },
         rules: {
+            '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': [
+                'error',
+                {
+                    allowSingleBlankLineBeforeComment: true,
+                    enableFix: false,
+                },
+            ],
             '@stylistic/arrow-parens': ['error', 'as-needed'],
             '@stylistic/comma-dangle': 'off',
-            '@stylistic/indent': ['error', 4, { ignoredNodes: ['PropertyDefinition[decorators]', 'TSUnionType', 'TSIntersectionType', 'TSConditionalType', 'TSTypeReference', 'Decorator'], SwitchCase: 1, FunctionExpression: { parameters: 'off' } }],
+            '@stylistic/indent': ['error', 4, {
+                ignoredNodes: [
+                    'PropertyDefinition[decorators]',
+                    'TSUnionType',
+                    'TSIntersectionType',
+                    'TSConditionalType',
+                    'TSTypeReference',
+                    'Decorator',
+                ],
+                SwitchCase: 1,
+                FunctionExpression: { parameters: 'off' },
+            }],
             '@stylistic/no-floating-decimal': 'off',
             '@stylistic/operator-linebreak': ['error', 'after'],
             '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'always', switches: 'never' }],
@@ -77,39 +81,29 @@ export const sharedConfigs = [
             '@typescript-eslint/no-empty-function': 'off',
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
+            '@typescript-eslint/consistent-type-imports': ['error', {
+                prefer: 'type-imports',
+                fixStyle: 'inline-type-imports',
+            }],
             'curly': ['error', 'all'],
             'eol-last': 'error',
             'eqeqeq': ['error', 'always', { null: 'never' }],
             'indent': 'off',
+            'max-len': ['error', {
+                code: 120,
+                ignoreUrls: true,
+                ignoreTemplateLiterals: true,
+                ignorePattern: '^import\\s+',
+            }],
+            'max-lines-per-function': ['error', { max: 50 }],
+            'max-statements': ['error', { max: 50 }],
             'no-console': ['error', { 'allow': ['warn', 'info', 'error'] }],
             'no-empty': ['error', { allowEmptyCatch: true }],
             'import/no-extraneous-dependencies': 'error',
-        },
-        languageOptions: {
-            globals: {
-                ...globals.node,
-            },
-        },
-    },
-
-    // Sorted imports
-    {
-        plugins: {
-            'simple-import-sort': simpleImportSort,
-        },
-        rules: {
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
-        },
-    },
-
-    // Unused imports
-    {
-        plugins: {
-            'unused-imports': unusedImports,
-        },
-        rules: {
             '@typescript-eslint/no-unused-vars': 'off',
+            // Unused imports
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': [
                 'warn',
@@ -122,8 +116,8 @@ export const sharedConfigs = [
                     varsIgnorePattern: '^_',
                     ignoreRestSiblings: true,
                 },
-            ]
-        }
+            ],
+        },
     },
 
     // Test overrides
@@ -138,17 +132,17 @@ export const sharedConfigs = [
                 'error',
                 {
                     'object': 'describe',
-                    'property': 'only'
+                    'property': 'only',
                 },
                 {
                     'object': 'context',
-                    'property': 'only'
+                    'property': 'only',
                 },
                 {
                     'object': 'it',
-                    'property': 'only'
-                }
-            ]
+                    'property': 'only',
+                },
+            ],
         },
     },
 

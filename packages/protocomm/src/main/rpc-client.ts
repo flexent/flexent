@@ -1,8 +1,8 @@
 import { Event } from 'nanoevent';
 
-import { DomainMethod } from './domain.js';
-import { ProtocolIndex } from './protocol.js';
-import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './rpc-messages.js';
+import { type DomainMethod } from './domain.js';
+import { type ProtocolIndex } from './protocol.js';
+import { type RpcEvent, type RpcMethodRequest, type RpcMethodResponse } from './rpc-messages.js';
 
 export interface RpcClientTransport {
     messageReceived: Event<unknown>;

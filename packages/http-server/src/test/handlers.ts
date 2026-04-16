@@ -1,4 +1,4 @@
-import { HttpContext, HttpHandler, HttpNext } from '../main/index.js';
+import { type HttpContext, type HttpHandler, type HttpNext } from '../main/index.js';
 import { runtime } from './runtime.js';
 
 export class FooMiddleware implements HttpHandler {

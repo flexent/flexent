@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 
 import { parsePath } from '@luminable/pathmatcher';
-import { Constructor } from 'mesh-ioc';
+import { type Constructor } from 'mesh-ioc';
 import { addClassMetadata, getClassMetadata } from 'reflect-utils';
 
-import { RouteDefinition, RouteMethod, RouteRole, RouteSpec } from '../types.js';
+import { type RouteDefinition, type RouteMethod, type RouteRole, type RouteSpec } from '../types.js';
 import { getParamDefinitions } from './param.js';
 
 const ROUTES_KEY = Symbol.for('@luminable/http/routes');

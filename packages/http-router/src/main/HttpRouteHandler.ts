@@ -1,7 +1,7 @@
-import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
-import { dep, Mesh } from 'mesh-ioc';
+import { type HttpContext, type HttpHandler, type HttpNext } from '@luminable/http-server';
+import { dep, type Mesh } from 'mesh-ioc';
 
-import { RouteMetrics } from './RouteMetrics.js';
+import { type RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 import { matchEndpoint } from './utils/match.js';
 import { resolveRouterBindings } from './utils/resolve.js';

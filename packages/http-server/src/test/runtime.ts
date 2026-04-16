@@ -1,6 +1,6 @@
 import { Logger } from '@luminable/logger';
 import { Config, ProcessEnvConfig } from 'mesh-config';
-import { dep, Mesh, ServiceConstructor } from 'mesh-ioc';
+import { dep, Mesh, type ServiceConstructor } from 'mesh-ioc';
 
 import { HttpHandler, HttpServer } from '../main/index.js';
 import { BarMiddleware, CatchMiddleware, EndpointHandler, FooMiddleware, ThrowMiddleware } from './handlers.js';

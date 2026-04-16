@@ -1,6 +1,6 @@
 import { HistogramMetric, metric } from '@luminable/metrics';
 
-import { RouteDefinition } from './types.js';
+import { type RouteDefinition } from './types.js';
 
 export class RouteMetrics {
 

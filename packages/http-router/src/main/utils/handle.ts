@@ -1,6 +1,6 @@
-import { HttpContext } from '@luminable/http-server';
+import { type HttpContext } from '@luminable/http-server';
 
-import { ParamDefinition, RouteDefinition } from '../types.js';
+import { type ParamDefinition, type RouteDefinition } from '../types.js';
 import { matchEndpoint, matchRoute } from './match.js';
 
 export async function handleRouter(

@@ -1,6 +1,6 @@
 import { ServerError } from '@luminable/errors';
-import { HttpContext, HttpHandler, HttpNext } from '@luminable/http-server';
-import { Logger, StructuredLogHttpRequest } from '@luminable/logger';
+import { type HttpContext, type HttpHandler, type HttpNext } from '@luminable/http-server';
+import { type Logger, type StructuredLogHttpRequest } from '@luminable/logger';
 import { dep } from 'mesh-ioc';
 
 export class HttpErrorHandler implements HttpHandler {

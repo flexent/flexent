@@ -1,5 +1,5 @@
 import { createMemberDecorator, invokeMethods } from 'mesh-decorators';
-import { Mesh } from 'mesh-ioc';
+import { type Mesh } from 'mesh-ioc';
 
 export const init = createMemberDecorator('init');
 

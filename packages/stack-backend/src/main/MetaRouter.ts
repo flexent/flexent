@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 
 import { Get, HttpRouter } from '@luminable/http-router';
-import { HttpContext } from '@luminable/http-server';
+import { type HttpContext } from '@luminable/http-server';
 import { generateMetricsReport } from '@luminable/metrics';
-import { dep, Mesh } from 'mesh-ioc';
+import { dep, type Mesh } from 'mesh-ioc';
 
 import { invokeStatusChecks } from './utils/status.js';
 

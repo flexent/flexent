@@ -1,4 +1,4 @@
-import { LogPayload, LogTransport } from '../types.js';
+import { type LogPayload, type LogTransport } from '../types.js';
 
 export class ConsoleLogTransport implements LogTransport {
 

@@ -1,7 +1,7 @@
-import { HttpChain, HttpErrorHandler } from '@luminable/http-server';
+import { HttpChain, type HttpErrorHandler } from '@luminable/http-server';
 import { dep } from 'mesh-ioc';
 
-import { MetaRouter } from './MetaRouter.js';
+import { type MetaRouter } from './MetaRouter.js';
 
 export class MetaHandler extends HttpChain {
 

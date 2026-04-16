@@ -1,14 +1,14 @@
 import { NotFoundError } from '@luminable/errors';
-import { Logger } from '@luminable/logger';
+import { type Logger } from '@luminable/logger';
 import * as http from 'http';
 import * as https from 'https';
 import { config } from 'mesh-config';
-import { dep, Mesh, scope, ScopeProvider } from 'mesh-ioc';
-import { Socket } from 'net';
+import { dep, type Mesh, scope, type ScopeProvider } from 'mesh-ioc';
+import { type Socket } from 'net';
 
 import { HttpContext } from './HttpContext.js';
 import { HttpHandler } from './HttpHandler.js';
-import { HttpNext } from './types.js';
+import { type HttpNext } from './types.js';
 
 export interface HttpServerConfig {
     port: number;

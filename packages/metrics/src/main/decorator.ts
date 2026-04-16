@@ -1,5 +1,5 @@
 import { createMemberDecorator, findMembers } from 'mesh-decorators';
-import { Mesh } from 'mesh-ioc';
+import { type Mesh } from 'mesh-ioc';
 
 import { BaseMetric } from './BaseMetric.js';
 

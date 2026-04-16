@@ -1,5 +1,5 @@
 import { InitializationError } from '@luminable/errors';
-import { Mesh } from 'mesh-ioc';
+import { type Mesh } from 'mesh-ioc';
 
 export function assertMissingDeps(mesh: Mesh) {
     const missingDepKeys = [...mesh.missingDeps()].map(_ => _.key);

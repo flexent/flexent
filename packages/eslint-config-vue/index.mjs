@@ -12,7 +12,7 @@ export const vueConfigs = [
                 parser: '@typescript-eslint/parser',
                 ecmaVersion: 2022,
                 sourceType: 'module',
-                modules: true
+                modules: true,
             },
             globals: {
                 ...globals.node,
@@ -38,13 +38,17 @@ export const vueConfigs = [
             'vue/no-v-html': 'off',
             'vue/order-in-components': 'error',
             'vue/padding-line-between-blocks': ['error', 'always'],
-            'vue/padding-lines-in-component-definition': ['error', { betweenOptions: 'always', withinOption: 'ignore', groupSingleLineProperties: false }],
+            'vue/padding-lines-in-component-definition': ['error', {
+                betweenOptions: 'always',
+                withinOption: 'ignore',
+                groupSingleLineProperties: false,
+            }],
             'vue/prefer-import-from-vue': 'off',
             'vue/prop-name-casing': 'error',
             'vue/require-default-prop': 'off',
             'vue/require-prop-types': 'off',
             'vue/singleline-html-element-content-newline': 'off',
             'vue/v-on-event-hyphenation': ['error', 'never'],
-        }
-    }
+        },
+    },
 ];

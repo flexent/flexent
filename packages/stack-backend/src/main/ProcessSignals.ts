@@ -1,4 +1,4 @@
-import { Logger } from '@luminable/logger';
+import { type Logger } from '@luminable/logger';
 import { dep } from 'mesh-ioc';
 import { Event } from 'nanoevent';
 

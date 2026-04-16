@@ -1,6 +1,6 @@
 import { HttpServer } from '@luminable/http-server';
 import { config } from 'mesh-config';
-import { scope, ScopeProvider } from 'mesh-ioc';
+import { scope, type ScopeProvider } from 'mesh-ioc';
 
 /**
  * Serves application metadata over HTTP.

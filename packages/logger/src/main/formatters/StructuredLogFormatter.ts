@@ -1,4 +1,4 @@
-import { LogFormatter, LogLevel, LogPayload } from '../types.js';
+import { type LogFormatter, LogLevel, type LogPayload } from '../types.js';
 
 export interface StructuredLogEntry {
     severity: StructuredLogSeverity;

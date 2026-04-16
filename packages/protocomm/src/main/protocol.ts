@@ -1,6 +1,6 @@
 import { Schema } from 'airtight';
 
-import { DomainDef, DomainEventDef, DomainMethodDef } from './domain.js';
+import { type DomainDef, type DomainEventDef, type DomainMethodDef } from './domain.js';
 
 export interface ProtocolMethodDesc {
     domainDef: DomainDef<any>;

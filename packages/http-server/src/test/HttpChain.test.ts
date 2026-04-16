@@ -2,7 +2,7 @@ import assert from 'assert';
 import { dep } from 'mesh-ioc';
 
 import { HttpChain } from '../main/index.js';
-import { BarMiddleware, CatchMiddleware, EndpointHandler, FooMiddleware, ThrowMiddleware } from './handlers.js';
+import { type BarMiddleware, type CatchMiddleware, type EndpointHandler, type FooMiddleware, type ThrowMiddleware } from './handlers.js';
 import { runtime } from './runtime.js';
 
 describe('HttpChain', () => {

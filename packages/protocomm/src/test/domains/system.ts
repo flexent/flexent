@@ -1,4 +1,4 @@
-import { DomainDef } from '../../main/domain.js';
+import { type DomainDef } from '../../main/domain.js';
 
 export interface SystemDomain {
     getVersion(req: {}): Promise<{ version: string }>;
