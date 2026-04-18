@@ -1,6 +1,6 @@
 {
     "name": "@luminable/monorepo",
-    "version": "1.3.6",
+    "version": "1.3.7",
     "description": "Luminable — frameworkless OOP toolkit for building scalable applications",
     "private": true,
     "workspaces": [

@@ -1,6 +1,6 @@
 {
     "name": "@luminable/logger",
-    "version": "1.3.6",
+    "version": "1.3.7",
     "description": "Idiomatic logger API supporting custom formatting and transports",
     "type": "module",
     "sideEffects": false,
