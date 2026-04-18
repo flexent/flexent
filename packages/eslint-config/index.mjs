@@ -3,6 +3,7 @@ import noBlankLinesInBlocks from '@inca/eslint-no-blank-lines-in-blocks';
 import stylistic from '@stylistic/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import unicorn from 'eslint-plugin-unicorn';
 import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
@@ -49,6 +50,7 @@ export const sharedConfigs = [
             '@inca/no-blank-lines-in-blocks': noBlankLinesInBlocks,
             'simple-import-sort': simpleImportSort,
             'unused-imports': unusedImports,
+            'unicorn': unicorn,
         },
         rules: {
             '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': [
@@ -103,6 +105,10 @@ export const sharedConfigs = [
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
             '@typescript-eslint/no-unused-vars': 'off',
+            'unicorn/no-array-for-each': 'error',
+            'unicorn/no-array-callback-reference': 'error',
+            'unicorn/no-array-reduce': ['error', { allowSimpleOperations: false }],
+            'unicorn/no-await-expression-member': 'error',
             // Unused imports
             'unused-imports/no-unused-imports': 'error',
             'unused-imports/no-unused-vars': [
