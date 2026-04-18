@@ -16,7 +16,10 @@ export const sharedConfigs = [
             '**/node_modules',
             '**/out',
             '**/dist',
-            '**/.*',
+            '**/.git',
+            '**/.github',
+            '**/.dev',
+            '**/.cache',
         ],
     },
 
