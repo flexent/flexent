@@ -1,4 +1,4 @@
-import { matchPath } from '@luminable/pathmatcher';
+import { matchPath } from '@flexent/pathmatcher';
 
 import { type RouteDefinition } from '../types.js';
 

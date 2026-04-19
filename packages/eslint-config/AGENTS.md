@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/eslint-config` provides the Luminable ESLint Config.
+`@flexent/eslint-config` provides the Flexent ESLint Config.
 
 ## Shared Repository Guidelines (Required)
 

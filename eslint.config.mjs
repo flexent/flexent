@@ -1,4 +1,4 @@
-import { sharedConfigs } from '@luminable/eslint-config';
+import { sharedConfigs } from '@flexent/eslint-config';
 
 export default [
     ...sharedConfigs,

@@ -1,7 +1,7 @@
 {
-    "name": "@luminable/eslint-config-vue",
+    "name": "@flexent/eslint-config-vue",
     "version": "1.3.8",
-    "description": "Vue SFC ESLint rules for Luminable (extends @luminable/eslint-config)",
+    "description": "Vue SFC ESLint rules for Flexent (extends @flexent/eslint-config)",
     "type": "module",
     "exports": {
         ".": "./index.mjs"

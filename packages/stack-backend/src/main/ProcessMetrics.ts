@@ -1,4 +1,4 @@
-import { DynamicGaugeMetric, metric } from '@luminable/metrics';
+import { DynamicGaugeMetric, metric } from '@flexent/metrics';
 
 const process = global.process;
 

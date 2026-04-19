@@ -1,4 +1,4 @@
-import { type HttpContext } from '@luminable/http-server';
+import { type HttpContext } from '@flexent/http-server';
 import { dep } from 'mesh-ioc';
 
 import { Get, Middleware } from '../../main/index.js';

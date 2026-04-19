@@ -1,4 +1,4 @@
-import { HttpServer } from '@luminable/http-server';
+import { HttpServer } from '@flexent/http-server';
 import { config } from 'mesh-config';
 import { scope, type ScopeProvider } from 'mesh-ioc';
 

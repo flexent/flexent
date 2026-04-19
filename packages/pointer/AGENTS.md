@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/pointer` provides simple library for getting and setting object values via JSON Pointer or dot-delimited formats.
+`@flexent/pointer` provides simple library for getting and setting object values via JSON Pointer or dot-delimited formats.
 
 ## Shared Repository Guidelines (Required)
 

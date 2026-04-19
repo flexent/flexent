@@ -1,4 +1,4 @@
-# @luminable/logger
+# @flexent/logger
 
 Idiomatic logger API supporting custom formatting and transports.
 
@@ -18,6 +18,3 @@ logger.level = 'warn';
 logger.info('Something happened, nothing to see here');
 logger.warn('User account has been suspended', { accountId: '123' });
 ```
-
-
-

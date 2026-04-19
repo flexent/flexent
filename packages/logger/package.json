@@ -1,5 +1,5 @@
 {
-    "name": "@luminable/logger",
+    "name": "@flexent/logger",
     "version": "1.3.8",
     "description": "Idiomatic logger API supporting custom formatting and transports",
     "type": "module",

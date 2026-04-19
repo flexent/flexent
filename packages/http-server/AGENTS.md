@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/http-server` provides an idiomatic HTTP server API.
+`@flexent/http-server` provides an idiomatic HTTP server API.
 
 ## Shared Repository Guidelines (Required)
 

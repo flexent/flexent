@@ -1,4 +1,4 @@
-# Luminable Pointer
+# Pointer
 
 Simple library for getting and setting object values via [JSON Pointer](https://www.rfc-editor.org/rfc/rfc6901.html) or dot-delimited formats.
 
@@ -12,7 +12,7 @@ Simple library for getting and setting object values via [JSON Pointer](https://
 ## Usage
 
 ```ts
-import * as pointer from '@luminable/pointer';
+import * as pointer from '@flexent/pointer';
 
 const object = {
     foo: {
@@ -39,7 +39,7 @@ pointer.set(newObj, 'foo.items.0.bar', '123');
 
 ## Spec
 
-Luminable Pointer aims to implement all the features from [RFC6901](https://www.rfc-editor.org/rfc/rfc6901.html) whilst also extending it to provide the following features:
+Pointer aims to implement all the features from [RFC6901](https://www.rfc-editor.org/rfc/rfc6901.html) whilst also extending it to provide the following features:
 
 1. Dot-delimited paths:
 

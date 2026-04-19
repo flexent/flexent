@@ -1,4 +1,4 @@
-import { invokeInitHandlers } from '@luminable/init-decorator';
+import { invokeInitHandlers } from '@flexent/init-decorator';
 import { Mesh } from 'mesh-ioc';
 import { type App as VueApp, reactive } from 'vue';
 

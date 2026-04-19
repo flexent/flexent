@@ -1,24 +1,24 @@
-# Luminable — frameworkless application toolkit
+# Flexent — frameworkless application toolkit
 
-Luminable is a toolkit for building scalable applications using the powers of Object Oriented Programming and Inversion of Control.
+Flexent is a toolkit for building scalable applications using the powers of Object Oriented Programming and Inversion of Control.
 
 ## Core Principles
 
-- **Frameworkless design.** The cornerstone design principle of Luminable: there is no framework, no single rigid structure that assumes what the application does and forces everything to be done in a specific way.
+- **Frameworkless design.** The cornerstone design principle of Flexent: there is no framework, no single rigid structure that assumes what the application does and forces everything to be done in a specific way.
 
   The only universal assumption is that applications are structured with classes.
 
 - **Component-based architecture.** Applications are built using **components** — small focused classes, each addressing a specific application concern. Components are registered centrally in IoC container and can be injected into other components as dependencies.
 
-- **Runtime-agnostic.** Luminable is designed for building fundamentally different applications: frontend, backend, CLI, scripts, background tasks, etc. The same OOP/IoC approach works equally well for applications of any kind and nature.
+- **Runtime-agnostic.** Flexent is designed for building fundamentally different applications: frontend, backend, CLI, scripts, background tasks, etc. The same OOP/IoC approach works equally well for applications of any kind and nature.
 
-- **Convention-optional.** Luminable recognizes that conventions are useful, but does not enforce them. It ships micro-libraries for addressing specific common concerns (e.g. logging, metrics) and "stack" modules that encapsulate common conventions for a specific runtime (e.g. Node.js backend, Vue frontend, etc). Stack modules are optional: they simply compose existing primitives into a conventional setup and thus can be easily re-created or extended to accommodate specific needs.
+- **Convention-optional.** Flexent recognizes that conventions are useful, but does not enforce them. It ships micro-libraries for addressing specific common concerns (e.g. logging, metrics) and "stack" modules that encapsulate common conventions for a specific runtime (e.g. Node.js backend, Vue frontend, etc). Stack modules are optional: they simply compose existing primitives into a conventional setup and thus can be easily re-created or extended to accommodate specific needs.
 
 ## Why?
 
-Luminable is built on decades of experience in building _different_ kinds of applications and observing overarching similarities in how complexity grows and how efficient patterns emerge.
+Flexent is built on decades of experience in building _different_ kinds of applications and observing overarching similarities in how complexity grows and how efficient patterns emerge.
 
-While there is no silver bullet, Luminable embraces universal ideas that have survived the test of time:
+While there is no silver bullet, Flexent embraces universal ideas that have survived the test of time:
 
 - **Separation of concerns.** Each component has a single, clearly defined responsibility, making systems easier to reason about, test and evolve.
 - **Design by contract.** Components communicate through explicit interfaces and well-defined expectations rather than implicit runtime behavior.
@@ -53,9 +53,9 @@ export class UserStorage {
 ```ts
 // src/routes/UserRouter.ts
 export class UserRouter {
-  
+
   @dep() private userStorage!: UserStorage;
-  
+
   @Get({ path: '/users' })
   async listUsers(
     @QueryParam('limit', {
@@ -177,7 +177,7 @@ export class NotificationsService {
 
 ## Is this the right fit?
 
-Luminable is not for everyone — and that’s intentional. It may resonate with you if you recognize yourself in one or more of the following situations.
+Flexent is not for everyone — and that’s intentional. It may resonate with you if you recognize yourself in one or more of the following situations.
 
 ### You’ve outgrown your current framework
 
@@ -200,4 +200,3 @@ You value having the same mental model — class-based composition, dependency i
 ### You see conventions as tools, not constraints
 
 You appreciate sensible defaults and shared patterns, but want the freedom to replace, extend, or completely redefine them when your application demands it.
-

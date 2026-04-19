@@ -1,8 +1,8 @@
 import fs from 'node:fs';
 
-import { Get, HttpRouter } from '@luminable/http-router';
-import { type HttpContext } from '@luminable/http-server';
-import { generateMetricsReport } from '@luminable/metrics';
+import { Get, HttpRouter } from '@flexent/http-router';
+import { type HttpContext } from '@flexent/http-server';
+import { generateMetricsReport } from '@flexent/metrics';
 import { dep, type Mesh } from 'mesh-ioc';
 
 import { invokeStatusChecks } from './utils/status.js';

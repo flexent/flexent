@@ -1,21 +1,21 @@
-Luminable is a frameworkless application toolkit utilizing Object Oriented Programming and Inversion of Control. It contains micro-libraries for common concerns and optional stack modules.
+Flexent is a frameworkless application toolkit utilizing Object Oriented Programming and Inversion of Control. It contains micro-libraries for common concerns and optional stack modules.
 
 ## Packages
 
-- `@luminable/errors` (`packages/errors`): Generic error classes with standardized name, message and status code.
-- `@luminable/eslint-config` (`packages/eslint-config`): Luminable ESLint Config.
-- `@luminable/http-router` (`packages/http-router`): Decorator-based routing for HTTP server.
-- `@luminable/http-server` (`packages/http-server`): Idiomatic HTTP server API.
-- `@luminable/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
-- `@luminable/logger` (`packages/logger`): Idiomatic logger API supporting custom formatting and transports.
-- `@luminable/metrics` (`packages/metrics`): Idiomatic API for collecting application metrics.
-- `@luminable/pathmatcher` (`packages/pathmatcher`): Path matching utils for pathname-based routing.
-- `@luminable/stack-backend` (`packages/stack-backend`): Backend basic setup.
-- `@luminable/stack-vue` (`packages/stack-vue`): Vue basic setup.
+- `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message and status code.
+- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint Config.
+- `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP server.
+- `@flexent/http-server` (`packages/http-server`): Idiomatic HTTP server API.
+- `@flexent/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
+- `@flexent/logger` (`packages/logger`): Idiomatic logger API supporting custom formatting and transports.
+- `@flexent/metrics` (`packages/metrics`): Idiomatic API for collecting application metrics.
+- `@flexent/pathmatcher` (`packages/pathmatcher`): Path matching utils for pathname-based routing.
+- `@flexent/stack-backend` (`packages/stack-backend`): Backend basic setup.
+- `@flexent/stack-vue` (`packages/stack-vue`): Vue basic setup.
 
 ## Required References
 
-- All edits must follow the [shared repository guidelines](docs/GUIDELINES.md).
+- All edits must follow the [shared repository guidelines](GUIDELINES.md).
 - Use package-local guides `packages/*/AGENTS.md` when editing package files.
 
 ## Commit Style

@@ -1,4 +1,4 @@
-import { InitializationError } from '@luminable/errors';
+import { InitializationError } from '@flexent/errors';
 import { type Mesh } from 'mesh-ioc';
 
 export function assertMissingDeps(mesh: Mesh) {

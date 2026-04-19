@@ -1,4 +1,4 @@
-# Luminable Authoring Guidelines
+# Guidelines
 
 ## TypeScript Conventions
 

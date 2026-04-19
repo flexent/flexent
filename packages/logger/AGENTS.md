@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/logger` provides an idiomatic logger API supporting custom formatting and transports.
+`@flexent/logger` provides an idiomatic logger API supporting custom formatting and transports.
 
 ## Shared Repository Guidelines (Required)
 

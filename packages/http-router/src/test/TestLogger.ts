@@ -1,4 +1,4 @@
-import { Logger, type LogLevel } from '@luminable/logger';
+import { Logger, type LogLevel } from '@flexent/logger';
 import { config } from 'mesh-config';
 
 export class TestLogger extends Logger {

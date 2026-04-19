@@ -1,4 +1,4 @@
-import { HistogramMetric, metric } from '@luminable/metrics';
+import { HistogramMetric, metric } from '@flexent/metrics';
 
 import { type RouteDefinition } from './types.js';
 

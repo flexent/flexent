@@ -1,5 +1,5 @@
-import { NotFoundError } from '@luminable/errors';
-import { type Logger } from '@luminable/logger';
+import { NotFoundError } from '@flexent/errors';
+import { type Logger } from '@flexent/logger';
 import * as http from 'http';
 import * as https from 'https';
 import { config } from 'mesh-config';

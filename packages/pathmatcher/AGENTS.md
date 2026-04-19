@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/pathmatcher` provides path matching utils for pathname-based routing.
+`@flexent/pathmatcher` provides path matching utils for pathname-based routing.
 
 ## Shared Repository Guidelines (Required)
 

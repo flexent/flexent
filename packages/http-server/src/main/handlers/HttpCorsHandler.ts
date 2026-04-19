@@ -1,4 +1,4 @@
-import { type HttpContext, type HttpHandler, type HttpNext } from '@luminable/http-server';
+import { type HttpContext, type HttpHandler, type HttpNext } from '@flexent/http-server';
 import { config } from 'mesh-config';
 
 /**

@@ -1,4 +1,4 @@
-import { InvalidStateError, RequestSizeExceededError } from '@luminable/errors';
+import { InvalidStateError, RequestSizeExceededError } from '@flexent/errors';
 import { type IncomingMessage, type ServerResponse } from 'http';
 import { Stream } from 'stream';
 

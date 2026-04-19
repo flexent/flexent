@@ -1,4 +1,4 @@
-# @luminable/metrics
+# @flexent/metrics
 
 Idiomatic API for collecting application metrics.
 

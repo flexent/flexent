@@ -1,5 +1,5 @@
 {
-    "name": "@luminable/protocomm",
+    "name": "@flexent/protocomm",
     "version": "1.3.8",
     "description": "Bi-directional transport-agnostic JSON-based messaging",
     "type": "module",

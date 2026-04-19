@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/http-router` provides decorator-based routing for HTTP server.
+`@flexent/http-router` provides decorator-based routing for HTTP server.
 
 ## Shared Repository Guidelines (Required)
 

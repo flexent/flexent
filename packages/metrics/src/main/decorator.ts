@@ -3,11 +3,11 @@ import { type Mesh } from 'mesh-ioc';
 
 import { BaseMetric } from './BaseMetric.js';
 
-export const metric = createMemberDecorator('@luminable/metric');
+export const metric = createMemberDecorator('@flexent/metric');
 
 export function findMetrics(mesh: Mesh): BaseMetric[] {
     const metrics: BaseMetric[] = [];
-    const refs = findMembers('@luminable/metric', mesh);
+    const refs = findMembers('@flexent/metric', mesh);
     for (const { target, memberName } of refs) {
         const value = target[memberName];
         if (value instanceof BaseMetric) {

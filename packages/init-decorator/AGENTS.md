@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/init-decorator` provides the `@init` decorator for `mesh-ioc`.
+`@flexent/init-decorator` provides the `@init` decorator for `mesh-ioc`.
 
 ## Shared Repository Guidelines (Required)
 

@@ -1,4 +1,4 @@
-import { HttpChain, type HttpErrorHandler } from '@luminable/http-server';
+import { HttpChain, type HttpErrorHandler } from '@flexent/http-server';
 import { dep } from 'mesh-ioc';
 
 import { type MetaRouter } from './MetaRouter.js';

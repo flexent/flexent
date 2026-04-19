@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/stack-vue` provides a basic Vue setup for Luminable.
+`@flexent/stack-vue` provides a basic Vue setup for Flexent.
 
 ## Shared Repository Guidelines (Required)
 

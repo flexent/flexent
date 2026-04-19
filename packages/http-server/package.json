@@ -1,5 +1,5 @@
 {
-    "name": "@luminable/http-server",
+    "name": "@flexent/http-server",
     "version": "1.3.8",
     "description": "Idiomatic HTTP server API",
     "type": "module",
@@ -13,10 +13,10 @@
         "test": "NODE_ENV=test mocha"
     },
     "peerDependencies": {
-        "@luminable/errors": "^1.3.8",
-        "@luminable/logger": "^1.3.8",
-        "@luminable/metrics": "^1.3.8",
-        "@luminable/pathmatcher": "^1.3.8",
+        "@flexent/errors": "^1.3.8",
+        "@flexent/logger": "^1.3.8",
+        "@flexent/metrics": "^1.3.8",
+        "@flexent/pathmatcher": "^1.3.8",
         "mesh-config": "^1.3.4",
         "mesh-decorators": "^1.3.6",
         "mesh-ioc": "^4.3.1",

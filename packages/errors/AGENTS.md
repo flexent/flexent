@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/errors` provides generic error classes with standardized name, message and status code.
+`@flexent/errors` provides generic error classes with standardized name, message and status code.
 
 ## Shared Repository Guidelines (Required)
 

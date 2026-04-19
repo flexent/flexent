@@ -1,4 +1,4 @@
-import { Logger } from '@luminable/logger';
+import { Logger } from '@flexent/logger';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh, type ServiceConstructor } from 'mesh-ioc';
 

@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/metrics` provides an idiomatic API for collecting application metrics.
+`@flexent/metrics` provides an idiomatic API for collecting application metrics.
 
 ## Shared Repository Guidelines (Required)
 

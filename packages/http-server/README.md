@@ -1,4 +1,4 @@
-# @luminable/http-server
+# @flexent/http-server
 
 **Status: alpha. Actively developed, new releases may break things.**
 
@@ -136,7 +136,7 @@ export class AuthHandler implements HttpHandler {
 }
 ```
 
-```ts   
+```ts
 export class AppHandler extends HttpChain {
 
     @dep() private authHandler!: AuthHandler;
@@ -250,7 +250,7 @@ throw new AccessDeniedError();
 Set response header value:
 
 ```ts
-ctx.setResponseHeader('X-Powered-By', 'Luminable');
+ctx.setResponseHeader('X-Powered-By', 'My Awesome App');
 ```
 
 Response headers support multiple values, so are stored as [HttpDict](#http-dict).

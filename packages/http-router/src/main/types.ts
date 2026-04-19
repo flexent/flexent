@@ -1,4 +1,4 @@
-import { type PathToken } from '@luminable/pathmatcher';
+import { type PathToken } from '@flexent/pathmatcher';
 import { type Schema, type SchemaDef } from 'airtight';
 
 export type RouteRole = 'endpoint' | 'middleware';

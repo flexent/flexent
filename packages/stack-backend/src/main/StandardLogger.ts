@@ -1,4 +1,4 @@
-import { Logger, PrettyLogFormatter, StructuredLogFormatter } from '@luminable/logger';
+import { Logger, PrettyLogFormatter, StructuredLogFormatter } from '@flexent/logger';
 import { config } from 'mesh-config';
 
 export class StandardLogger extends Logger {

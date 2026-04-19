@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/eslint-config-vue` exports `vueRules` for `.vue` files, omitting any rule key already present on `@luminable/eslint-config`’s `sharedRules`. Consumers combine them with `{ ...sharedRules, ...vueRules }`.
+`@flexent/eslint-config-vue` exports `vueRules` for `.vue` files, omitting any rule key already present on `@flexent/eslint-config`’s `sharedRules`. Consumers combine them with `{ ...sharedRules, ...vueRules }`.
 
 ## Shared Repository Guidelines (Required)
 

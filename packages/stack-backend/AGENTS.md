@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/stack-backend` provides a basic backend setup for Luminable.
+`@flexent/stack-backend` provides a basic backend setup for Flexent.
 
 ## Shared Repository Guidelines (Required)
 

@@ -1,6 +1,6 @@
 ## Purpose
 
-`@luminable/protocomm` provides a bi-directional transport-agnostic JSON-based messaging framework.
+`@flexent/protocomm` provides a bi-directional transport-agnostic JSON-based messaging framework.
 
 ## Shared Repository Guidelines (Required)
 

@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 
-import { RouteMetrics } from '@luminable/http-router';
-import { HttpCorsHandler, HttpErrorHandler, HttpHandler, HttpServer } from '@luminable/http-server';
-import { Logger } from '@luminable/logger';
+import { RouteMetrics } from '@flexent/http-router';
+import { HttpCorsHandler, HttpErrorHandler, HttpHandler, HttpServer } from '@flexent/http-server';
+import { Logger } from '@flexent/logger';
 import { Config, ProcessEnvConfig } from 'mesh-config';
 import { dep, Mesh } from 'mesh-ioc';
 

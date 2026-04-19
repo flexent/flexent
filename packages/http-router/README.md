@@ -1,4 +1,4 @@
-# @luminable/http-router
+# @flexent/http-router
 
 Decorator-based routing for HTTP server.
 
@@ -43,7 +43,7 @@ export class UsersRouter {
 
 Bind routes to mesh. Most apps would use a separate scope for isolating request-scoped state.
 
-Also bind `RouterHandler`: it will resolve all routes defined in the same scope. 
+Also bind `RouterHandler`: it will resolve all routes defined in the same scope.
 
 ```ts
 export class HttpScope extends Mesh {
@@ -142,4 +142,3 @@ Note: HttpRouteHandler is generally more efficient because it can skip instantia
     - No middlewares are executed, even if they match.
     - `next()` is called to allow other handlers to execute.
     - As an additional optimization, if `RouteHandler` is used, it will only instantiate a router class with matching endpoint.
-

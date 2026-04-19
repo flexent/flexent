@@ -1,11 +1,11 @@
 import 'reflect-metadata';
 
-import { InitializationError } from '@luminable/errors';
+import { InitializationError } from '@flexent/errors';
 import { Schema } from 'airtight';
 
 import { type ParamDefinition, type ParamSource, type ParamSpec } from '../types.js';
 
-const PARAMS_KEY = Symbol.for('@luminable/http/params');
+const PARAMS_KEY = Symbol.for('@flexent/http/params');
 
 export function getParamDefinitions(target: any, methodKey: string): ParamDefinition[] {
     return Reflect.getMetadata(PARAMS_KEY, target, methodKey) ?? [];
