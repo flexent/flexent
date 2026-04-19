@@ -1,6 +1,6 @@
 {
     "name": "@flexent/protocomm",
-    "version": "1.3.8",
+    "version": "2.0.0",
     "description": "Bi-directional transport-agnostic JSON-based messaging",
     "type": "module",
     "sideEffects": false,

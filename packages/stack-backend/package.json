@@ -1,6 +1,6 @@
 {
     "name": "@flexent/stack-backend",
-    "version": "1.3.8",
+    "version": "2.0.0",
     "description": "Backend basic setup",
     "type": "module",
     "exports": {
@@ -10,10 +10,10 @@
         "out"
     ],
     "peerDependencies": {
-        "@flexent/errors": "^1.3.8",
-        "@flexent/http-router": "^1.3.8",
-        "@flexent/http-server": "^1.3.8",
-        "@flexent/logger": "^1.3.8",
+        "@flexent/errors": "^2.0.0",
+        "@flexent/http-router": "^2.0.0",
+        "@flexent/http-server": "^2.0.0",
+        "@flexent/logger": "^2.0.0",
         "mesh-config": "^1.3.4",
         "mesh-decorators": "^1.3.6",
         "mesh-ioc": "^4.3.1",

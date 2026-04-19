@@ -1,6 +1,6 @@
 {
     "name": "@flexent/pointer",
-    "version": "1.3.8",
+    "version": "2.0.0",
     "description": "Simple Object Get/Set via JSON Pointer or dot-delimited formats",
     "type": "module",
     "sideEffects": false,
