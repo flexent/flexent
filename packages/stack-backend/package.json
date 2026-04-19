@@ -2,6 +2,8 @@
     "name": "@flexent/stack-backend",
     "version": "2.0.0",
     "description": "Backend basic setup",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
     "type": "module",
     "exports": {
         ".": "./out/main/index.js"

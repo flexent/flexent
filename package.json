@@ -2,6 +2,8 @@
     "name": "@flexent/monorepo",
     "version": "2.0.0",
     "description": "Flexent — frameworkless OOP toolkit for building scalable applications",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
     "private": true,
     "workspaces": [
         "packages/*"

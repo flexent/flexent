@@ -2,6 +2,8 @@
     "name": "@flexent/stack-vue",
     "version": "2.0.0",
     "description": "Vue basic setup",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
     "type": "module",
     "exports": {
         ".": "./out/main/index.js"

@@ -2,6 +2,8 @@
     "name": "@flexent/http-router",
     "version": "2.0.0",
     "description": "Decorator-based routing for HTTP server",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
     "type": "module",
     "exports": {
         ".": "./out/main/index.js"
