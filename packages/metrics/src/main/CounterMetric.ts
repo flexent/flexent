@@ -27,7 +27,7 @@ export class CounterMetric<L = any> extends BaseMetric<L> {
         }
     }
 
-    * generateReportLines() {
+    *generateReportLines() {
         for (const datum of this.data.values()) {
             yield [
                 this.getMetricLineName(datum.labels),

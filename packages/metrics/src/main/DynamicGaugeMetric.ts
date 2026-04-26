@@ -14,7 +14,7 @@ export class DynamicGaugeMetric<L = any> extends BaseMetric<L> {
         return 'gauge';
     }
 
-    * generateReportLines() {
+    *generateReportLines() {
         for (const datum of this.fn()) {
             yield [
                 this.getMetricLineName(datum.labels),

@@ -8,7 +8,7 @@ export class GaugeMetric<L = any> extends BaseMetric<L> {
         return 'gauge';
     }
 
-    * generateReportLines() {
+    *generateReportLines() {
         for (const datum of this.data.values()) {
             yield [
                 this.getMetricLineName(datum.labels),

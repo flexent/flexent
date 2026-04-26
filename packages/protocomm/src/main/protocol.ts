@@ -34,7 +34,7 @@ export class ProtocolIndex<P> {
         this.buildEventCache();
     }
 
-    * [Symbol.iterator](): IterableIterator<[string, DomainDef<any>]> {
+    *[Symbol.iterator](): IterableIterator<[string, DomainDef<any>]> {
         for (const [domainName, domainDef] of Object.entries(this.index)) {
             yield [domainName, domainDef as DomainDef<any>];
         }

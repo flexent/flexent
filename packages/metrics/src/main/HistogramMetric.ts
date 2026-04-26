@@ -71,7 +71,7 @@ export class HistogramMetric<L = any> extends BaseMetric<L> {
             });
     }
 
-    protected* generateReportLines() {
+    protected *generateReportLines() {
         for (const datum of this.data.values()) {
             for (const [i, le] of this.buckets.entries()) {
                 const prefix = this.getMetricLineName({ ...datum.labels, le: String(le) }, '_bucket');
