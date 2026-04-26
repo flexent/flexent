@@ -1,6 +1,6 @@
 {
     "name": "@flexent/eslint-config",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Flexent ESLint Config",
     "author": "Boris Okunskiy",
     "license": "MIT",
