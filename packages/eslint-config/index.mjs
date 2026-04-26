@@ -81,6 +81,7 @@ export const sharedConfigs = [
             '@stylistic/operator-linebreak': ['error', 'after'],
             '@stylistic/padded-blocks': ['error', { blocks: 'never', classes: 'always', switches: 'never' }],
             '@stylistic/yield-star-spacing': ['error', 'after'],
+            '@stylistic/generator-star-spacing': ['error', { before: true, after: false }],
             '@typescript-eslint/array-type': 'off',
             '@typescript-eslint/class-literal-property-style': 'off',
             '@typescript-eslint/no-empty-function': 'off',
