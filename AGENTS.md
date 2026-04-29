@@ -1,36 +1,88 @@
-Flexent is a frameworkless application toolkit utilizing Object Oriented Programming and Inversion of Control. It contains micro-libraries for common concerns and optional stack modules.
+# Flexent Agent Rules
 
-## Packages
+Flexent is a frameworkless toolkit built around Object Oriented Programming and Inversion of Control.
 
-- `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message and status code.
-- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint Config.
-- `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP server.
-- `@flexent/http-server` (`packages/http-server`): Idiomatic HTTP server API.
-- `@flexent/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
-- `@flexent/logger` (`packages/logger`): Idiomatic logger API supporting custom formatting and transports.
-- `@flexent/metrics` (`packages/metrics`): Idiomatic API for collecting application metrics.
-- `@flexent/pathmatcher` (`packages/pathmatcher`): Path matching utils for pathname-based routing.
-- `@flexent/stack-backend` (`packages/stack-backend`): Backend basic setup.
-- `@flexent/stack-vue` (`packages/stack-vue`): Vue basic setup.
+## Repository Scope
 
-## Required References
+- Keep modules focused and small.
+- Prefer explicit, stable exports.
+- Scope each change to the correct package.
+- Follow OOP and Dependency Injection (`mesh-ioc`) principles.
 
-- All edits must follow the [shared repository guidelines](GUIDELINES.md).
-- Use package-local guides `packages/*/AGENTS.md` when editing package files.
+## TypeScript Rules
 
-## Commit Style
+- Keep code simple, readable, and modular.
+- Break long lines into smaller statements.
+- Keep methods short (target: under 30 lines).
+- Do not use blank lines inside method bodies.
+- Keep argument counts low; use options objects for many parameters.
+- Avoid complex TypeScript type constructs; keep types readable.
+- Balance type safety with cognitive overhead; avoid type proliferation.
+- Prefer `for...of` for loops.
+- Do not use `.reduce()` as looping syntax.
+- Do not use `.forEach()`.
+- Use `.map()`, `.filter()`, and `.some()` only for simple cases.
+- Structure classes as: fields, then getters, then methods.
+- In each class-member group, place public members before private members.
 
-- Do not commit changes unless explicitly instructed to do so.
-- Use Conventional Commits for every commit message.
-- Format: `type: short summary` (lowercased, no dot at the end)
+## Documentation Rules
+
+- Keep Markdown concise and scannable.
+- Use short sections and practical examples.
+- Use fenced code blocks with language hints.
+- Prefer sentence-style prose over dense paragraph blocks.
+- Keep naming and terminology consistent with code and package names.
+- Separate Markdown blocks with exactly one blank line.
+
+## Dependency Rules
+
+- Do not add external runtime dependencies unless absolutely necessary.
+
+## Commit Rules
+
+- Do not commit unless explicitly instructed.
+- Use Conventional Commits.
+- Format: `type: short summary` (lowercase, no trailing period).
 - Allowed types: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `build`.
 
-## Change Checklist
+## Package Purposes
 
-- [ ] Scope changes to the correct package(s); keep modules focused.
-- [ ] Follow package-local requirements in the corresponding `packages/*/AGENTS.md`.
-- [ ] Follow the OOP and Dependency Injection guidelines.
-- [ ] Keep docs concise and scannable with proper fenced code blocks.
-- [ ] In Markdown separate blocks with a single blank line.
-- [ ] Run relevant build/dev checks before finishing (`npm run build` or package-specific scripts).
-- [ ] Commit messages follow the Commit Style.
+- `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message, and status code.
+- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config.
+- `@flexent/eslint-config-vue` (`packages/eslint-config-vue`): `vueRules` for `.vue` files, merged with shared rules as `{ ...sharedRules, ...vueRules }`.
+- `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP servers.
+- `@flexent/http-server` (`packages/http-server`): Idiomatic HTTP server API.
+- `@flexent/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
+- `@flexent/jwt` (`packages/jwt`): JWT signing and verification service.
+- `@flexent/logger` (`packages/logger`): Logger API with pluggable formatting and transports.
+- `@flexent/metrics` (`packages/metrics`): Metrics collection API.
+- `@flexent/pathmatcher` (`packages/pathmatcher`): Pathname matching utilities.
+- `@flexent/pointer` (`packages/pointer`): Object get/set via JSON Pointer and dot notation.
+- `@flexent/protocomm` (`packages/protocomm`): Transport-agnostic, bi-directional JSON messaging.
+- `@flexent/stack-backend` (`packages/stack-backend`): Default backend stack setup.
+- `@flexent/stack-vue` (`packages/stack-vue`): Default Vue stack setup.
+
+## Package-Specific Rules
+
+- `@flexent/errors`: Keep class hierarchies simple and understandable.
+- `@flexent/eslint-config`: Keep the existing rule groups, do not add more.
+- `@flexent/http-router`: Keep decorators aligned with standard HTTP methods and routing conventions.
+- `@flexent/http-server`: Keep server integration clean with the DI container.
+- `@flexent/jwt`: Keep signing and verification configuration explicit.
+- `@flexent/logger`: Keep logger transports easily pluggable.
+- `@flexent/metrics`: Design API to fit common observability patterns.
+- `@flexent/pathmatcher`: Keep matching logic highly optimized and tested.
+- `@flexent/pointer`: Keep pointer logic highly optimized and tested.
+- `@flexent/protocomm`: Do not assume any specific transport layer.
+- `@flexent/protocomm`: Keep protocol logic highly optimized and tested.
+
+## Completion Checklist
+
+- [ ] Change scope is limited to the intended package(s).
+- [ ] OOP and DI constraints are followed.
+- [ ] Export surfaces remain explicit and stable.
+- [ ] Documentation rules are followed.
+- [ ] Runtime dependency policy is respected.
+- [ ] Package-specific rules for touched packages are satisfied.
+- [ ] Relevant checks have been run (`npm run build` or package-specific scripts).
+- [ ] Commit rules are followed when committing is requested.
