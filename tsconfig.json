@@ -1,6 +1,7 @@
 {
     "files": [],
     "references": [
+        { "path": "./packages/repo-tools" },
         { "path": "./packages/errors" },
         { "path": "./packages/logger" },
         { "path": "./packages/metrics" },

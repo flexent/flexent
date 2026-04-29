@@ -1,0 +1,23 @@
+{
+    "name": "@flexent/repo-tools",
+    "version": "2.0.2",
+    "description": "Reusable repo scripts for Flexent workspaces",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "bin": {
+        "bump-version": "./cli/bump-version.mjs",
+        "ls-publish-workspaces": "./cli/ls-publish-workspaces.mjs"
+    },
+    "files": [
+        "out",
+        "cli"
+    ],
+    "dependencies": {
+        "commander": "^14.0.1"
+    }
+}

@@ -19,15 +19,16 @@
         "dev:ts": "tsc -b -w",
         "compile:ts": "tsc -b",
         "lint": "eslint . --fix",
-        "test": "npm run test --workspaces --if-present",
+        "test": "npm run tst --workspaces --if-present",
         "version": "run-s clean compile:ts version:bump",
-        "version:bump": "node ./tools/bump-version.mjs && git add **/package.json",
+        "version:bump": "bump-version && git add **/package.json",
         "postversion": "npm run publish:workspaces && git push && git push --tags",
-        "publish:workspaces": "npm publish $(node ./tools/ls-publish-workspaces.mjs) --access=public"
+        "publish:workspaces": "npm publish $(ls-publish-workspaces) --access=public"
     },
     "devDependencies": {
         "@fastify/pre-commit": "^2.2.1",
         "@flexent/eslint-config": "file:packages/eslint-config",
+        "@flexent/repo-tools": "file:packages/repo-tools",
         "@types/mocha": "^10.0.10",
         "@types/node": "^25.0.3",
         "eslint": "^9.39.2",
