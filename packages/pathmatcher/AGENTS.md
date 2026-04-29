@@ -4,7 +4,7 @@
 
 ## Shared Repository Guidelines (Required)
 
-All edits in this package must follow the shared repository guidelines in `../../docs/GUIDELINES.md`.
+All edits in this package must follow the shared repository guidelines in `../../GUIDELINES.md`.
 
 ## Do / Don’t
 
