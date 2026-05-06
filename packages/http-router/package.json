@@ -1,6 +1,6 @@
 {
     "name": "@flexent/http-router",
-    "version": "2.3.0",
+    "version": "2.4.0",
     "description": "Decorator-based routing for HTTP server",
     "author": "Boris Okunskiy",
     "license": "MIT",
@@ -15,11 +15,11 @@
         "test": "NODE_ENV=test mocha"
     },
     "peerDependencies": {
-        "@flexent/errors": "^2.3.0",
-        "@flexent/http-server": "^2.3.0",
-        "@flexent/logger": "^2.3.0",
-        "@flexent/metrics": "^2.3.0",
-        "@flexent/pathmatcher": "^2.3.0",
+        "@flexent/errors": "^2.4.0",
+        "@flexent/http-server": "^2.4.0",
+        "@flexent/logger": "^2.4.0",
+        "@flexent/metrics": "^2.4.0",
+        "@flexent/pathmatcher": "^2.4.0",
         "airtight": "^5.7.2",
         "mesh-config": "^1.3.4",
         "mesh-decorators": "^1.3.6",
