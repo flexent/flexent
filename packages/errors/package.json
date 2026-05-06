@@ -1,6 +1,6 @@
 {
     "name": "@flexent/errors",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "description": "Generic error classes with standardized name, message and status code",
     "author": "Boris Okunskiy",
     "license": "MIT",
