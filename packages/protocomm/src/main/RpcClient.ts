@@ -1,17 +1,12 @@
 import { Event } from 'nanoevent';
 
 import { type DomainMethod } from './domain.js';
+import { ClientClosedError } from './errors.js';
 import { type ProtocolIndex } from './protocol.js';
-import { type RpcEvent, type RpcMethodRequest, type RpcMethodResponse } from './rpc-messages.js';
-
-export interface RpcClientTransport {
-    messageReceived: Event<unknown>;
-    connectionClosed: Event<{}>;
-    sendRequest(req: RpcMethodRequest): void;
-}
+import { type RpcEvent, type RpcMethodRequest, type RpcMethodResponse } from './types.js';
 
 /**
- * PoC client for exchanging messages in RPC format via an abstract transport
+ * Client for exchanging messages in RPC format via an abstract transport
  * that supports sending and receiving arbitrary messages (e.g. WebSocket, IPC, events, etc.)
  */
 export class RpcClient<P> {
@@ -47,7 +42,7 @@ export class RpcClient<P> {
      */
     handleClose() {
         for (const cmd of this.awaitingCommands.values()) {
-            const err = new ClientClosed(`Method ${cmd.methodName} failed: client connection closed`);
+            const err = new ClientClosedError(`Method ${cmd.methodName} failed: client connection closed`);
             cmd.reject(err);
         }
         this.awaitingCommands.clear();
@@ -130,15 +125,9 @@ export class RpcClient<P> {
 
 }
 
-interface AwaitingCommand<T> {
+export interface AwaitingCommand<T> {
     id: number;
     methodName: string;
     resolve: (result: T) => void;
     reject: (error: Error) => void;
-}
-
-export class ClientClosed extends Error {
-
-    override name = this.constructor.name;
-
 }

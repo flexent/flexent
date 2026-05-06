@@ -41,3 +41,9 @@ export class UnexpectedResponseError extends Error {
     }
 
 }
+
+export class ClientClosedError extends Error {
+
+    override name = this.constructor.name;
+
+}

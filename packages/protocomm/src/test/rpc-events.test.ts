@@ -1,8 +1,8 @@
 import assert from 'assert';
 import EventEmitter from 'events';
 
-import { RpcClient } from '../main/rpc-client.js';
-import { RpcHandler } from '../main/rpc-handler.js';
+import { RpcClient } from '../main/RpcClient.js';
+import { RpcHandler } from '../main/RpcHandler.js';
 import { instanceDb, protocolImpl } from './backend.js';
 import { protocolIndex } from './protocol.js';
 
