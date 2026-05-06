@@ -1,0 +1,25 @@
+{
+    "name": "@flexent/protocomm-ws",
+    "version": "2.3.0",
+    "description": "WebSocket handler for protocomm RPC protocols",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out/main/**/*"
+    ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
+    "peerDependencies": {
+        "@flexent/http-server": "^2.3.0",
+        "@flexent/logger": "^2.3.0",
+        "@flexent/protocomm": "^2.3.0",
+        "mesh-ioc": "^4.3.1",
+        "nanoevent": "^1.0.0"
+    }
+}

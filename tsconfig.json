@@ -9,6 +9,8 @@
         { "path": "./packages/pathmatcher" },
         { "path": "./packages/pointer" },
         { "path": "./packages/protocomm" },
+        { "path": "./packages/protocomm-http" },
+        { "path": "./packages/protocomm-ws" },
         { "path": "./packages/http-server" },
         { "path": "./packages/http-router" },
         { "path": "./packages/stack-backend" },
