@@ -1,19 +1,19 @@
-import { ProtocolEventEmitter } from '@flexent/protocomm';
+import { type RpcEvent } from '@flexent/protocomm';
+import { Event } from 'nanoevent';
 
 import { FakeWs } from './FakeWs.js';
-import { protocol, type TestProtocol } from './TestProtocol.js';
 import { TestWsProtocolHandler } from './TestWsProtocolHandler.js';
 
 export class TestRuntime {
 
-    events: ProtocolEventEmitter<TestProtocol, string> | null = null;
+    eventBus: Event<RpcEvent<string>> | null = null;
     handler: TestWsProtocolHandler | null = null;
     ws: FakeWs | null = null;
 
     setup(): void {
         this.ws = new FakeWs();
-        this.events = new ProtocolEventEmitter<TestProtocol, string>(protocol);
-        this.handler = new TestWsProtocolHandler(this.events);
+        this.eventBus = new Event<RpcEvent<string>>();
+        this.handler = new TestWsProtocolHandler(this.eventBus);
         Object.defineProperty(this.handler, 'ws', {
             value: this.ws,
         });
@@ -27,7 +27,7 @@ export class TestRuntime {
     }
 
     afterEach(): void {
-        this.events = null;
+        this.eventBus = null;
         this.handler = null;
         this.ws = null;
     }

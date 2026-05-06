@@ -1,4 +1,5 @@
-import { type ProtocolEventEmitter } from '@flexent/protocomm';
+import { type RpcEvent } from '@flexent/protocomm';
+import { type Event } from 'nanoevent';
 
 import { WsProtocolHandler } from '../main/WsProtocolHandler.js';
 import { protocol, type TestProtocol } from './TestProtocol.js';
@@ -7,7 +8,7 @@ import { protocolImpl } from './TestProtocolImpl.js';
 export class TestWsProtocolHandler extends WsProtocolHandler<TestProtocol, string> {
 
     constructor(
-        readonly events: ProtocolEventEmitter<TestProtocol, string>,
+        readonly eventBus: Event<RpcEvent<string>>,
     ) {
         super();
     }
@@ -20,12 +21,8 @@ export class TestWsProtocolHandler extends WsProtocolHandler<TestProtocol, strin
         return protocolImpl;
     }
 
-    protected override get eventSource() {
-        return this.events;
-    }
-
-    protected override acceptsEvent(message: { target?: string }): boolean {
-        return !message.target || message.target === 'client:one';
+    protected override acceptsEvent(event: { target?: string }): boolean {
+        return !event.target || event.target === 'client:one';
     }
 
 }

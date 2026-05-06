@@ -2,26 +2,19 @@ import { type HttpContext } from '@flexent/http-server';
 import { type Logger } from '@flexent/logger';
 import {
     type ProtocolIndex,
-    resolveRpcEventMessage,
     type RpcEvent,
-    type RpcEventEnvelope,
-    type RpcEventMessage,
-    type RpcEventSource,
     RpcHandler,
     type RpcMethodResponse,
 } from '@flexent/protocomm';
 import { dep } from 'mesh-ioc';
+import { type Event } from 'nanoevent';
 
 const OPEN_READY_STATE = 1;
 
-export interface WsProtocolData {
-    toString(): string;
-}
-
 export interface WsProtocolConnection {
     readyState: number;
-    send(data: string): void;
-    on(event: 'message', listener: (data: WsProtocolData) => void): unknown;
+    send(data: string | Buffer): void;
+    on(event: 'message', listener: (data: string | Buffer) => void): unknown;
     on(event: 'close', listener: () => void): unknown;
     on(event: 'error', listener: (error: unknown) => void): unknown;
 }
@@ -38,28 +31,26 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
 
     abstract get protocolImpl(): P;
 
-    protected get eventSource(): RpcEventSource<Target> | null {
-        return null;
-    }
+    abstract get eventBus(): Event<RpcEvent<Target>>;
 
-    init(): void {
+    init() {
         this.handler = new RpcHandler(
             this.protocol,
             this.protocolImpl,
             res => this.sendResponse(res),
             evt => this.sendEvent(evt),
         );
-        this.eventSource?.rpcEvent.on(message => this.onRpcEvent(message), this);
+        this.eventBus.on(event => this.onRpcEvent(event), this);
         this.ws.on('message', data => this.onMessage(data));
         this.ws.on('close', () => this.onClose());
         this.ws.on('error', error => this.onError(error));
     }
 
-    setHttpContext(ctx: HttpContext): void {
+    setHttpContext(ctx: HttpContext) {
         this.httpContext = ctx;
     }
 
-    protected async onMessage(data: WsProtocolData): Promise<void> {
+    protected async onMessage(data: string | Buffer) {
         try {
             await this.handler.processMessage(data.toString());
         } catch (error) {
@@ -67,39 +58,38 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
         }
     }
 
-    protected onRpcEvent(message: RpcEventMessage<Target>): void {
-        const envelope = resolveRpcEventMessage(message);
-        if (this.acceptsEvent(envelope)) {
-            this.sendEvent(envelope.event);
+    protected onRpcEvent(event: RpcEvent<Target>) {
+        if (this.acceptsEvent(event)) {
+            this.sendEvent(event);
         }
     }
 
-    protected acceptsEvent(envelope: RpcEventEnvelope<Target>): boolean {
-        void envelope;
+    protected acceptsEvent(event: RpcEvent<Target>) {
+        void event;
         return true;
     }
 
-    protected sendResponse(res: RpcMethodResponse): void {
+    protected sendResponse(res: RpcMethodResponse) {
         this.send(res);
     }
 
-    protected sendEvent(evt: RpcEvent): void {
+    protected sendEvent(evt: RpcEvent) {
         this.send(evt);
     }
 
-    protected send(payload: unknown): void {
+    protected send(payload: unknown) {
         if (this.ws.readyState === OPEN_READY_STATE) {
             this.ws.send(JSON.stringify(payload));
         }
     }
 
-    protected onClose(): void {
-        this.eventSource?.rpcEvent.removeAll(this);
+    protected onClose() {
+        this.eventBus.removeAll(this);
         this.handler.methodStats.removeAll(this);
         this.logger.debug('WS connection closed');
     }
 
-    protected onError(error: unknown): void {
+    protected onError(error: unknown) {
         this.logger.error('WS error', { error });
     }
 

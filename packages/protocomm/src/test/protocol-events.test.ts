@@ -1,9 +1,8 @@
 import assert from 'assert';
 import { type Event } from 'nanoevent';
 
-import { type DomainDef } from '../main/domain.js';
-import { ProtocolEventEmitter } from '../main/events.js';
-import { ProtocolIndex } from '../main/protocol.js';
+import { RpcEventProducer } from '../main/RpcEventProducer.js';
+import { type RpcEvent } from '../main/types.js';
 
 interface TestDomain {
     updated: Event<{ id: string }>;
@@ -13,34 +12,25 @@ interface TestProtocol {
     Test: TestDomain;
 }
 
-const TestDomain: DomainDef<TestDomain> = {
-    name: 'Test',
-    methods: {},
-    events: {
-        updated: {
-            params: {
-                id: { type: 'string' },
-            },
-        },
-    },
-};
+class TestEventProducer extends RpcEventProducer<TestProtocol, string> {
 
-describe('ProtocolEventEmitter', () => {
+    events: RpcEvent<string>[] = [];
 
-    it('emits schema-validated protocol events', () => {
-        const protocolIndex = new ProtocolIndex<TestProtocol>({
-            Test: TestDomain,
-        });
-        const events = new ProtocolEventEmitter<TestProtocol, string>(protocolIndex);
-        const emitted: unknown[] = [];
-        events.rpcEvent.on(evt => emitted.push(evt));
-        events.emitProtocolEvent('Test', 'updated', { id: 'one' }, 'client:one');
-        assert.deepStrictEqual(emitted, [{
-            event: {
-                domain: 'Test',
-                event: 'updated',
-                data: { id: 'one' },
-            },
+    produceEvent(event: RpcEvent<string>) {
+        this.events.push(event);
+    }
+
+}
+
+describe('RpcEventProducer', () => {
+
+    it('produces typed protocol events', async () => {
+        const events = new TestEventProducer();
+        await events.broadcast('Test', 'updated', { id: 'one' }, 'client:one');
+        assert.deepStrictEqual(events.events, [{
+            domain: 'Test',
+            event: 'updated',
+            data: { id: 'one' },
             target: 'client:one',
         }]);
     });

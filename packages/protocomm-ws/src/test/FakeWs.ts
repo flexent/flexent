@@ -1,7 +1,4 @@
-import {
-    type WsProtocolConnection,
-    type WsProtocolData,
-} from '../main/WsProtocolHandler.js';
+import { type WsProtocolConnection } from '../main/WsProtocolHandler.js';
 
 type AnyListener = (...args: any[]) => void;
 
@@ -11,11 +8,11 @@ export class FakeWs implements WsProtocolConnection {
     sent: string[] = [];
     private listeners = new Map<string, AnyListener[]>();
 
-    send(data: string): void {
-        this.sent.push(data);
+    send(data: string | Buffer): void {
+        this.sent.push(data.toString());
     }
 
-    on(event: 'message', listener: (data: WsProtocolData) => void): unknown;
+    on(event: 'message', listener: (data: string | Buffer) => void): unknown;
     on(event: 'close', listener: () => void): unknown;
     on(event: 'error', listener: (error: unknown) => void): unknown;
     on(event: string, listener: AnyListener): unknown {

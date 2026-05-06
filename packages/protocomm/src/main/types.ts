@@ -1,4 +1,5 @@
 import { Schema } from 'airtight';
+import { type Event } from 'nanoevent';
 
 export interface RpcError {
     name: string;
@@ -50,10 +51,17 @@ export const RpcMethodResponse = new Schema<RpcMethodResponse>({
     },
 });
 
-export interface RpcEvent {
+export type ProtocolEventData<
+    P,
+    D extends keyof P,
+    E extends keyof P[D],
+> = P[D][E] extends Event<infer T> ? T : never;
+
+export interface RpcEvent<Target = unknown> {
     domain: string;
     event: string;
     data: any;
+    target?: Target;
 }
 
 export const RpcEvent = new Schema<RpcEvent>({
@@ -63,5 +71,6 @@ export const RpcEvent = new Schema<RpcEvent>({
         domain: { type: 'string' },
         event: { type: 'string' },
         data: { type: 'any' },
+        target: { type: 'any', optional: true },
     },
 });

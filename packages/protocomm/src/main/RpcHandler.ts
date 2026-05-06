@@ -5,7 +5,7 @@ import { MethodNotFound, type ProtocolIndex } from './protocol.js';
 import { type RpcEvent, RpcMethodRequest, type RpcMethodResponse } from './types.js';
 
 /**
- * PoC RPC message handler. Can be used to implement server side of RPC communication.
+ * RPC message handler. Can be used to implement server side of RPC communication.
  */
 export class RpcHandler<P> {
 

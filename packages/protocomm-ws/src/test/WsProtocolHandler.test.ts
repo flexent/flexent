@@ -23,12 +23,23 @@ describe('WsProtocolHandler', () => {
     });
 
     it('emits accepted events from a pluggable event source', () => {
-        runtime.events!.emitProtocolEvent('Test', 'updated', { name: 'Ada' }, 'client:one');
-        runtime.events!.emitProtocolEvent('Test', 'updated', { name: 'Grace' }, 'client:two');
+        runtime.eventBus!.emit({
+            domain: 'Test',
+            event: 'updated',
+            data: { name: 'Ada' },
+            target: 'client:one',
+        });
+        runtime.eventBus!.emit({
+            domain: 'Test',
+            event: 'updated',
+            data: { name: 'Grace' },
+            target: 'client:two',
+        });
         assert.deepStrictEqual(JSON.parse(runtime.ws!.sent[0]), {
             domain: 'Test',
             event: 'updated',
             data: { name: 'Ada' },
+            target: 'client:one',
         });
         assert.strictEqual(runtime.ws!.sent.length, 1);
     });
