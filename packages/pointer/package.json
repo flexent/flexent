@@ -1,6 +1,6 @@
 {
     "name": "@flexent/pointer",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "description": "Simple Object Get/Set via JSON Pointer or dot-delimited formats",
     "author": "Boris Okunskiy",
     "license": "MIT",

@@ -1,6 +1,6 @@
 {
     "name": "@flexent/protocomm",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "description": "Bi-directional transport-agnostic JSON-based messaging",
     "author": "Boris Okunskiy",
     "license": "MIT",
