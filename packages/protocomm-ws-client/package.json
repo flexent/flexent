@@ -1,0 +1,22 @@
+{
+    "name": "@flexent/protocomm-ws-client",
+    "version": "2.2.0",
+    "description": "WebSocket client transport for Protocomm protocols",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "engines": {
+        "node": ">=18"
+    },
+    "peerDependencies": {
+        "@flexent/protocomm": "^2.2.0",
+        "nanoevent": "^1.0.0"
+    }
+}
