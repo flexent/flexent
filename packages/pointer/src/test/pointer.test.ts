@@ -6,7 +6,7 @@ describe('object', () => {
 
     // See https://datatracker.ietf.org/doc/html/rfc6901
     const data = {
-        'foo': ['bar', 'baz'],
+        foo: ['bar', 'baz'],
         '': 0,
         'a/b': 1,
         'c%d': 2,
@@ -77,7 +77,7 @@ describe('object', () => {
         it('inserts an empty key if key is /', () => {
             const obj = { foo: { bar: [1, 2] } };
             set(obj, '/', 'new');
-            assert.deepStrictEqual(obj, { '': 'new', 'foo': { bar: [1, 2] } });
+            assert.deepStrictEqual(obj, { '': 'new', foo: { bar: [1, 2] } });
         });
 
         it('inserts an array item', () => {

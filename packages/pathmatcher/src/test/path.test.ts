@@ -197,7 +197,7 @@ describe('matchPath', () => {
     describe('/files/*.{ext}', () => {
         it('match all path components', () => {
             const m = matchPath('/files/*.{ext}', '/files/foo/bar/baz.txt');
-            assert.deepStrictEqual(m, { '*': 'foo/bar/baz', 'ext': 'txt' });
+            assert.deepStrictEqual(m, { '*': 'foo/bar/baz', ext: 'txt' });
         });
     });
 

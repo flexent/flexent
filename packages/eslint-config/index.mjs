@@ -42,7 +42,7 @@ export const sharedConfigs = [
     stylistic.configs.customize({
         braceStyle: '1tbs',
         indent: 4,
-        quoteProps: 'consistent',
+        quoteProps: 'as-needed',
         quotes: 'single',
         semi: true,
     }),
@@ -53,7 +53,7 @@ export const sharedConfigs = [
             '@inca/no-blank-lines-in-blocks': noBlankLinesInBlocks,
             'simple-import-sort': simpleImportSort,
             'unused-imports': unusedImports,
-            'unicorn': unicorn,
+            unicorn,
         },
         rules: {
             '@inca/no-blank-lines-in-blocks/no-blank-lines-in-blocks': [
@@ -91,10 +91,10 @@ export const sharedConfigs = [
                 prefer: 'type-imports',
                 fixStyle: 'inline-type-imports',
             }],
-            'curly': ['error', 'all'],
+            curly: ['error', 'all'],
             'eol-last': 'error',
-            'eqeqeq': ['error', 'always', { null: 'never' }],
-            'indent': 'off',
+            eqeqeq: ['error', 'always', { null: 'never' }],
+            indent: 'off',
             'max-len': ['error', {
                 code: 120,
                 ignoreUrls: true,
@@ -103,7 +103,7 @@ export const sharedConfigs = [
             }],
             'max-lines-per-function': ['error', { max: 50 }],
             'max-statements': ['error', { max: 50 }],
-            'no-console': ['error', { 'allow': ['warn', 'info', 'error'] }],
+            'no-console': ['error', { allow: ['warn', 'info', 'error'] }],
             'no-empty': ['error', { allowEmptyCatch: true }],
             'import/no-extraneous-dependencies': 'error',
             'simple-import-sort/imports': 'error',
@@ -141,16 +141,16 @@ export const sharedConfigs = [
             'no-restricted-properties': [
                 'error',
                 {
-                    'object': 'describe',
-                    'property': 'only',
+                    object: 'describe',
+                    property: 'only',
                 },
                 {
-                    'object': 'context',
-                    'property': 'only',
+                    object: 'context',
+                    property: 'only',
                 },
                 {
-                    'object': 'it',
-                    'property': 'only',
+                    object: 'it',
+                    property: 'only',
                 },
             ],
         },
