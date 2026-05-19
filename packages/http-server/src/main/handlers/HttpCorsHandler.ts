@@ -1,3 +1,4 @@
+import { AccessDeniedError } from '@flexent/errors';
 import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
 import { config } from 'mesh-config';
 
@@ -17,11 +18,23 @@ export class HttpCorsHandler implements HttpHandler {
     @config({ default: true })
     CORS_ALLOW_CREDENTIALS!: boolean;
 
+    @config({ default: '*' })
+    CORS_ALLOWED_ORIGINS!: string;
+
+    private get allowedOrigins(): string[] {
+        return this.CORS_ALLOWED_ORIGINS.split(',').map(s => s.trim()).filter(Boolean);
+    }
+
     async handle(ctx: HttpContext, next: HttpNext) {
         ctx.setResponseHeader('Vary', 'Origin');
         const origin = ctx.state.corsOrigin ?? ctx.getRequestHeader('Origin');
         if (!origin) {
             return next();
+        }
+        if (!this.allowedOrigins.includes('*')) {
+            if (!this.allowedOrigins.includes(origin)) {
+                throw new AccessDeniedError('Origin not allowed');
+            }
         }
         const maxAge = ctx.state.corsMaxAge ?? this.CORS_MAX_AGE;
         const exposeHeaders = ctx.state.corsExposeHeaders ?? this.CORS_EXPOSE_HEADERS;
