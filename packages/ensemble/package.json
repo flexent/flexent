@@ -1,0 +1,25 @@
+{
+    "name": "@flexent/ensemble",
+    "version": "2.6.3",
+    "description": "YAML-driven process manager for local development",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "bin": {
+        "ensemble": "./cli/ensemble.mjs"
+    },
+    "files": [
+        "out",
+        "cli"
+    ],
+    "dependencies": {
+        "@flexent/errors": "^2.6.3",
+        "airtight": "^5.7.2",
+        "commander": "^14.0.1",
+        "yaml": "^2.8.0"
+    }
+}

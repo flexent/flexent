@@ -3,6 +3,7 @@
     "references": [
         { "path": "./packages/repo-tools" },
         { "path": "./packages/errors" },
+        { "path": "./packages/ensemble" },
         { "path": "./packages/jwt" },
         { "path": "./packages/logger" },
         { "path": "./packages/metrics" },

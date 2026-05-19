@@ -48,6 +48,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 ## Package Purposes
 
 - `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message, and status code.
+- `@flexent/ensemble` (`packages/ensemble`): YAML-driven process manager for local development.
 - `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config.
 - `@flexent/eslint-config-vue` (`packages/eslint-config-vue`): `vueRules` for `.vue` files, merged with shared rules as `{ ...sharedRules, ...vueRules }`.
 - `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP servers.
@@ -68,8 +69,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/eslint-config`: Keep the existing rule groups, do not add more.
 - `@flexent/http-router`: Keep decorators aligned with standard HTTP methods and routing conventions.
 - `@flexent/http-server`: Keep server integration clean with the DI container.
-- `@flexent/jwt`: Keep signing and verification configuration explicit.
-- `@flexent/logger`: Keep logger transports easily pluggable.
+- `@flexent/logger`: Keep logger transports and formatters easily pluggable.
 - `@flexent/metrics`: Design API to fit common observability patterns.
 - `@flexent/pathmatcher`: Keep matching logic highly optimized and tested.
 - `@flexent/pointer`: Keep pointer logic highly optimized and tested.
