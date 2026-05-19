@@ -1,6 +1,6 @@
 {
     "name": "@flexent/metrics",
-    "version": "2.6.2",
+    "version": "2.6.3",
     "description": "Idiomatic API for collecting application metrics",
     "author": "Boris Okunskiy",
     "license": "MIT",
