@@ -1,6 +1,6 @@
 import { HttpServer } from '@flexent/http-server';
 import { config } from 'mesh-config';
-import { scope, type ScopeProvider } from 'mesh-ioc';
+import { scope, ScopeProvider } from 'mesh-ioc';
 
 /**
  * Serves application metadata over HTTP.

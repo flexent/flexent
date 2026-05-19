@@ -1,9 +1,9 @@
 import { Event } from 'nanoevent';
 
-import { type DomainMethod } from './domain.js';
+import { DomainMethod } from './domain.js';
 import { ClientClosedError } from './errors.js';
-import { type ProtocolIndex } from './protocol.js';
-import { type RpcEvent, type RpcMethodRequest, type RpcMethodResponse } from './types.js';
+import { ProtocolIndex } from './protocol.js';
+import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
 
 /**
  * Client for exchanging messages in RPC format via an abstract transport

@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { InitializationError } from '@flexent/errors';
 import { Schema } from 'airtight';
 
-import { type ParamDefinition, type ParamSource, type ParamSpec } from '../types.js';
+import { ParamDefinition, ParamSource, ParamSpec } from '../types.js';
 
 const PARAMS_KEY = Symbol.for('@flexent/http/params');
 

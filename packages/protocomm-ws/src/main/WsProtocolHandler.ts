@@ -1,13 +1,13 @@
-import { type HttpContext } from '@flexent/http-server';
-import { type Logger } from '@flexent/logger';
+import { HttpContext } from '@flexent/http-server';
+import { Logger } from '@flexent/logger';
 import {
-    type ProtocolIndex,
-    type RpcEvent,
+    ProtocolIndex,
+    RpcEvent,
     RpcHandler,
-    type RpcMethodResponse,
+    RpcMethodResponse,
 } from '@flexent/protocomm';
 import { dep } from 'mesh-ioc';
-import { type Event } from 'nanoevent';
+import { Event } from 'nanoevent';
 
 const OPEN_READY_STATE = 1;
 

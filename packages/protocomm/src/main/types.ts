@@ -1,5 +1,5 @@
 import { Schema } from 'airtight';
-import { type Event } from 'nanoevent';
+import { Event } from 'nanoevent';
 
 export interface RpcError {
     name: string;

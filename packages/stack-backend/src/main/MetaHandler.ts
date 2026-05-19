@@ -1,7 +1,7 @@
-import { HttpChain, type HttpErrorHandler } from '@flexent/http-server';
+import { HttpChain, HttpErrorHandler } from '@flexent/http-server';
 import { dep } from 'mesh-ioc';
 
-import { type MetaRouter } from './MetaRouter.js';
+import { MetaRouter } from './MetaRouter.js';
 
 export class MetaHandler extends HttpChain {
 

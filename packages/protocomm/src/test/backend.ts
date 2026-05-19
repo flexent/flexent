@@ -1,8 +1,8 @@
 import { Event } from 'nanoevent';
 
-import { type Protocol } from './protocol.js';
-import { type GroupSummary } from './schema/group-summary.js';
-import { type Instance } from './schema/instance.js';
+import { Protocol } from './protocol.js';
+import { GroupSummary } from './schema/group-summary.js';
+import { Instance } from './schema/instance.js';
 
 export const instanceDb = new Map<string, Instance>();
 

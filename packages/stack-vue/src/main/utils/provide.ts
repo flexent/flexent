@@ -1,5 +1,5 @@
-import { type Mesh, type ServiceConstructor } from 'mesh-ioc';
-import { type App as VueApp } from 'vue';
+import { Mesh, ServiceConstructor } from 'mesh-ioc';
+import { App as VueApp } from 'vue';
 
 export const globalProvideMap = new Map<string, ServiceConstructor<any>>();
 

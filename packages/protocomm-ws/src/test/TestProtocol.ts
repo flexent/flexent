@@ -1,5 +1,5 @@
-import { type DomainDef, ProtocolIndex } from '@flexent/protocomm';
-import { type Event } from 'nanoevent';
+import { DomainDef, ProtocolIndex } from '@flexent/protocomm';
+import { Event } from 'nanoevent';
 
 export interface TestDomain {
     getVersion(req: {}): Promise<{ version: string }>;

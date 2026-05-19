@@ -1,6 +1,6 @@
-import { type Event } from 'nanoevent';
+import { Event } from 'nanoevent';
 
-import { type TestProtocol } from './TestProtocol.js';
+import { TestProtocol } from './TestProtocol.js';
 
 export const protocolImpl = {
     Test: {

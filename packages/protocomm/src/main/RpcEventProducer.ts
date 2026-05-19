@@ -1,4 +1,4 @@
-import { type ProtocolEventData, type RpcEvent } from './types.js';
+import { ProtocolEventData, RpcEvent } from './types.js';
 
 export abstract class RpcEventProducer<P, Target = unknown> {
 

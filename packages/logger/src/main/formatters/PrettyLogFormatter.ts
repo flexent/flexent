@@ -1,4 +1,4 @@
-import { type LogFormatter, LogLevel, type LogPayload } from '../types.js';
+import { LogFormatter, LogLevel, LogPayload } from '../types.js';
 
 export class PrettyLogFormatter implements LogFormatter {
 

@@ -1,6 +1,6 @@
 import { invokeInitHandlers } from '@flexent/init-decorator';
 import { Mesh } from 'mesh-ioc';
-import { type App as VueApp, reactive } from 'vue';
+import { App as VueApp, reactive } from 'vue';
 
 import { provideAll } from './utils/provide.js';
 

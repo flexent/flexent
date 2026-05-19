@@ -1,4 +1,4 @@
-import { type WsProtocolConnection } from '../main/WsProtocolHandler.js';
+import { WsProtocolConnection } from '../main/WsProtocolHandler.js';
 
 type AnyListener = (...args: any[]) => void;
 

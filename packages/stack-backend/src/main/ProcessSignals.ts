@@ -1,4 +1,4 @@
-import { type Logger } from '@flexent/logger';
+import { Logger } from '@flexent/logger';
 import { dep } from 'mesh-ioc';
 import { Event } from 'nanoevent';
 

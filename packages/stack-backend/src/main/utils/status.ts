@@ -1,5 +1,5 @@
 import { createMemberDecorator, findMembers } from 'mesh-decorators';
-import { type Mesh } from 'mesh-ioc';
+import { Mesh } from 'mesh-ioc';
 
 const DECORATOR_NAME = '@flexent/http/statusCheck';
 

@@ -1,8 +1,8 @@
 import { Event } from 'nanoevent';
 
-import { type ProtocolIndex } from './protocol.js';
+import { ProtocolIndex } from './protocol.js';
 import { RpcClient } from './RpcClient.js';
-import { type RpcMethodRequest } from './types.js';
+import { RpcMethodRequest } from './types.js';
 
 const OPEN_READY_STATE = 1;
 

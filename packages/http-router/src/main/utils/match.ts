@@ -1,6 +1,6 @@
 import { matchPath } from '@flexent/pathmatcher';
 
-import { type RouteDefinition } from '../types.js';
+import { RouteDefinition } from '../types.js';
 
 export function matchRoute(
     routeDef: RouteDefinition,

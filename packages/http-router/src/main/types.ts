@@ -1,5 +1,5 @@
-import { type PathToken } from '@flexent/pathmatcher';
-import { type Schema, type SchemaDef } from 'airtight';
+import { PathToken } from '@flexent/pathmatcher';
+import { Schema, SchemaDef } from 'airtight';
 
 export type RouteRole = 'endpoint' | 'middleware';
 export type RouteMethod = '*' | 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';

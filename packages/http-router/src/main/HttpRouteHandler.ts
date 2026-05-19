@@ -1,7 +1,7 @@
-import { type HttpContext, type HttpHandler, type HttpNext } from '@flexent/http-server';
-import { dep, type Mesh } from 'mesh-ioc';
+import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
+import { dep, Mesh } from 'mesh-ioc';
 
-import { type RouteMetrics } from './RouteMetrics.js';
+import { RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 import { matchEndpoint } from './utils/match.js';
 import { resolveRouterBindings } from './utils/resolve.js';

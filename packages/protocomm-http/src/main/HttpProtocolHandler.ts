@@ -1,11 +1,11 @@
 import { NotFoundError } from '@flexent/errors';
-import { type HttpContext, HttpHandler, type HttpNext } from '@flexent/http-server';
-import { type Logger } from '@flexent/logger';
+import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
+import { Logger } from '@flexent/logger';
 import {
-    type DomainMethod,
-    type DomainMethodStat,
+    DomainMethod,
+    DomainMethodStat,
     MethodNotFound,
-    type ProtocolIndex,
+    ProtocolIndex,
 } from '@flexent/protocomm';
 import { dep } from 'mesh-ioc';
 import { Event } from 'nanoevent';

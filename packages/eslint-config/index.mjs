@@ -88,7 +88,7 @@ export const sharedConfigs = [
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/no-explicit-any': 'off',
             '@typescript-eslint/consistent-type-imports': ['error', {
-                prefer: 'type-imports',
+                prefer: 'no-type-imports',
                 fixStyle: 'inline-type-imports',
             }],
             curly: ['error', 'all'],

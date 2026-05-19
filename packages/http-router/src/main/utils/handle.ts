@@ -1,6 +1,6 @@
-import { type HttpContext } from '@flexent/http-server';
+import { HttpContext } from '@flexent/http-server';
 
-import { type ParamDefinition, type RouteDefinition } from '../types.js';
+import { ParamDefinition, RouteDefinition } from '../types.js';
 import { matchEndpoint, matchRoute } from './match.js';
 
 export async function handleRouter(

@@ -1,4 +1,4 @@
-import { BaseMetric, type MetricDatum } from './BaseMetric.js';
+import { BaseMetric, MetricDatum } from './BaseMetric.js';
 
 export class CounterMetric<L = any> extends BaseMetric<L> {
 

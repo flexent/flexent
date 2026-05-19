@@ -1,4 +1,4 @@
-import { type HttpContext } from './HttpContext.js';
+import { HttpContext } from './HttpContext.js';
 
 export type HttpNext = () => Promise<void>;
 

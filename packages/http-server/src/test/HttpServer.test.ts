@@ -1,6 +1,6 @@
 import assert from 'assert';
 
-import { type HttpContext } from '../main/HttpContext.js';
+import { HttpContext } from '../main/HttpContext.js';
 import { EchoHandler } from './handlers.js';
 import { runtime } from './runtime.js';
 

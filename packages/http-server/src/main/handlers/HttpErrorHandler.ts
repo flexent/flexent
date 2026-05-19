@@ -1,6 +1,6 @@
 import { ServerError } from '@flexent/errors';
-import { type HttpContext, type HttpHandler, type HttpNext } from '@flexent/http-server';
-import { type Logger, type StructuredLogHttpRequest } from '@flexent/logger';
+import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
+import { Logger, StructuredLogHttpRequest } from '@flexent/logger';
 import { dep } from 'mesh-ioc';
 
 export class HttpErrorHandler implements HttpHandler {

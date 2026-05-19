@@ -1,6 +1,6 @@
-import { type HttpContext } from './HttpContext.js';
+import { HttpContext } from './HttpContext.js';
 import { HttpHandler } from './HttpHandler.js';
-import { type HttpNext } from './types.js';
+import { HttpNext } from './types.js';
 import { createChain } from './util.js';
 
 export abstract class HttpChain extends HttpHandler {

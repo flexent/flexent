@@ -1,7 +1,7 @@
-import { type Constructor, type Mesh } from 'mesh-ioc';
+import { Constructor, Mesh } from 'mesh-ioc';
 
 import { getAllRoutes } from '../decorators/route.js';
-import { type RouteDefinition } from '../types.js';
+import { RouteDefinition } from '../types.js';
 
 export interface RouterBinding {
     bindingKey: string;

@@ -1,14 +1,14 @@
 import { NotFoundError } from '@flexent/errors';
-import { type Logger } from '@flexent/logger';
+import { Logger } from '@flexent/logger';
 import * as http from 'http';
 import * as https from 'https';
 import { config } from 'mesh-config';
-import { dep, type Mesh, scope, type ScopeProvider } from 'mesh-ioc';
-import { type Socket } from 'net';
+import { dep, Mesh, scope, ScopeProvider } from 'mesh-ioc';
+import { Socket } from 'net';
 
 import { HttpContext } from './HttpContext.js';
 import { HttpHandler } from './HttpHandler.js';
-import { type HttpNext } from './types.js';
+import { HttpNext } from './types.js';
 
 export interface HttpServerConfig {
     port: number;

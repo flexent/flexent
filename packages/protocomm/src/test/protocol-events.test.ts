@@ -1,8 +1,8 @@
 import assert from 'assert';
-import { type Event } from 'nanoevent';
+import { Event } from 'nanoevent';
 
 import { RpcEventProducer } from '../main/RpcEventProducer.js';
-import { type RpcEvent } from '../main/types.js';
+import { RpcEvent } from '../main/types.js';
 
 interface TestDomain {
     updated: Event<{ id: string }>;

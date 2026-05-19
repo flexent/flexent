@@ -1,9 +1,9 @@
 import fs from 'node:fs';
 
 import { Get, HttpRouter } from '@flexent/http-router';
-import { type HttpContext } from '@flexent/http-server';
+import { HttpContext } from '@flexent/http-server';
 import { generateMetricsReport } from '@flexent/metrics';
-import { dep, type Mesh } from 'mesh-ioc';
+import { dep, Mesh } from 'mesh-ioc';
 
 import { invokeStatusChecks } from './utils/status.js';
 

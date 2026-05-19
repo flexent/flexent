@@ -1,4 +1,4 @@
-import { type RpcEvent } from '@flexent/protocomm';
+import { RpcEvent } from '@flexent/protocomm';
 import { Event } from 'nanoevent';
 
 import { FakeWs } from './FakeWs.js';

@@ -1,8 +1,8 @@
-import { type HttpContext, type HttpHandler, type HttpNext } from '@flexent/http-server';
-import { type Constructor, dep } from 'mesh-ioc';
+import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
+import { Constructor, dep } from 'mesh-ioc';
 
 import { getAllRoutes } from './decorators/route.js';
-import { type RouteMetrics } from './RouteMetrics.js';
+import { RouteMetrics } from './RouteMetrics.js';
 import { handleRouter } from './utils/handle.js';
 
 /**
