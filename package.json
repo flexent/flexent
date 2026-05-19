@@ -18,7 +18,7 @@
         "dev": "npm run clean && run-p dev:*",
         "dev:ts": "tsc -b -w",
         "compile:ts": "tsc -b",
-        "lint": "eslint . --fix",
+        "lint": "eslint .",
         "test": "npm run tst --workspaces --if-present",
         "version": "run-s clean compile:ts version:bump",
         "version:bump": "bump-version && git add **/package.json",

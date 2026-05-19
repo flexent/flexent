@@ -2,8 +2,6 @@ import { BaseMetric } from './BaseMetric.js';
 
 const DEFAULT_BUCKETS = [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10];
 
-const process = global.process;
-
 export class HistogramMetric<L = any> extends BaseMetric<L> {
 
     protected buckets: number[];
@@ -46,10 +44,9 @@ export class HistogramMetric<L = any> extends BaseMetric<L> {
     }
 
     timer(labels: Partial<L> = {}) {
-        const startedAt = process.hrtime();
+        const startedAt = globalThis.performance.now();
         return () => {
-            const [sec, nanosec] = process.hrtime(startedAt);
-            const value = sec + nanosec * 1e-9;
+            const value = (globalThis.performance.now() - startedAt) * 1e-3;
             this.addSeconds(value, labels);
         };
     }
