@@ -10,7 +10,7 @@
         ".": "./out/main/index.js"
     },
     "bin": {
-        "ensemble": "./cli/ensemble.mjs"
+        "ensemble": "cli/ensemble.mjs"
     },
     "files": [
         "out",
