@@ -1,6 +1,6 @@
 {
     "name": "@flexent/protocomm-http",
-    "version": "2.6.3",
+    "version": "2.6.4",
     "description": "HTTP handler for protocomm RPC protocols",
     "author": "Boris Okunskiy",
     "license": "MIT",
@@ -16,10 +16,10 @@
         "test": "NODE_ENV=test mocha"
     },
     "peerDependencies": {
-        "@flexent/errors": "^2.6.3",
-        "@flexent/http-server": "^2.6.3",
-        "@flexent/logger": "^2.6.3",
-        "@flexent/protocomm": "^2.6.3",
+        "@flexent/errors": "^2.6.4",
+        "@flexent/http-server": "^2.6.4",
+        "@flexent/logger": "^2.6.4",
+        "@flexent/protocomm": "^2.6.4",
         "mesh-ioc": "^4.3.1",
         "nanoevent": "^1.0.0"
     }
