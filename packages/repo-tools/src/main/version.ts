@@ -1,16 +1,9 @@
 import { writeFile } from 'node:fs/promises';
 
-import {
-    inferPrefixFromRootPackageName,
-    listWorkspacePackagePaths,
-    normalizePrefix,
-    readRootWorkspacePackage,
-    readWorkspacePackageText
-} from './workspace.js';
+import { listWorkspacePackages, readRootWorkspacePackage, readWorkspacePackageText } from './workspace.js';
 
 interface BumpOptions {
     rootDir?: string;
-    prefix?: string;
     logger?: Pick<Console, 'info'>;
 }
 
@@ -19,19 +12,24 @@ export async function bumpVersion(options: BumpOptions = {}): Promise<void> {
     const logger = options.logger ?? console;
     const rootPackage = await readRootWorkspacePackage(rootDir);
     const newVersion = rootPackage.version;
-    const inferredPrefix = inferPrefixFromRootPackageName(rootPackage.name);
-    const prefix = normalizePrefix(options.prefix ?? inferredPrefix);
-    const escapedPrefix = escapeRegExp(prefix);
-    const dependencyPattern = new RegExp(`"(${escapedPrefix}.*?)": ".*?"`, 'g');
-    logger.info(`Bumping packages to ${newVersion} (prefix: ${prefix})`);
-    for await (const packagePath of listWorkspacePackagePaths(rootDir, rootPackage.workspaces)) {
-        const packageText = await readWorkspacePackageText(packagePath);
+    const workspacePackages = await listWorkspacePackages({ rootDir });
+    const packageNames = workspacePackages.map(entry => entry.package.name);
+    const dependencyPattern = buildWorkspaceDependencyPattern(packageNames);
+    logger.info(`Bumping packages to ${newVersion}`);
+    for (const entry of workspacePackages) {
+        const packageText = await readWorkspacePackageText(entry.path);
         const replacedText = packageText
             .replace(dependencyPattern, `"$1": "^${newVersion}"`)
             .replace(/"version": ".*?"/g, `"version": "${newVersion}"`);
-        await writeFile(packagePath, replacedText);
-        logger.info(`Bumped ${packagePath} to ${newVersion}`);
+        await writeFile(entry.path, replacedText);
+        logger.info(`Bumped ${entry.path} to ${newVersion}`);
     }
+}
+
+function buildWorkspaceDependencyPattern(packageNames: string[]): RegExp {
+    const sortedNames = [...packageNames].sort((left, right) => right.length - left.length);
+    const escapedNames = sortedNames.map(name => escapeRegExp(name)).join('|');
+    return new RegExp(`"(${escapedNames})": "\\^.*?"`, 'g');
 }
 
 function escapeRegExp(value: string): string {

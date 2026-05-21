@@ -12,6 +12,15 @@ export interface WorkspacePackage {
     private?: boolean;
 }
 
+export interface WorkspacePackageEntry {
+    path: string;
+    package: WorkspacePackage;
+}
+
+interface ListOptions {
+    rootDir?: string;
+}
+
 export async function readRootWorkspacePackage(rootDir: string): Promise<RootWorkspacePackage> {
     const packagePath = join(rootDir, 'package.json');
     const packageText = await readFile(packagePath, 'utf-8');
@@ -33,17 +42,16 @@ export async function readWorkspacePackageText(packagePath: string): Promise<str
     return readFile(packagePath, 'utf-8');
 }
 
-export function inferPrefixFromRootPackageName(rootPackageName: string | undefined): string {
-    if (typeof rootPackageName !== 'string') {
-        throw new Error('Cannot infer prefix: root package name is missing');
+export async function listWorkspacePackages(options: ListOptions = {}): Promise<WorkspacePackageEntry[]> {
+    const rootDir = options.rootDir ?? process.cwd();
+    const rootPackage = await readRootWorkspacePackage(rootDir);
+    const packages: WorkspacePackageEntry[] = [];
+    for await (const packagePath of listWorkspacePackagePaths(rootDir, rootPackage.workspaces)) {
+        const workspacePackage = await readWorkspacePackage(packagePath);
+        packages.push({
+            path: packagePath,
+            package: workspacePackage
+        });
     }
-    const prefixScope = rootPackageName.match(/^(@[^/]+)\//)?.[1];
-    if (!prefixScope) {
-        throw new Error(`Cannot infer prefix from root package name "${rootPackageName}"`);
-    }
-    return `${prefixScope}/`;
-}
-
-export function normalizePrefix(prefix: string): string {
-    return prefix.endsWith('/') ? prefix : `${prefix}/`;
+    return packages;
 }

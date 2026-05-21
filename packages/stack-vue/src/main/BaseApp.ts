@@ -11,8 +11,8 @@ export abstract class BaseApp {
     mountSelector = '#root';
 
     constructor() {
-        this.vue = this.createVueApp();
         this.mesh = new Mesh();
+        this.vue = this.createVueApp();
         this.mesh.use(instance => reactive(instance));
         this.mesh.constant('vue', this.vue);
     }
