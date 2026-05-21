@@ -19,7 +19,7 @@ export async function bumpVersion(options: BumpOptions = {}): Promise<void> {
     for (const entry of workspacePackages) {
         const packageText = await readWorkspacePackageText(entry.path);
         const replacedText = packageText
-            .replace(dependencyPattern, `"$1": "^${newVersion}"`)
+            .replace(dependencyPattern, `"$1": "$2${newVersion}"`)
             .replace(/"version": ".*?"/g, `"version": "${newVersion}"`);
         await writeFile(entry.path, replacedText);
         logger.info(`Bumped ${entry.path} to ${newVersion}`);
@@ -29,7 +29,7 @@ export async function bumpVersion(options: BumpOptions = {}): Promise<void> {
 function buildWorkspaceDependencyPattern(packageNames: string[]): RegExp {
     const sortedNames = [...packageNames].sort((left, right) => right.length - left.length);
     const escapedNames = sortedNames.map(name => escapeRegExp(name)).join('|');
-    return new RegExp(`"(${escapedNames})": "\\^.*?"`, 'g');
+    return new RegExp(`"(${escapedNames})": "([\\^~]?)(.*?)"`, 'g');
 }
 
 function escapeRegExp(value: string): string {
