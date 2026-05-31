@@ -10,18 +10,20 @@ export abstract class BaseApp {
     vue: VueApp;
     mountSelector = '#root';
 
-    constructor() {
+    constructor(vue: VueApp) {
+        this.vue = vue;
         this.mesh = new Mesh();
-        this.vue = this.createVueApp();
         this.mesh.use(instance => reactive(instance));
         this.mesh.constant('vue', this.vue);
     }
 
-    abstract createVueApp(): VueApp;
-
     async start() {
         provideAll(this.mesh, this.vue);
         await invokeInitHandlers(this.mesh);
+        this.mount();
+    }
+
+    mount() {
         this.vue.mount(this.mountSelector);
     }
 
