@@ -133,8 +133,7 @@ export abstract class WsClient<P> {
         return new WebSocket(url) as unknown as WsConnection;
     }
 
-    protected shouldRetry(attempt: number): boolean {
-        void attempt;
+    protected shouldRetry(_attempt: number): boolean {
         return true;
     }
 
@@ -147,8 +146,7 @@ export abstract class WsClient<P> {
         return false;
     }
 
-    protected onConnectionFailed(attempt: number): void {
-        void attempt;
+    protected onConnectionFailed(_attempt: number): void {
     }
 
     protected wait(ms: number): Promise<void> {

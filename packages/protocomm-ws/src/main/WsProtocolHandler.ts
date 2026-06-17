@@ -64,8 +64,7 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
         }
     }
 
-    protected acceptsEvent(event: RpcEvent<Target>) {
-        void event;
+    protected acceptsEvent(_event: RpcEvent<Target>) {
         return true;
     }
 

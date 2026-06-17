@@ -105,6 +105,18 @@ export const sharedConfigs = [
             'max-statements': ['error', { max: 50 }],
             'no-console': ['error', { allow: ['warn', 'info', 'error'] }],
             'no-empty': ['error', { allowEmptyCatch: true }],
+            'no-void': 'error',
+            'no-restricted-syntax': [
+                'error',
+                {
+                    selector: 'TSAsExpression > TSTypeReference > Identifier[name="const"]',
+                    message: 'Do not use `as const`.',
+                },
+                {
+                    selector: 'TSSatisfiesExpression',
+                    message: 'Do not use `satisfies`.',
+                },
+            ],
             'import/no-extraneous-dependencies': 'error',
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
