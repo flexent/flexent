@@ -67,9 +67,9 @@ export class ProcessFork {
         }
         try {
             child.kill(signal);
-        } catch (err: unknown) {
-            const code = err instanceof Error && 'code' in err ? err.code : undefined;
-            if (code !== 'ESRCH' && code !== 'EPERM') {
+        } catch (err: any) {
+            const code = err?.code;
+            if (!['ESRCH', 'EPERM'].includes(code)) {
                 throw err;
             }
         }
@@ -79,13 +79,6 @@ export class ProcessFork {
         if (child.exitCode != null || child.signalCode != null) {
             return Promise.resolve(true);
         }
-        return new Promise(resolve => {
-            const timer = setTimeout(() => resolve(false), timeoutMs);
-            child.once('exit', () => {
-                clearTimeout(timer);
-                resolve(true);
-            });
-        });
     }
 
     private async waitForPort(port: number, timeout = 10_000) {
