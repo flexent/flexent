@@ -1,6 +1,6 @@
 {
     "name": "@flexent/jwt",
-    "version": "2.9.3",
+    "version": "2.9.4",
     "description": "JWT service for signing and verifying tokens",
     "author": "Boris Okunskiy",
     "license": "MIT",
