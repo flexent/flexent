@@ -80,8 +80,8 @@ export class Ensemble {
         await Promise.all(this.config.apps.map(cfg => this.start(cfg.id)));
     }
 
-    async stopAll() {
-        await Promise.all(this.config.apps.map(cfg => this.stop(cfg.id)));
+    async stopAll(signal: NodeJS.Signals = 'SIGTERM') {
+        await Promise.all(this.config.apps.map(cfg => this.stop(cfg.id, signal)));
     }
 
     private buildAppEnv(config: EnsembleAppConfig): Record<string, string | undefined> {

@@ -10,6 +10,7 @@ const parentProcess = global.process;
 export class ProcessFork {
 
     process: ChildProcess | null = null;
+    private stoppingChild: ChildProcess | null = null;
     env: Record<string, string | undefined> = {};
     nodeFlags: string[] = [];
     waitForPorts: number[] = [];
@@ -49,22 +50,33 @@ export class ProcessFork {
     }
 
     async stop(signal: NodeJS.Signals = 'SIGTERM') {
-        const child = this.process;
+        const child = this.process ?? this.stoppingChild;
         if (!child) {
             return;
         }
         const pid = child.pid;
         if (pid == null) {
             this.process = null;
+            this.stoppingChild = null;
             return;
         }
-        this.process = null;
+        if (this.process) {
+            this.process = null;
+            this.stoppingChild = child;
+        }
+        if (signal === 'SIGKILL') {
+            this.sendGroupSignal(pid, 'SIGKILL', child);
+            await this.waitForChildExit(child, this.stopGracePeriodMs);
+            this.stoppingChild = null;
+            return;
+        }
         this.sendGroupSignal(pid, signal, child);
         const exited = await this.waitForChildExit(child, this.stopGracePeriodMs);
         if (!exited) {
             this.sendGroupSignal(pid, 'SIGKILL', child);
             await this.waitForChildExit(child, this.stopGracePeriodMs);
         }
+        this.stoppingChild = null;
     }
 
     private sendGroupSignal(pid: number, signal: NodeJS.Signals, child: ChildProcess) {
@@ -79,6 +91,7 @@ export class ProcessFork {
             if (code !== 'ESRCH') {
                 throw err;
             }
+            child.kill(signal);
         }
     }
 

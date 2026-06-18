@@ -68,6 +68,27 @@ setInterval(() => {}, 99999);
             assert.equal(isProcessRunning(pid), false);
         });
 
+        it('accepts SIGKILL while a graceful stop is in progress', async () => {
+            const { dir, entrypoint } = await createFixtureDir(`
+import fs from 'node:fs';
+
+process.on('SIGTERM', () => {});
+fs.writeFileSync('pid.txt', String(process.pid));
+setInterval(() => {}, 99999);
+`);
+            const marker = path.join(dir, 'pid.txt');
+            const fork = new ProcessFork(dir, entrypoint);
+            fork.stopGracePeriodMs = 5000;
+            await fork.start();
+            const text = await waitForFile(marker);
+            const pid = Number(text.trim());
+            const gracefulStop = fork.stop();
+            await new Promise(resolve => setTimeout(resolve, 100));
+            await fork.stop('SIGKILL');
+            await gracefulStop;
+            assert.equal(isProcessRunning(pid), false);
+        });
+
     });
 
 });

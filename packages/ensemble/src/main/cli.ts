@@ -18,12 +18,27 @@ export async function main() {
                 const ensemble = new Ensemble();
                 await ensemble.resolve(options.file);
                 await ensemble.startAll();
-                const shutdown = async () => {
-                    await ensemble.stopAll();
-                    process.exit(0);
+                let shuttingDown = false;
+                let exitCode = 0;
+                const shutdown = async (force: boolean, forceExitCode: number) => {
+                    if (force) {
+                        exitCode = forceExitCode;
+                        await ensemble.stopAll('SIGKILL');
+                        process.exit(exitCode);
+                    }
+                    if (shuttingDown) {
+                        return;
+                    }
+                    shuttingDown = true;
+                    await ensemble.stopAll('SIGTERM');
+                    process.exit(exitCode);
                 };
-                process.once('SIGINT', shutdown);
-                process.once('SIGTERM', shutdown);
+                process.on('SIGINT', () => {
+                    shutdown(shuttingDown, 130);
+                });
+                process.on('SIGTERM', () => {
+                    shutdown(shuttingDown, 143);
+                });
             } catch (error: unknown) {
                 console.error(error);
                 process.exit(1);
