@@ -1,6 +1,6 @@
 {
     "name": "@flexent/eslint-config-vue",
-    "version": "2.9.2",
+    "version": "2.9.3",
     "description": "Vue SFC ESLint rules for Flexent (extends @flexent/eslint-config)",
     "author": "Boris Okunskiy",
     "license": "MIT",

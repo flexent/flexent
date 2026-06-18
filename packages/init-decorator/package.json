@@ -1,6 +1,6 @@
 {
     "name": "@flexent/init-decorator",
-    "version": "2.9.2",
+    "version": "2.9.3",
     "description": "@init decorator for mesh-ioc",
     "author": "Boris Okunskiy",
     "license": "MIT",
