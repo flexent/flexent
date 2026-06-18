@@ -43,10 +43,20 @@ export class ProcessFork {
             await Promise.all(this.waitForPorts.map(port => this.waitForPort(port)));
         }
         parentProcess.once('exit', () => {
-            if (this.process?.pid != null) {
-                this.sendGroupSignal(this.process.pid, 'SIGTERM', this.process);
-            }
+            this.stopSync('SIGTERM');
         });
+    }
+
+    stopSync(signal: NodeJS.Signals = 'SIGINT') {
+        const child = this.process ?? this.stoppingChild;
+        if (!child?.pid) {
+            return;
+        }
+        if (this.process) {
+            this.process = null;
+            this.stoppingChild = child;
+        }
+        this.sendGroupSignal(child.pid, signal, child);
     }
 
     async stop(signal: NodeJS.Signals = 'SIGTERM') {
@@ -84,6 +94,7 @@ export class ProcessFork {
             child.kill(signal);
             return;
         }
+        child.kill(signal);
         try {
             process.kill(-pid, signal);
         } catch (err: unknown) {
@@ -91,7 +102,6 @@ export class ProcessFork {
             if (code !== 'ESRCH') {
                 throw err;
             }
-            child.kill(signal);
         }
     }
 

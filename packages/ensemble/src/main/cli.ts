@@ -17,21 +17,23 @@ export async function main() {
             try {
                 const ensemble = new Ensemble();
                 await ensemble.resolve(options.file);
-                await ensemble.startAll();
                 let shuttingDown = false;
-                let exitCode = 0;
+                const stopChildren = (signal: NodeJS.Signals) => {
+                    ensemble.stopAllSync(signal);
+                };
                 const shutdown = async (force: boolean, forceExitCode: number) => {
                     if (force) {
-                        exitCode = forceExitCode;
+                        stopChildren('SIGKILL');
                         await ensemble.stopAll('SIGKILL');
-                        process.exit(exitCode);
+                        process.exit(forceExitCode);
                     }
                     if (shuttingDown) {
                         return;
                     }
                     shuttingDown = true;
-                    await ensemble.stopAll('SIGTERM');
-                    process.exit(exitCode);
+                    stopChildren('SIGINT');
+                    await ensemble.stopAll('SIGINT');
+                    process.exit(0);
                 };
                 process.on('SIGINT', () => {
                     shutdown(shuttingDown, 130);
@@ -39,6 +41,10 @@ export async function main() {
                 process.on('SIGTERM', () => {
                     shutdown(shuttingDown, 143);
                 });
+                process.on('SIGHUP', () => {
+                    stopChildren('SIGINT');
+                });
+                await ensemble.startAll();
             } catch (error: unknown) {
                 console.error(error);
                 process.exit(1);

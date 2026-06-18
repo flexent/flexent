@@ -89,6 +89,27 @@ setInterval(() => {}, 99999);
             assert.equal(isProcessRunning(pid), false);
         });
 
+        it('stopSync sends a signal before async stop completes', async () => {
+            const { dir, entrypoint } = await createFixtureDir(`
+import fs from 'node:fs';
+
+const signals = [];
+process.on('SIGINT', () => { signals.push('SIGINT'); fs.writeFileSync('signals.txt', signals.join(',')); });
+process.on('SIGTERM', () => { signals.push('SIGTERM'); fs.writeFileSync('signals.txt', signals.join(',')); });
+fs.writeFileSync('ready.txt', '1');
+setInterval(() => {}, 99999);
+`);
+            const marker = path.join(dir, 'signals.txt');
+            const fork = new ProcessFork(dir, entrypoint);
+            fork.stopGracePeriodMs = 5000;
+            await fork.start();
+            await waitForFile(path.join(dir, 'ready.txt'));
+            fork.stopSync('SIGINT');
+            const text = await waitForFile(marker);
+            assert.equal(text.includes('SIGINT'), true);
+            await fork.stop('SIGKILL');
+        });
+
     });
 
 });
