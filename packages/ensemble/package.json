@@ -16,6 +16,9 @@
         "out",
         "cli"
     ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
     "dependencies": {
         "@flexent/errors": "^2.8.0",
         "airtight": "^5.7.2",

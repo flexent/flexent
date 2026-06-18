@@ -6,7 +6,11 @@ import * as Yaml from 'yaml';
 
 import { ProcessFork } from './ProcessFork.js';
 import { EnsembleAppConfig } from './schema/EnsembleAppConfig.js';
-import { EnsembleConfig, EnsembleConfigSchema } from './schema/EnsembleConfig.js';
+import {
+    DEFAULT_STOP_GRACE_PERIOD_MS,
+    EnsembleConfig,
+    EnsembleConfigSchema,
+} from './schema/EnsembleConfig.js';
 
 export class Ensemble {
 
@@ -16,6 +20,7 @@ export class Ensemble {
     config: EnsembleConfig = {
         apps: [],
         sharedEnv: {},
+        stopGracePeriodMs: DEFAULT_STOP_GRACE_PERIOD_MS,
     };
 
     async resolve(filename = 'ensemble.yaml') {
@@ -34,6 +39,7 @@ export class Ensemble {
         this.config = {
             apps: decoded.apps,
             sharedEnv: decoded.sharedEnv ?? {},
+            stopGracePeriodMs: decoded.stopGracePeriodMs,
         };
         this.rootDir = path.dirname(file);
     }
@@ -59,6 +65,7 @@ export class Ensemble {
         fork.env = env;
         fork.nodeFlags = config.nodeFlags ?? [];
         fork.waitForPorts = this.resolveWaitForPorts(config.waitForPorts ?? [], env);
+        fork.stopGracePeriodMs = this.config.stopGracePeriodMs;
         await fork.start();
     }
 

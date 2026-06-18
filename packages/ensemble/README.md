@@ -46,9 +46,13 @@ apps:
 sharedEnv:
   LOG_PRETTY: "true"
   REGISTRY_URL: http://localhost:32003
+
+stopGracePeriodMs: 5000
 ```
 
-Each app is forked with `stdio: inherit`.
+Each app is forked with `stdio: inherit` in a detached process group. On stop, ensemble sends `SIGTERM` to the whole group, waits `stopGracePeriodMs` (default `5000`), then sends `SIGKILL` if the group is still running.
+
+`stopGracePeriodMs` is optional. It applies to each app stop and to the graceful shutdown triggered by `SIGINT` / `SIGTERM`.
 
 `waitForPorts` lists env var names or literal port numbers. Ensemble waits until each port accepts TCP connections on `127.0.0.1` before starting the next app. Env var names are resolved from the app’s merged env (`sharedEnv`, then per-app `env`).
 
