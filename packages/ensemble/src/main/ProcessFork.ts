@@ -10,7 +10,6 @@ const parentProcess = global.process;
 export class ProcessFork {
 
     process: ChildProcess | null = null;
-    private stoppingChild: ChildProcess | null = null;
     env: Record<string, string | undefined> = {};
     nodeFlags: string[] = [];
     waitForPorts: number[] = [];
@@ -37,75 +36,46 @@ export class ProcessFork {
             },
             execArgv: this.nodeFlags,
             stdio: 'inherit',
-            detached: true,
         });
         if (this.waitForPorts.length > 0) {
             await Promise.all(this.waitForPorts.map(port => this.waitForPort(port)));
         }
         parentProcess.once('exit', () => {
-            this.stopSync('SIGTERM');
+            if (this.process) {
+                this.killChild('SIGTERM', this.process);
+            }
         });
     }
 
-    stopSync(signal: NodeJS.Signals = 'SIGINT') {
-        const child = this.process ?? this.stoppingChild;
-        if (!child?.pid) {
-            return;
-        }
-        if (this.process) {
-            this.process = null;
-            this.stoppingChild = child;
-        }
-        this.sendGroupSignal(child.pid, signal, child);
-    }
-
     async stop(signal: NodeJS.Signals = 'SIGTERM') {
-        const child = this.process ?? this.stoppingChild;
+        const child = this.process;
         if (!child) {
             return;
         }
-        const pid = child.pid;
-        if (pid == null) {
-            this.process = null;
-            this.stoppingChild = null;
-            return;
+        this.process = null;
+        this.killChild(signal, child);
+        const exited = await this.waitForExit(child, this.stopGracePeriodMs);
+        if (!exited && signal !== 'SIGKILL') {
+            this.killChild('SIGKILL', child);
+            await this.waitForExit(child, this.stopGracePeriodMs);
         }
-        if (this.process) {
-            this.process = null;
-            this.stoppingChild = child;
-        }
-        if (signal === 'SIGKILL') {
-            this.sendGroupSignal(pid, 'SIGKILL', child);
-            await this.waitForChildExit(child, this.stopGracePeriodMs);
-            this.stoppingChild = null;
-            return;
-        }
-        this.sendGroupSignal(pid, signal, child);
-        const exited = await this.waitForChildExit(child, this.stopGracePeriodMs);
-        if (!exited) {
-            this.sendGroupSignal(pid, 'SIGKILL', child);
-            await this.waitForChildExit(child, this.stopGracePeriodMs);
-        }
-        this.stoppingChild = null;
     }
 
-    private sendGroupSignal(pid: number, signal: NodeJS.Signals, child: ChildProcess) {
-        if (process.platform === 'win32') {
-            child.kill(signal);
+    private killChild(signal: NodeJS.Signals, child: ChildProcess) {
+        if (!child.pid) {
             return;
         }
-        child.kill(signal);
         try {
-            process.kill(-pid, signal);
+            child.kill(signal);
         } catch (err: unknown) {
             const code = err instanceof Error && 'code' in err ? err.code : undefined;
-            if (code !== 'ESRCH') {
+            if (code !== 'ESRCH' && code !== 'EPERM') {
                 throw err;
             }
         }
     }
 
-    private waitForChildExit(child: ChildProcess, timeoutMs: number): Promise<boolean> {
+    private waitForExit(child: ChildProcess, timeoutMs: number): Promise<boolean> {
         if (child.exitCode != null || child.signalCode != null) {
             return Promise.resolve(true);
         }

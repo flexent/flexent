@@ -17,34 +17,13 @@ export async function main() {
             try {
                 const ensemble = new Ensemble();
                 await ensemble.resolve(options.file);
-                let shuttingDown = false;
-                const stopChildren = (signal: NodeJS.Signals) => {
-                    ensemble.stopAllSync(signal);
-                };
-                const shutdown = async (force: boolean, forceExitCode: number) => {
-                    if (force) {
-                        stopChildren('SIGKILL');
-                        await ensemble.stopAll('SIGKILL');
-                        process.exit(forceExitCode);
-                    }
-                    if (shuttingDown) {
-                        return;
-                    }
-                    shuttingDown = true;
-                    stopChildren('SIGINT');
-                    await ensemble.stopAll('SIGINT');
+                await ensemble.startAll();
+                const shutdown = async () => {
+                    await ensemble.stopAll();
                     process.exit(0);
                 };
-                process.on('SIGINT', () => {
-                    shutdown(shuttingDown, 130);
-                });
-                process.on('SIGTERM', () => {
-                    shutdown(shuttingDown, 143);
-                });
-                process.on('SIGHUP', () => {
-                    stopChildren('SIGINT');
-                });
-                await ensemble.startAll();
+                process.once('SIGINT', shutdown);
+                process.once('SIGTERM', shutdown);
             } catch (error: unknown) {
                 console.error(error);
                 process.exit(1);

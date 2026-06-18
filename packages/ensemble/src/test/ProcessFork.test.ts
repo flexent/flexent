@@ -24,92 +24,22 @@ setInterval(() => {}, 99999);
         assert.equal(isProcessRunning(pid), false);
     });
 
-    const describeUnix = process.platform === 'win32' ? describe.skip : describe;
-
-    describeUnix('process group', () => {
-
-        it('stops a child and its grandchild', async () => {
-            const { dir, entrypoint } = await createFixtureDir(`
-import { spawn } from 'node:child_process';
-import fs from 'node:fs';
-
-const grandchild = spawn(process.execPath, ['-e', 'setInterval(() => {}, 99999)'], {
-    stdio: 'ignore',
-});
-fs.writeFileSync('pids.txt', process.pid + '\\n' + grandchild.pid + '\\n');
-setInterval(() => {}, 99999);
-`);
-            const marker = path.join(dir, 'pids.txt');
-            const fork = new ProcessFork(dir, entrypoint);
-            fork.stopGracePeriodMs = 1000;
-            await fork.start();
-            const text = await waitForFile(marker);
-            const [childPid, grandchildPid] = text.trim().split('\n').map(Number);
-            await fork.stop();
-            assert.equal(isProcessRunning(childPid), false);
-            assert.equal(isProcessRunning(grandchildPid), false);
-        });
-
-        it('escalates to SIGKILL after the grace period', async () => {
-            const { dir, entrypoint } = await createFixtureDir(`
+    it('escalates to SIGKILL after the grace period', async () => {
+        const { dir, entrypoint } = await createFixtureDir(`
 import fs from 'node:fs';
 
 process.on('SIGTERM', () => {});
 fs.writeFileSync('pid.txt', String(process.pid));
 setInterval(() => {}, 99999);
 `);
-            const marker = path.join(dir, 'pid.txt');
-            const fork = new ProcessFork(dir, entrypoint);
-            fork.stopGracePeriodMs = 200;
-            await fork.start();
-            const text = await waitForFile(marker);
-            const pid = Number(text.trim());
-            await fork.stop();
-            assert.equal(isProcessRunning(pid), false);
-        });
-
-        it('accepts SIGKILL while a graceful stop is in progress', async () => {
-            const { dir, entrypoint } = await createFixtureDir(`
-import fs from 'node:fs';
-
-process.on('SIGTERM', () => {});
-fs.writeFileSync('pid.txt', String(process.pid));
-setInterval(() => {}, 99999);
-`);
-            const marker = path.join(dir, 'pid.txt');
-            const fork = new ProcessFork(dir, entrypoint);
-            fork.stopGracePeriodMs = 5000;
-            await fork.start();
-            const text = await waitForFile(marker);
-            const pid = Number(text.trim());
-            const gracefulStop = fork.stop();
-            await new Promise(resolve => setTimeout(resolve, 100));
-            await fork.stop('SIGKILL');
-            await gracefulStop;
-            assert.equal(isProcessRunning(pid), false);
-        });
-
-        it('stopSync sends a signal before async stop completes', async () => {
-            const { dir, entrypoint } = await createFixtureDir(`
-import fs from 'node:fs';
-
-const signals = [];
-process.on('SIGINT', () => { signals.push('SIGINT'); fs.writeFileSync('signals.txt', signals.join(',')); });
-process.on('SIGTERM', () => { signals.push('SIGTERM'); fs.writeFileSync('signals.txt', signals.join(',')); });
-fs.writeFileSync('ready.txt', '1');
-setInterval(() => {}, 99999);
-`);
-            const marker = path.join(dir, 'signals.txt');
-            const fork = new ProcessFork(dir, entrypoint);
-            fork.stopGracePeriodMs = 5000;
-            await fork.start();
-            await waitForFile(path.join(dir, 'ready.txt'));
-            fork.stopSync('SIGINT');
-            const text = await waitForFile(marker);
-            assert.equal(text.includes('SIGINT'), true);
-            await fork.stop('SIGKILL');
-        });
-
+        const marker = path.join(dir, 'pid.txt');
+        const fork = new ProcessFork(dir, entrypoint);
+        fork.stopGracePeriodMs = 200;
+        await fork.start();
+        const text = await waitForFile(marker);
+        const pid = Number(text.trim());
+        await fork.stop();
+        assert.equal(isProcessRunning(pid), false);
     });
 
 });
