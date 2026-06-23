@@ -29,6 +29,8 @@ apps:
   - id: api
     dir: packages/api
     entrypoint: out/bin/run.js
+    args:
+      - --watch
     env:
       HTTP_PORT: "32001"
       META_HTTP_PORT: "38001"
@@ -51,6 +53,8 @@ stopGracePeriodMs: 5000
 ```
 
 Each app is forked with `stdio: inherit`. On stop, ensemble sends `SIGTERM`, waits `stopGracePeriodMs` (default `5000`), then sends `SIGKILL` if the child is still running.
+
+`args` is optional. Command-line arguments passed to the forked process after `entrypoint`.
 
 `stopGracePeriodMs` is optional.
 

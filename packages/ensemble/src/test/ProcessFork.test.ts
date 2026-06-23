@@ -24,6 +24,22 @@ setInterval(() => {}, 99999);
         assert.equal(isProcessRunning(pid), false);
     });
 
+    it('passes args to the forked process', async () => {
+        const { dir, entrypoint } = await createFixtureDir(`
+import fs from 'node:fs';
+
+fs.writeFileSync('args.txt', JSON.stringify(process.argv.slice(2)));
+`);
+        const marker = path.join(dir, 'args.txt');
+        const fork = new ProcessFork(dir, entrypoint);
+        fork.args = ['--watch', 'extra'];
+        fork.stopGracePeriodMs = 1000;
+        await fork.start();
+        const text = await waitForFile(marker);
+        await fork.stop();
+        assert.deepEqual(JSON.parse(text), ['--watch', 'extra']);
+    });
+
     it('escalates to SIGKILL after the grace period', async () => {
         const { dir, entrypoint } = await createFixtureDir(`
 import fs from 'node:fs';

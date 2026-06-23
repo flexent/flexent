@@ -38,4 +38,16 @@ describe('EnsembleConfigSchema', () => {
         assert.equal(config.stopGracePeriodMs, 2500);
     });
 
+    it('decodes optional args on apps', () => {
+        const config = EnsembleConfigSchema.decode({
+            apps: [{
+                id: 'api',
+                dir: 'packages/api',
+                entrypoint: 'out/bin/run.js',
+                args: ['--watch', '--verbose'],
+            }],
+        });
+        assert.deepEqual(config.apps[0]?.args, ['--watch', '--verbose']);
+    });
+
 });

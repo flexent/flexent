@@ -6,6 +6,7 @@ export interface EnsembleAppConfig {
     entrypoint: string;
     waitForPorts?: unknown[];
     nodeFlags?: string[];
+    args?: string[];
     env?: Record<string, string>;
 }
 
@@ -21,6 +22,11 @@ export const EnsembleAppConfigSchema = new Schema<EnsembleAppConfig>({
             optional: true,
         },
         nodeFlags: {
+            type: 'array',
+            items: { type: 'string' },
+            optional: true,
+        },
+        args: {
             type: 'array',
             items: { type: 'string' },
             optional: true,

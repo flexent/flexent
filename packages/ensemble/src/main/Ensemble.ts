@@ -64,6 +64,7 @@ export class Ensemble {
         const env = this.buildAppEnv(config);
         fork.env = env;
         fork.nodeFlags = config.nodeFlags ?? [];
+        fork.args = config.args ?? [];
         fork.waitForPorts = this.resolveWaitForPorts(config.waitForPorts ?? [], env);
         fork.stopGracePeriodMs = this.config.stopGracePeriodMs;
         await fork.start();

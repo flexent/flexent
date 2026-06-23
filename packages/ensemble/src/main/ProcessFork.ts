@@ -12,6 +12,7 @@ export class ProcessFork {
     process: ChildProcess | null = null;
     env: Record<string, string | undefined> = {};
     nodeFlags: string[] = [];
+    args: string[] = [];
     waitForPorts: number[] = [];
     stopGracePeriodMs = DEFAULT_STOP_GRACE_PERIOD_MS;
 
@@ -28,7 +29,7 @@ export class ProcessFork {
         if (this.process) {
             return;
         }
-        this.process = fork(this.modulePath, {
+        this.process = fork(this.modulePath, this.args, {
             cwd: this.cwd,
             env: {
                 ...process.env,
@@ -79,6 +80,13 @@ export class ProcessFork {
         if (child.exitCode != null || child.signalCode != null) {
             return Promise.resolve(true);
         }
+        return new Promise(resolve => {
+            const timer = setTimeout(() => resolve(false), timeoutMs);
+            child.once('exit', () => {
+                clearTimeout(timer);
+                resolve(true);
+            });
+        });
     }
 
     private async waitForPort(port: number, timeout = 10_000) {
