@@ -1,6 +1,6 @@
 {
     "name": "@flexent/repo-tools",
-    "version": "2.9.5",
+    "version": "2.10.0",
     "description": "Reusable repo scripts for Flexent workspaces",
     "author": "Boris Okunskiy",
     "license": "MIT",
