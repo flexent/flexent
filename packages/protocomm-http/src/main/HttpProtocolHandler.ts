@@ -6,6 +6,7 @@ import {
     DomainMethodHook,
     MethodNotFound,
     ProtocolIndex,
+    ProtocolMethodDesc,
 } from '@flexent/protocomm';
 import { dep } from 'mesh-ioc';
 import { Event } from 'nanoevent';
@@ -14,9 +15,9 @@ export abstract class HttpProtocolHandler<P> extends HttpHandler {
 
     @dep() protected logger!: Logger;
 
-    methodStats = new Event<DomainMethodHook>();
-
     prefix = '';
+
+    onMethod = new Event<DomainMethodHook>();
 
     abstract get protocol(): ProtocolIndex<P>;
 
@@ -27,53 +28,57 @@ export abstract class HttpProtocolHandler<P> extends HttpHandler {
             return await next();
         }
         const [domainName, methodName] = this.parsePath(ctx.path);
-        const startedAt = Date.now();
-        try {
-            await this.handleProtocolMethod(ctx, next, domainName, methodName);
-            this.methodStats.emit({
-                domain: domainName,
-                method: methodName,
-                latency: Date.now() - startedAt,
-            });
-        } catch (error: any) {
-            this.methodStats.emit({
-                domain: domainName,
-                method: methodName,
-                latency: Date.now() - startedAt,
-                error: error.name,
-            });
-            throw error;
+        const methodDesc = this.protocol.lookupMethod(domainName, methodName);
+        const expectedMethod = methodDesc.methodDef.type === 'query' ? 'GET' : 'POST';
+        if (ctx.method !== expectedMethod) {
+            return await next();
         }
+        await this.handleProtocolMethod(ctx, domainName, methodName, methodDesc);
     }
 
     protected async handleProtocolMethod(
         ctx: HttpContext,
-        next: HttpNext,
         domainName: string,
         methodName: string,
+        methodDesc: ProtocolMethodDesc,
     ): Promise<void> {
-        const { methodDef, reqSchema, resSchema } = this.protocol.lookupMethod(domainName, methodName);
-        const expectedMethod = methodDef.type === 'query' ? 'GET' : 'POST';
-        if (ctx.method !== expectedMethod) {
-            return await next();
+        const startedAt = Date.now();
+        let decodedParams: any;
+        try {
+            const { methodDef, reqSchema, resSchema } = methodDesc;
+            const params = await this.parseParams(ctx);
+            decodedParams = reqSchema.decode(params, { strictRequired: true });
+            this.logger.debug(`>>> ${domainName}.${methodName}`, { params: decodedParams });
+            const domainImpl = (this.protocolImpl as any)[domainName];
+            const methodImpl = domainImpl?.[methodName] as DomainMethod<any, any> | undefined;
+            if (!methodImpl) {
+                throw new MethodNotFound(`${domainName}.${methodName}`);
+            }
+            ctx.state.domainName = domainName;
+            ctx.state.methodName = methodName;
+            ctx.state.methodDef = methodDef;
+            ctx.state.params = decodedParams;
+            const res = await methodImpl.call(domainImpl, decodedParams);
+            const decodedRes = resSchema.decode(res);
+            this.logger.debug(`<<< ${domainName}.${methodName}`, { result: decodedRes });
+            ctx.status = 200;
+            ctx.responseBody = decodedRes;
+            this.onMethod.emit({
+                domain: domainName,
+                method: methodName,
+                params: decodedParams,
+                result: decodedRes,
+                latency: Date.now() - startedAt,
+            });
+        } catch (error: any) {
+            this.onMethod.emit({
+                domain: domainName,
+                method: methodName,
+                params: decodedParams,
+                error,
+                latency: Date.now() - startedAt,
+            });
         }
-        const params = await this.parseParams(ctx);
-        const decodedParams = reqSchema.decode(params, { strictRequired: true });
-        this.logger.debug(`>>> ${domainName}.${methodName}`, { params: decodedParams });
-        const domainImpl = (this.protocolImpl as any)[domainName];
-        const methodImpl = domainImpl?.[methodName] as DomainMethod<any, any> | undefined;
-        if (!methodImpl) {
-            throw new MethodNotFound(`${domainName}.${methodName}`);
-        }
-        ctx.state.domainName = domainName;
-        ctx.state.methodName = methodName;
-        ctx.state.methodDef = methodDef;
-        ctx.state.params = decodedParams;
-        const res = await methodImpl.call(domainImpl, decodedParams);
-        const decodedRes = resSchema.decode(res);
-        this.logger.debug(`<<< ${domainName}.${methodName}`, { result: decodedRes });
-        ctx.status = 200;
-        ctx.responseBody = decodedRes;
     }
 
     protected parsePath(path: string): [string, string] {
