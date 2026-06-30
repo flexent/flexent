@@ -34,9 +34,17 @@ export interface DomainEventDef<E> {
 
 export type MethodType = 'query' | 'command';
 
-export interface DomainMethodStat {
+export interface DomainMethodHook {
     domain: string;
     method: string;
+    params: any;
+    result?: any;
+    error?: any;
     latency: number;
-    error?: string;
+}
+
+export interface DomainEventHook {
+    domain: string;
+    event: string;
+    data: any;
 }

@@ -3,7 +3,7 @@ import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
 import { Logger } from '@flexent/logger';
 import {
     DomainMethod,
-    DomainMethodStat,
+    DomainMethodHook,
     MethodNotFound,
     ProtocolIndex,
 } from '@flexent/protocomm';
@@ -14,7 +14,7 @@ export abstract class HttpProtocolHandler<P> extends HttpHandler {
 
     @dep() protected logger!: Logger;
 
-    methodStats = new Event<DomainMethodStat>();
+    methodStats = new Event<DomainMethodHook>();
 
     prefix = '';
 

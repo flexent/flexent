@@ -84,7 +84,7 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
 
     protected onClose() {
         this.eventBus.removeAll(this);
-        this.handler.methodStats.removeAll(this);
+        this.handler.onMethod.removeAll(this);
         this.logger.debug('WS connection closed');
     }
 

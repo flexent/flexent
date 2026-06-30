@@ -1,6 +1,6 @@
 import { Event } from 'nanoevent';
 
-import { DomainMethodStat } from './domain.js';
+import { DomainEventHook, DomainMethodHook } from './domain.js';
 import { MethodNotFound, ProtocolIndex } from './protocol.js';
 import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
 
@@ -9,7 +9,8 @@ import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
  */
 export class RpcHandler<P> {
 
-    methodStats = new Event<DomainMethodStat>();
+    onMethod = new Event<DomainMethodHook>();
+    onEvent = new Event<DomainEventHook>();
 
     constructor(
         readonly protocolIndex: ProtocolIndex<P>,
@@ -46,8 +47,8 @@ export class RpcHandler<P> {
 
     protected async runMethod(rpcReq: RpcMethodRequest): Promise<unknown> {
         const startedAt = Date.now();
+        const { domain, method, params } = rpcReq;
         try {
-            const { domain, method, params } = rpcReq;
             const {
                 reqSchema,
                 resSchema,
@@ -60,18 +61,21 @@ export class RpcHandler<P> {
             const decodedParams = reqSchema.decode(params, { strictRequired: true });
             const res = await methodImpl.call(domainImpl, decodedParams);
             const result = resSchema.decode(res);
-            this.methodStats.emit({
-                domain: rpcReq.domain,
-                method: rpcReq.method,
+            this.onMethod.emit({
+                domain,
+                method,
+                params,
+                result,
                 latency: Date.now() - startedAt,
             });
             return result;
         } catch (error: any) {
-            this.methodStats.emit({
-                domain: rpcReq.domain,
-                method: rpcReq.method,
+            this.onMethod.emit({
+                domain,
+                method,
+                params,
+                error,
                 latency: Date.now() - startedAt,
-                error: error.name
             });
             throw error;
         }
@@ -83,11 +87,19 @@ export class RpcHandler<P> {
                 const { paramSchema } = this.protocolIndex.lookupEvent(domainName, eventName);
                 const ev = (this.protocolImpl as any)[domainName][eventName];
                 if (ev instanceof Event) {
-                    ev.on(payload => this.sendEvent({
-                        domain: domainName,
-                        event: eventName,
-                        data: paramSchema.decode(payload),
-                    }));
+                    ev.on(payload => {
+                        const data = paramSchema.decode(payload);
+                        this.sendEvent({
+                            domain: domainName,
+                            event: eventName,
+                            data,
+                        });
+                        this.onEvent.emit({
+                            domain: domainName,
+                            event: eventName,
+                            data,
+                        });
+                    }, this);
                 }
             }
         }
