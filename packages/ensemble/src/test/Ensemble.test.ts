@@ -3,6 +3,8 @@ import { mkdtemp, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
+import { InitializationError } from '@flexent/errors';
+
 import { Ensemble } from '../main/Ensemble.js';
 import { DEFAULT_STOP_GRACE_PERIOD_MS } from '../main/schema/EnsembleConfig.js';
 
@@ -35,6 +37,76 @@ describe('Ensemble', () => {
         const ensemble = new Ensemble();
         await ensemble.load(file);
         assert.equal(ensemble.config.stopGracePeriodMs, DEFAULT_STOP_GRACE_PERIOD_MS);
+    });
+
+    it('resolves start order from dependsOn', async () => {
+        const dir = await mkdtemp(path.join(os.tmpdir(), 'ensemble-test-'));
+        const file = path.join(dir, 'ensemble.yaml');
+        await writeFile(file, [
+            'apps:',
+            '  - id: worker',
+            '    dir: packages/worker',
+            '    entrypoint: out/bin/run.js',
+            '    dependsOn:',
+            '      - api',
+            '  - id: api',
+            '    dir: packages/api',
+            '    entrypoint: out/bin/run.js',
+            '  - id: ui',
+            '    dir: packages/ui',
+            '    entrypoint: out/bin/run.js',
+            '    dependsOn:',
+            '      - api',
+        ].join('\n'));
+        const ensemble = new Ensemble();
+        await ensemble.load(file);
+        const order = (ensemble as any).resolveStartOrder();
+        assert.deepEqual(order, ['api', 'worker', 'ui']);
+    });
+
+    it('rejects unknown dependsOn id', async () => {
+        const dir = await mkdtemp(path.join(os.tmpdir(), 'ensemble-test-'));
+        const file = path.join(dir, 'ensemble.yaml');
+        await writeFile(file, [
+            'apps:',
+            '  - id: worker',
+            '    dir: packages/worker',
+            '    entrypoint: out/bin/run.js',
+            '    dependsOn:',
+            '      - missing',
+        ].join('\n'));
+        const ensemble = new Ensemble();
+        await ensemble.load(file);
+        assert.throws(
+            () => (ensemble as any).resolveStartOrder(),
+            (err: unknown) => err instanceof InitializationError &&
+                err.message.includes('dependsOn: app missing not found'),
+        );
+    });
+
+    it('rejects circular dependsOn', async () => {
+        const dir = await mkdtemp(path.join(os.tmpdir(), 'ensemble-test-'));
+        const file = path.join(dir, 'ensemble.yaml');
+        await writeFile(file, [
+            'apps:',
+            '  - id: a',
+            '    dir: packages/a',
+            '    entrypoint: out/bin/run.js',
+            '    dependsOn:',
+            '      - b',
+            '  - id: b',
+            '    dir: packages/b',
+            '    entrypoint: out/bin/run.js',
+            '    dependsOn:',
+            '      - a',
+        ].join('\n'));
+        const ensemble = new Ensemble();
+        await ensemble.load(file);
+        assert.throws(
+            () => (ensemble as any).resolveStartOrder(),
+            (err: unknown) => err instanceof InitializationError &&
+                err.message.includes('Circular dependency'),
+        );
     });
 
 });

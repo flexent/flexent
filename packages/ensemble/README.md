@@ -40,6 +40,8 @@ apps:
   - id: worker
     dir: packages/worker
     entrypoint: out/bin/run.js
+    dependsOn:
+      - api
     waitForPorts:
       - 39001
     env:
@@ -58,7 +60,9 @@ Each app is forked with `stdio: inherit`. On stop, ensemble sends `SIGTERM`, wai
 
 `stopGracePeriodMs` is optional.
 
-`waitForPorts` lists env var names or literal port numbers. Ensemble waits until each port accepts TCP connections on `127.0.0.1` before starting the next app. Env var names are resolved from the app’s merged env (`sharedEnv`, then per-app `env`).
+`dependsOn` lists app ids that must start before this one. Apps without dependencies start in config order. Ensemble stops apps in reverse start order.
+
+`waitForPorts` lists env var names or literal port numbers. After forking, ensemble waits until each port accepts TCP connections on `127.0.0.1` before the app is considered started. Env var names are resolved from the app’s merged env (`sharedEnv`, then per-app `env`). Combine with `dependsOn` when a dependent should wait for a dependency to be listening.
 
 `sharedEnv` is merged into each forked app’s environment. Per-app `env` overrides shared values. The ensemble parent process is not modified.
 

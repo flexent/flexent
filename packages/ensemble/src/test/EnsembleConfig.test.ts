@@ -50,4 +50,16 @@ describe('EnsembleConfigSchema', () => {
         assert.deepEqual(config.apps[0]?.args, ['--watch', '--verbose']);
     });
 
+    it('decodes optional dependsOn on apps', () => {
+        const config = EnsembleConfigSchema.decode({
+            apps: [{
+                id: 'worker',
+                dir: 'packages/worker',
+                entrypoint: 'out/bin/run.js',
+                dependsOn: ['api'],
+            }],
+        });
+        assert.deepEqual(config.apps[0]?.dependsOn, ['api']);
+    });
+
 });

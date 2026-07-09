@@ -78,11 +78,46 @@ export class Ensemble {
     }
 
     async startAll() {
-        await Promise.all(this.config.apps.map(cfg => this.start(cfg.id)));
+        for (const id of this.resolveStartOrder()) {
+            await this.start(id);
+        }
     }
 
     async stopAll() {
-        await Promise.all(this.config.apps.map(cfg => this.stop(cfg.id)));
+        const order = this.resolveStartOrder();
+        for (let i = order.length - 1; i >= 0; i--) {
+            await this.stop(order[i]!);
+        }
+    }
+
+    private resolveStartOrder(): string[] {
+        const ids = new Set(this.config.apps.map(app => app.id));
+        const order: string[] = [];
+        const visited = new Set<string>();
+        const visiting = new Set<string>();
+        const visit = (id: string) => {
+            if (visited.has(id)) {
+                return;
+            }
+            if (visiting.has(id)) {
+                throw new InitializationError(`Circular dependency detected involving ${id}`);
+            }
+            visiting.add(id);
+            const config = this.getConfig(id);
+            for (const dep of config.dependsOn ?? []) {
+                if (!ids.has(dep)) {
+                    throw new InitializationError(`dependsOn: app ${dep} not found`);
+                }
+                visit(dep);
+            }
+            visiting.delete(id);
+            visited.add(id);
+            order.push(id);
+        };
+        for (const app of this.config.apps) {
+            visit(app.id);
+        }
+        return order;
     }
 
     private buildAppEnv(config: EnsembleAppConfig): Record<string, string | undefined> {
