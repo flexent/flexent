@@ -1,0 +1,18 @@
+{
+    "name": "@flexent/ws-proxy",
+    "version": "2.11.0",
+    "description": "Transparent WebSocket upgrade relay for Node.js HTTP servers",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "files": [
+        "out"
+    ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    }
+}

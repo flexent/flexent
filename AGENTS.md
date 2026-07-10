@@ -62,6 +62,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/protocomm` (`packages/protocomm`): Transport-agnostic, bi-directional JSON messaging.
 - `@flexent/stack-backend` (`packages/stack-backend`): Default backend stack setup.
 - `@flexent/stack-vue` (`packages/stack-vue`): Default Vue stack setup.
+- `@flexent/ws-proxy` (`packages/ws-proxy`): Transparent WebSocket upgrade relay for Node.js HTTP servers.
 
 ## Package-Specific Rules
 
@@ -75,6 +76,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/pointer`: Keep pointer logic highly optimized and tested.
 - `@flexent/protocomm`: Do not assume any specific transport layer.
 - `@flexent/protocomm`: Keep protocol logic highly optimized and tested.
+- `@flexent/ws-proxy`: Keep relay logic highly optimized and tested.
 
 ## Completion Checklist
 

@@ -1,0 +1,7 @@
+{
+    "reporter": "spec",
+    "spec": "./out/test/**/*.test.js",
+    "timeout": 10000,
+    "slow": 100,
+    "exit": true
+}
