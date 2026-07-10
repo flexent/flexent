@@ -13,3 +13,8 @@ export interface OutboundUpgradeOptions {
     headers?: Record<string, string | string[]>;
     omitHeaders?: string[];
 }
+
+export interface WsProxyRelay {
+    outbound: Duplex;
+    upgrade: OutboundUpgradeOptions;
+}

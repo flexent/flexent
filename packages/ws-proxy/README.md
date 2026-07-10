@@ -4,19 +4,23 @@ Transparent WebSocket upgrade relay for Node.js HTTP servers.
 
 ## Usage
 
-Subclass `WsProxy` and implement outbound connection handling:
+Subclass `WsProxy` and implement `processConnection` to authenticate, open the outbound socket, and specify the upgrade request to send upstream:
 
 ```ts
-import { Duplex } from 'node:stream';
-import { WsProxy, WsProxyContext } from '@flexent/ws-proxy';
+import { connectToUrl, WsProxy, WsProxyContext, WsProxyRelay } from '@flexent/ws-proxy';
 
 class MyProxy extends WsProxy {
 
-    protected override async processConnection(_ctx: WsProxyContext): Promise<void> {}
-
-    protected override async connectOutbound(_ctx: WsProxyContext): Promise<Duplex> {
-        // Return a TCP socket or other Duplex connected to the upstream server.
-        throw new Error('Not implemented');
+    protected async processConnection(ctx: WsProxyContext): Promise<WsProxyRelay> {
+        const outbound = await connectToUrl('wss://upstream.example/lease');
+        return {
+            outbound,
+            upgrade: {
+                path: '/lease?t=token',
+                host: 'upstream.example',
+                omitHeaders: ['authorization'],
+            },
+        };
     }
 
 }

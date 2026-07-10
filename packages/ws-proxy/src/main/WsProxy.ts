@@ -2,7 +2,7 @@ import { IncomingMessage, STATUS_CODES } from 'node:http';
 import { Duplex } from 'node:stream';
 
 import { WsProxyError } from './errors.js';
-import { OutboundUpgradeOptions, WsProxyContext } from './types.js';
+import { OutboundUpgradeOptions, WsProxyContext, WsProxyRelay } from './types.js';
 import { pipeBidirectional } from './util/pipe.js';
 
 const FORWARDED_HEADER_NAMES = [
@@ -19,27 +19,22 @@ const FORWARDED_HEADER_NAMES = [
 
 export abstract class WsProxy {
 
-    onUpgrade(request: IncomingMessage, socket: Duplex, head: Buffer): void {
+    onUpgrade(request: IncomingMessage, socket: Duplex, head: Buffer) {
+        this.onUpgradeInternal(request, socket, head).catch(() => {});
+    }
+
+    private async onUpgradeInternal(request: IncomingMessage, socket: Duplex, head: Buffer) {
         const ctx: WsProxyContext = { request, socket, head };
-        socket.pause();
         try {
+            socket.pause();
             this.assertWebSocketUpgrade(ctx);
+            await this.runRelay(ctx);
         } catch (error) {
             this.onError(error, ctx);
-            return;
         }
-        this.relay(ctx);
     }
 
-    protected abstract processConnection(ctx: WsProxyContext): Promise<void>;
-
-    protected abstract connectOutbound(ctx: WsProxyContext): Promise<Duplex>;
-
-    protected buildOutboundUpgrade(ctx: WsProxyContext): string {
-        return this.encodeForwardedUpgrade(ctx.request, {
-            path: ctx.request.url ?? '/',
-        });
-    }
+    protected abstract processConnection(ctx: WsProxyContext): Promise<WsProxyRelay>;
 
     protected onConnected(
         _ctx: WsProxyContext,
@@ -67,7 +62,7 @@ export abstract class WsProxy {
             if (value == null) {
                 continue;
             }
-            headers[canonicalHeaderName(name)] = value;
+            headers[this.canonicalHeaderName(name)] = value;
         }
         if (options.host) {
             headers.Host = options.host;
@@ -76,10 +71,10 @@ export abstract class WsProxy {
         }
         for (const [name, value] of Object.entries(options.headers ?? {})) {
             if (value == null) {
-                delete headers[canonicalHeaderName(name)];
+                delete headers[this.canonicalHeaderName(name)];
                 continue;
             }
-            headers[canonicalHeaderName(name)] = value;
+            headers[this.canonicalHeaderName(name)] = value;
         }
         const lines = [`GET ${options.path} HTTP/${request.httpVersion}`];
         for (const [name, value] of Object.entries(headers)) {
@@ -94,22 +89,15 @@ export abstract class WsProxy {
         return `${lines.join('\r\n')}\r\n\r\n`;
     }
 
-    private relay(ctx: WsProxyContext): void {
-        this.runRelay(ctx).catch(error => {
-            this.onError(error, ctx);
-        });
-    }
-
     private async runRelay(ctx: WsProxyContext): Promise<void> {
-        await this.processConnection(ctx);
-        const outbound = await this.connectOutbound(ctx);
-        outbound.write(this.buildOutboundUpgrade(ctx));
+        const relay = await this.processConnection(ctx);
+        relay.outbound.write(this.encodeForwardedUpgrade(ctx.request, relay.upgrade));
         ctx.socket.resume();
-        pipeBidirectional(ctx.socket, outbound);
+        pipeBidirectional(ctx.socket, relay.outbound);
         if (ctx.head.length > 0) {
-            queueMicrotask(() => outbound.write(ctx.head));
+            queueMicrotask(() => relay.outbound.write(ctx.head));
         }
-        this.onConnected(ctx, outbound);
+        this.onConnected(ctx, relay.outbound);
     }
 
     private assertWebSocketUpgrade(ctx: WsProxyContext): void {
@@ -146,11 +134,11 @@ export abstract class WsProxy {
         socket.end(payload);
     }
 
-}
+    protected canonicalHeaderName(name: string): string {
+        return name
+            .split('-')
+            .map(part => part ? `${part[0].toUpperCase()}${part.slice(1).toLowerCase()}` : part)
+            .join('-');
+    }
 
-function canonicalHeaderName(name: string): string {
-    return name
-        .split('-')
-        .map(part => part ? `${part[0].toUpperCase()}${part.slice(1).toLowerCase()}` : part)
-        .join('-');
 }

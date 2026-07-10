@@ -4,7 +4,7 @@ import { PassThrough } from 'node:stream';
 
 import { WsProxy } from '../main/WsProxy.js';
 
-describe('@flexent/ws-proxy', () => {
+describe('WsProxy', () => {
 
     it('rejects non-WebSocket upgrade requests', async () => {
         const proxy = new TestProxy();
@@ -45,10 +45,11 @@ describe('@flexent/ws-proxy', () => {
 
 class TestProxy extends WsProxy {
 
-    protected override async processConnection(): Promise<void> {}
-
-    protected override async connectOutbound(): Promise<PassThrough> {
-        return new PassThrough();
+    protected async processConnection(): Promise<{ outbound: PassThrough; upgrade: { path: string } }> {
+        return {
+            outbound: new PassThrough(),
+            upgrade: { path: '/' },
+        };
     }
 
     publicEncode(request: IncomingMessage, options: { path: string; host?: string }) {

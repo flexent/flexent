@@ -19,7 +19,7 @@
         "dev:ts": "tsc -b -w",
         "compile:ts": "tsc -b",
         "lint": "eslint .",
-        "test": "npm run tst --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present",
         "version": "run-s clean compile:ts version:bump",
         "version:bump": "bump-version && git add **/package.json",
         "postversion": "npm run publish:workspaces && git push && git push --tags",
