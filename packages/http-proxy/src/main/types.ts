@@ -1,0 +1,82 @@
+import { randomBytes } from 'node:crypto';
+import http from 'node:http';
+import net from 'node:net';
+
+export interface ProxyUpstream {
+    host: string;
+    username?: string;
+    password?: string;
+    useHttps?: boolean;
+}
+
+export interface ProxyStats {
+    bytesRead: number;
+    bytesWritten: number;
+}
+
+/**
+ * Describes an outbound connection established by a proxy instance.
+ * This can be either a direct connection to the target host,
+ * or a connection to an upstream proxy.
+ */
+export interface Connection {
+    connectionId: string;
+    partitionId?: string;
+    upstream: ProxyUpstream | null;
+    socket: net.Socket;
+    host: string;
+}
+
+/**
+ * Standard logging interface, compatible with `console` and `@flexent/logger`.
+ */
+export interface Logger {
+    info(message: string, object?: unknown): void;
+    warn(message: string, object?: unknown): void;
+    error(message: string, object?: unknown): void;
+    debug(message: string, object?: unknown): void;
+}
+
+export function makeBasicAuthHeader(config: ProxyUpstream) {
+    const { username = '', password = '' } = config;
+    return 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64');
+}
+
+export function makeProxyUrl(config: ProxyUpstream) {
+    const { useHttps, username = '', password = '' } = config;
+    const protocol = useHttps ? 'https:' : 'http:';
+    const auth = (username || password) ?
+        `${encodeURIComponent(username)}:${encodeURIComponent(password)}@` :
+        '';
+    return `${protocol}//${auth}${config.host}`;
+}
+
+export function makeRequestHead(req: http.IncomingMessage): string {
+    const lines: string[] = [];
+    lines.push(`${req.method} ${req.url} HTTP/${req.httpVersion}`);
+    for (let i = 0; i < req.rawHeaders.length; i += 2) {
+        lines.push(`${req.rawHeaders[i]}: ${req.rawHeaders[i + 1]}`);
+    }
+    return lines.join('\r\n') + '\r\n\r\n';
+}
+
+export function makeResponseHead(res: http.IncomingMessage): string {
+    const lines: string[] = [];
+    lines.push(`HTTP/${res.httpVersion} ${res.statusCode} ${res.statusMessage}`);
+    for (let i = 0; i < res.rawHeaders.length; i += 2) {
+        lines.push(`${res.rawHeaders[i]}: ${res.rawHeaders[i + 1]}`);
+    }
+    return lines.join('\r\n') + '\r\n\r\n';
+}
+
+export function createUpstreamUrl(upstream: ProxyUpstream | null) {
+    if (!upstream) {
+        return '';
+    }
+    const proto = upstream.useHttps ? 'https:' : 'http:';
+    return `${proto}//${upstream.username ?? ''}@${upstream.host}`;
+}
+
+export function createConnectionId() {
+    return randomBytes(8).toString('hex');
+}

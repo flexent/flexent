@@ -51,6 +51,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/ensemble` (`packages/ensemble`): YAML-driven process manager for local development.
 - `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config.
 - `@flexent/eslint-config-vue` (`packages/eslint-config-vue`): `vueRules` for `.vue` files, merged with shared rules as `{ ...sharedRules, ...vueRules }`.
+- `@flexent/http-proxy` (`packages/http-proxy`): Modular HTTP/HTTPS proxy components with routing and SSL bumping.
 - `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP servers.
 - `@flexent/http-server` (`packages/http-server`): Idiomatic HTTP server API.
 - `@flexent/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
@@ -68,6 +69,7 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 
 - `@flexent/errors`: Keep class hierarchies simple and understandable.
 - `@flexent/eslint-config`: Keep the existing rule groups, do not add more.
+- `@flexent/http-proxy`: Keep proxy components modular and transport-focused; prefer hooks over baked-in application logic.
 - `@flexent/http-router`: Keep decorators aligned with standard HTTP methods and routing conventions.
 - `@flexent/http-server`: Keep server integration clean with the DI container.
 - `@flexent/logger`: Keep logger transports and formatters easily pluggable.
