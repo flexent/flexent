@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
 import { IncomingMessage } from 'node:http';
 import { PassThrough } from 'node:stream';
 
+import { WsProxyRelay } from '../main/types.js';
 import { WsProxy } from '../main/WsProxy.js';
 
 describe('WsProxy', () => {
@@ -41,13 +43,36 @@ describe('WsProxy', () => {
         assert.match(payload, /Sec-Websocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n/i);
     });
 
+    it('destroys outbound when the client disconnects', async () => {
+        const outbound = new PassThrough();
+        const proxy = new TestProxy(outbound);
+        const socket = new PassThrough();
+        proxy.onUpgrade({
+            method: 'GET',
+            httpVersion: '1.1',
+            headers: {
+                upgrade: 'websocket',
+                connection: 'Upgrade',
+                'sec-websocket-key': 'dGhlIHNhbXBsZSBub25jZQ==',
+            },
+        } as IncomingMessage, socket, Buffer.alloc(0));
+        await once(outbound, 'data');
+        socket.end();
+        await once(outbound, 'close');
+        assert.equal(outbound.destroyed, true);
+    });
+
 });
 
 class TestProxy extends WsProxy {
 
-    protected async processConnection(): Promise<{ outbound: PassThrough; upgrade: { path: string } }> {
+    constructor(private readonly outbound = new PassThrough()) {
+        super();
+    }
+
+    protected async processConnection(): Promise<WsProxyRelay> {
         return {
-            outbound: new PassThrough(),
+            outbound: this.outbound,
             upgrade: { path: '/' },
         };
     }
