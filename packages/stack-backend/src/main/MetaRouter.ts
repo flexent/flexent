@@ -1,13 +1,9 @@
-import fs from 'node:fs';
-
 import { Get, HttpRouter } from '@flexent/http-router';
 import { HttpContext } from '@flexent/http-server';
 import { generateMetricsReport } from '@flexent/metrics';
 import { dep, Mesh } from 'mesh-ioc';
 
 import { invokeStatusChecks } from './utils/status.js';
-
-const pkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 
 export class MetaRouter extends HttpRouter {
 
@@ -17,7 +13,7 @@ export class MetaRouter extends HttpRouter {
     async getStatus(ctx: HttpContext) {
         const checks = await invokeStatusChecks(this.mesh);
         ctx.responseBody = {
-            version: pkg.version,
+            version: process.env.APP_VERSION,
             ...checks,
         };
         ctx.status = 200;
