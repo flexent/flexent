@@ -78,6 +78,7 @@ export abstract class HttpProtocolHandler<P> extends HttpHandler {
                 error,
                 latency: Date.now() - startedAt,
             });
+            throw error;
         }
     }
 
