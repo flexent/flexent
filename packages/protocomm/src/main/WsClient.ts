@@ -30,6 +30,7 @@ export abstract class WsClient<P> {
     protected ws: WsConnection | null = null;
     protected connectPromise: Promise<WsConnection> | null = null;
     protected reconnectEnabled = this.shouldReconnectOnClose();
+    protected pendingRequests: RpcMethodRequest[] = [];
 
     protected _rpcClient: RpcClient<P> | null = null;
 
@@ -63,11 +64,14 @@ export abstract class WsClient<P> {
 
     disconnect() {
         this.reconnectEnabled = false;
-        if (this.ws) {
-            this.ws.close();
-        }
+        const ws = this.ws;
         this.ws = null;
         this.connectPromise = null;
+        this.pendingRequests = [];
+        this._rpcClient?.handleClose();
+        if (ws) {
+            ws.close();
+        }
     }
 
     protected async makeConnection(): Promise<WsConnection> {
@@ -76,14 +80,19 @@ export abstract class WsClient<P> {
             try {
                 const ws = await this.tryConnect();
                 ws.addEventListener('message', ev => this.onMessage(ev));
-                ws.addEventListener('close', () => this.onClose());
+                ws.addEventListener('close', () => {
+                    this.onClose(ws).catch(() => {});
+                });
                 this.ws = ws;
                 this.connected.emit();
+                this.flushPendingRequests();
                 return ws;
             } catch (_err) {
                 attempts++;
                 if (!this.shouldRetry(attempts)) {
                     this.connectPromise = null;
+                    this.pendingRequests = [];
+                    this._rpcClient?.handleClose();
                     this.onConnectionFailed(attempts);
                     throw new Error('WebSocket connection failed');
                 }
@@ -105,20 +114,58 @@ export abstract class WsClient<P> {
         this.rpcClient.processMessage(ev.data);
     }
 
-    protected async onClose() {
-        this.rpcClient.handleClose();
+    protected async onClose(ws: WsConnection) {
+        if (this.ws !== ws) {
+            return;
+        }
+        const keepIds = this.reconnectEnabled ?
+            new Set(this.pendingRequests.map(req => req.id)) :
+            undefined;
+        if (!this.reconnectEnabled) {
+            this.pendingRequests = [];
+        }
+        this._rpcClient?.handleClose(keepIds);
         this.ws = null;
         this.disconnected.emit();
         this.connectPromise = null;
-        if (this.reconnectEnabled) {
-            await this.wait(this.getRetryIntervalMs());
-            this.connectPromise = this.makeConnection();
+        if (!this.reconnectEnabled) {
+            return;
+        }
+        await this.wait(this.getRetryIntervalMs());
+        if (!this.reconnectEnabled) {
+            return;
+        }
+        this.connectPromise = this.makeConnection();
+        try {
+            await this.connectPromise;
+        } catch {
+            // makeConnection already rejected queued commands
         }
     }
 
     protected sendRequest(req: RpcMethodRequest) {
-        const ws = this.requireWs();
-        ws.send(JSON.stringify(req));
+        const ws = this.ws;
+        if (ws && ws.readyState === OPEN_READY_STATE) {
+            ws.send(JSON.stringify(req));
+            return;
+        }
+        if (this.reconnectEnabled) {
+            this.pendingRequests.push(req);
+            return;
+        }
+        throw new Error('WebSocket not connected');
+    }
+
+    protected flushPendingRequests() {
+        const ws = this.ws;
+        if (!ws || ws.readyState !== OPEN_READY_STATE) {
+            return;
+        }
+        const pending = this.pendingRequests;
+        this.pendingRequests = [];
+        for (const req of pending) {
+            ws.send(JSON.stringify(req));
+        }
     }
 
     protected requireWs(): WsConnection {

@@ -39,13 +39,17 @@ export class RpcClient<P> {
 
     /**
      * Call this when the client connection closes.
+     * Commands whose ids are in `keepIds` stay registered (e.g. not yet sent).
      */
-    handleClose() {
-        for (const cmd of this.awaitingCommands.values()) {
+    handleClose(keepIds?: ReadonlySet<number>) {
+        for (const [id, cmd] of this.awaitingCommands) {
+            if (keepIds?.has(id)) {
+                continue;
+            }
+            this.awaitingCommands.delete(id);
             const err = new ClientClosedError(`Method ${cmd.methodName} failed: client connection closed`);
             cmd.reject(err);
         }
-        this.awaitingCommands.clear();
     }
 
     protected createMethod<Req, Res>(domainName: string, methodName: string): DomainMethod<Req, Res> {
@@ -64,7 +68,12 @@ export class RpcClient<P> {
                     resolve,
                     reject,
                 });
-                this.sendRequest(rpcPayload);
+                try {
+                    this.sendRequest(rpcPayload);
+                } catch (err) {
+                    this.awaitingCommands.delete(this.id);
+                    reject(err instanceof Error ? err : new Error(String(err)));
+                }
             });
         };
     }
