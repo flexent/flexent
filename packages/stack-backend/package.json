@@ -11,6 +11,9 @@
     "files": [
         "out"
     ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
     "peerDependencies": {
         "@flexent/errors": "^2.16.1",
         "@flexent/http-router": "^2.16.1",

@@ -13,7 +13,7 @@ import { ProcessMetrics } from './ProcessMetrics.js';
 import { ProcessSignals } from './ProcessSignals.js';
 import { StandardLogger } from './StandardLogger.js';
 import { assertMissingDeps } from './utils/deps.js';
-import { configureEnv, getEnvName } from './utils/env.js';
+import { assertEnv, configureEnv, getEnvName } from './utils/env.js';
 
 const process = global.process;
 
@@ -69,6 +69,7 @@ export abstract class BaseApp {
     async start() {
         const env = getEnvName();
         configureEnv(env);
+        assertEnv();
         this.processEnvConfig.refresh();
         this.logger.info('Starting application', { env });
         assertMissingDeps(this.mesh);
