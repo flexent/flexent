@@ -1,6 +1,6 @@
 {
     "name": "@flexent/pathmatcher",
-    "version": "2.16.1",
+    "version": "2.17.0",
     "description": "Path matching utils for pathname-based routing",
     "author": "Boris Okunskiy",
     "license": "MIT",
