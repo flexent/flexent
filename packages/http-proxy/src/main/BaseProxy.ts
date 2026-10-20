@@ -227,13 +227,19 @@ export class BaseProxy extends EventEmitter {
     }
 
     protected async replyToConnectRequest(clientSocket: net.Socket, connection: Connection) {
-        const payload = [
+        const lines = this.createConnectResponse(connection);
+        clientSocket.write(lines.join('\r\n') + '\r\n\r\n');
+    }
+
+    /**
+     * Builds the HTTP response sent to the client after CONNECT succeeds.
+     * Return status line and header lines; trailing `\r\n\r\n` is added when writing.
+     */
+    protected createConnectResponse(connection: Connection): string[] {
+        return [
             'HTTP/1.1 200 OK',
             `X-Connection-Id: ${connection.connectionId}`,
-            '',
-            '',
-        ].join('\r\n');
-        clientSocket.write(payload);
+        ];
     }
 
     /**
