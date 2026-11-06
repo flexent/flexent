@@ -1,7 +1,7 @@
 import { createMemberDecorator, findMembers } from 'mesh-decorators';
 import { Mesh } from 'mesh-ioc';
 
-import { BaseMetric } from './BaseMetric.js';
+import { BaseMetric } from '../BaseMetric.js';
 
 export const metric = createMemberDecorator('@flexent/metric');
 

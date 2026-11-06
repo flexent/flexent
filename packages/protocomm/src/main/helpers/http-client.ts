@@ -1,6 +1,6 @@
-import { DomainMethodDef } from './domain.js';
-import { HttpRequestError, RequestFailedError, UnexpectedResponseError } from './errors.js';
-import { ProtocolIndex } from './protocol.js';
+import { DomainMethodDef } from '../domain.js';
+import { HttpRequestError, RequestFailedError, UnexpectedResponseError } from '../errors.js';
+import { ProtocolIndex } from '../ProtocolIndex.js';
 
 export type FetchFn = (fullUrl: string, options?: FetchOptions) => Promise<Response>;
 

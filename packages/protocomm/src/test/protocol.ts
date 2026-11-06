@@ -1,4 +1,4 @@
-import { ProtocolIndex } from '../main/protocol.js';
+import { ProtocolIndex } from '../main/ProtocolIndex.js';
 import { HeartbeatDomain } from './domains/heartbeat.js';
 import { SystemDomain } from './domains/system.js';
 

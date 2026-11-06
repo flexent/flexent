@@ -8,6 +8,29 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
 
+import { moduleKind } from './rules/module-kind.mjs';
+import { restrictImports } from './rules/restrict-imports.mjs';
+
+export { restrictImports };
+
+/** Flexent's own rules: the Codeshade conventions that ESLint can check. */
+export const flexentPlugin = {
+    meta: {
+        name: '@flexent/eslint-plugin',
+    },
+    rules: {
+        'module-kind': moduleKind,
+    },
+};
+
+const STORAGE_MESSAGE = 'Use the storage helper (readStored/writeStored) instead of touching browser storage directly.';
+const STORAGE_GLOBALS = ['localStorage', 'sessionStorage'];
+const STORAGE_PROPERTIES = ['window', 'globalThis', 'self'].flatMap(object => STORAGE_GLOBALS.map(property => ({
+    object,
+    property,
+    message: STORAGE_MESSAGE,
+})));
+
 export const sharedConfigs = [
 
     // Global ignores
@@ -139,6 +162,36 @@ export const sharedConfigs = [
                     ignoreRestSiblings: true,
                 },
             ],
+        },
+    },
+
+    // Codeshade: module kinds
+    {
+        files: ['**/*.ts', '**/*.mts'],
+        ignores: ['**/*.d.ts', '**/*.test.ts', '**/*.config.ts', '**/test/**'],
+        plugins: {
+            flexent: flexentPlugin,
+        },
+        rules: {
+            'flexent/module-kind': 'error',
+        },
+    },
+
+    // Codeshade: browser storage goes through one helper module that decodes and never throws
+    {
+        rules: {
+            'no-restricted-globals': ['error', ...STORAGE_GLOBALS.map(name => ({
+                name,
+                message: STORAGE_MESSAGE,
+            }))],
+            'no-restricted-properties': ['error', ...STORAGE_PROPERTIES],
+        },
+    },
+    {
+        files: ['**/storage.ts', '**/storage.mts'],
+        rules: {
+            'no-restricted-globals': 'off',
+            'no-restricted-properties': 'off',
         },
     },
 

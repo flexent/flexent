@@ -1,6 +1,6 @@
 import { Event } from 'nanoevent';
 
-import { ProtocolIndex } from './protocol.js';
+import { ProtocolIndex } from './ProtocolIndex.js';
 import { RpcClient } from './RpcClient.js';
 import { RpcMethodRequest } from './types.js';
 

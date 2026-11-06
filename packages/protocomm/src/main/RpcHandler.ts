@@ -1,7 +1,8 @@
 import { Event } from 'nanoevent';
 
 import { DomainEventHook, DomainMethodHook } from './domain.js';
-import { MethodNotFound, ProtocolIndex } from './protocol.js';
+import { MethodNotFound } from './errors.js';
+import { ProtocolIndex } from './ProtocolIndex.js';
 import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
 
 /**

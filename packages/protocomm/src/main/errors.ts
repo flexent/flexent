@@ -47,3 +47,25 @@ export class ClientClosedError extends Error {
     override name = this.constructor.name;
 
 }
+
+export class MethodNotFound extends Error {
+
+    override name = this.constructor.name;
+    status = 404;
+
+    constructor(key: string) {
+        super(`Method ${key} not found`);
+    }
+
+}
+
+export class EventNotFound extends Error {
+
+    override name = this.constructor.name;
+    status = 404;
+
+    constructor(key: string) {
+        super(`Event ${key} not found`);
+    }
+
+}

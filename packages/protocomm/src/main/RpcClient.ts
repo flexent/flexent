@@ -2,7 +2,7 @@ import { Event } from 'nanoevent';
 
 import { DomainMethod } from './domain.js';
 import { ClientClosedError } from './errors.js';
-import { ProtocolIndex } from './protocol.js';
+import { ProtocolIndex } from './ProtocolIndex.js';
 import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
 
 /**

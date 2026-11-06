@@ -1,6 +1,7 @@
 import { Schema } from 'airtight';
 
 import { DomainDef, DomainEventDef, DomainMethodDef } from './domain.js';
+import { EventNotFound, MethodNotFound } from './errors.js';
 
 export interface ProtocolMethodDesc {
     domainDef: DomainDef<any>;
@@ -97,28 +98,6 @@ export class ProtocolIndex<P> {
                 });
             }
         }
-    }
-
-}
-
-export class MethodNotFound extends Error {
-
-    override name = this.constructor.name;
-    status = 404;
-
-    constructor(key: string) {
-        super(`Method ${key} not found`);
-    }
-
-}
-
-export class EventNotFound extends Error {
-
-    override name = this.constructor.name;
-    status = 404;
-
-    constructor(key: string) {
-        super(`Event ${key} not found`);
     }
 
 }

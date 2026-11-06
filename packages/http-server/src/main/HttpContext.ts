@@ -2,9 +2,9 @@ import { InvalidStateError, RequestSizeExceededError } from '@flexent/errors';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Stream } from 'stream';
 
+import { RequestBodyType, searchParamsToDict, TypedArray } from './helpers/http.js';
 import { HttpServerConfig } from './HttpServer.js';
 import { HttpDict } from './types.js';
-import { RequestBodyType, searchParamsToDict, TypedArray } from './util.js';
 
 export type HttpResponseBody = Stream | Buffer | ArrayBuffer | Uint8Array | string | object | undefined;
 

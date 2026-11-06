@@ -22,6 +22,7 @@ export const vueConfigs = [
         rules: {
             'vue/attribute-hyphenation': ['error', 'never'],
             'vue/attributes-order': 'error',
+            'vue/component-api-style': ['error', ['options']],
             'vue/component-definition-name-casing': ['error', 'PascalCase'],
             'vue/first-attribute-linebreak': 'error',
             'vue/html-closing-bracket-newline': ['error', { singleline: 'never', multiline: 'never' }],
@@ -33,6 +34,7 @@ export const vueConfigs = [
             'vue/multi-word-component-names': 'off',
             'vue/multiline-html-element-content-newline': 'off',
             'vue/no-multi-spaces': 'error',
+            'vue/no-side-effects-in-computed-properties': 'error',
             'vue/no-mutating-props': 'off',
             'vue/no-template-shadow': 'off',
             'vue/no-v-html': 'off',

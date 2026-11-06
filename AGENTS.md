@@ -1,55 +1,69 @@
-# Flexent Agent Rules
+# Codeshade agent rules
 
-Flexent is a frameworkless toolkit built around Object Oriented Programming and Inversion of Control.
+This repository follows Codeshade, a design system for code. Read what's around you and match it. Never invent a new approach where a local one exists.
 
-## Repository Scope
+These are the always-on rules. For the reasoning, patterns, recipes and the structure checker, use the `codeshade` skill (installed under `.agents/skills/codeshade`).
 
-- Keep modules focused and small.
-- Prefer explicit, stable exports.
-- Scope each change to the correct package.
-- Follow OOP and Dependency Injection (`mesh-ioc`) principles.
+## Structure
 
-## TypeScript Rules
+- **Never mix top-level functions and classes in one module.** A class module is `PascalCase.ts`, named after its class. Functions live in kebab-case helper modules (`helpers/`, or the `util` package when generic).
+- **One role per directory.** `managers/`, `controllers/`, `scenes/`, `views/`, `components/`, `pages/`, domain family directories (`objects/`, `generators/`, …), `forms/`, `helpers/`. Don't drop a helper into a class directory or a class into a helper directory.
+- **Don't add ad hoc helper modules.** Put the behavior on the class that owns it, or in an existing helper that already does that job. Create a new helper module only when asked.
+- **Dependencies point down:** apps → framework packages → domain packages → utility packages. Domain packages are framework-free.
 
-- Keep code simple, readable, and modular.
-- Break long lines into smaller statements.
-- Keep methods short (target: under 30 lines).
-- Do not use blank lines inside method bodies.
-- Keep argument counts low; use options objects for many parameters.
-- Avoid complex TypeScript type constructs; keep types readable.
-- Balance type safety with cognitive overhead; avoid type proliferation.
-- Prefer `for...of` for loops.
-- Do not use `.reduce()` as looping syntax.
-- Do not use `.forEach()`.
-- Use `.map()`, `.filter()`, and `.some()` only for simple cases.
-- Structure classes as: fields, then getters, then methods.
-- In each class-member group, place public members before private members.
+## State
 
-## Documentation Rules
+- **One source of truth per fact.** A setting has one shape: the shape its form produces. Don't mirror it, and don't restate its defaults elsewhere.
+- **Decode at the boundary.** Storage, files, clipboard and HTTP input are `unknown` until a schema or form decodes them. Past the boundary, trust the types.
+- **Single ownership.** Instances deep-copy what they're given and hand out copies (`toData()`). Nothing keeps a live reference into another instance's data.
+- **Derived engines are raw.** Scenes, simulations and Three.js or Manifold objects are stored with `markRaw` and never persisted.
 
-- Keep Markdown concise and scannable.
-- Use short sections and practical examples.
-- Use fenced code blocks with language hints.
-- Prefer sentence-style prose over dense paragraph blocks.
-- Keep naming and terminology consistent with code and package names.
-- Separate Markdown blocks with exactly one blank line.
+## Frontend
 
-## Dependency Rules
+- Use the Vue Options API. Never use `<script setup>`, and don't write composables.
+- Logic lives in classes: app-scoped `@provide`d managers, or view-scoped controllers created with `mesh.connect`. In Vite apps, inject with `dependency(this, X)`. In Node, use `@dep()`.
+- Views `inject` managers. Components use props and events only. Pages are thin.
+- Managers never watch each other. A coordinating manager sequences actions that touch several.
+- Three.js and Manifold code lives in lazily loaded `scenes/` (or workbench chunks) and never in pages, views, components or managers.
+- Prefer Nightshade components and design tokens over native elements and custom CSS.
 
-- Do not add external runtime dependencies unless absolutely necessary.
+## Code
 
-## Commit Rules
+- **Make contracts carry invariants.** If every caller re-checks the same preconditions, move the check into the producer.
+- **Don't write excessively defensive code.** No guards against your own contracts.
+- **Don't invent accidental complexity.** Prefer fewer entities, layers, flags, branches and arguments. No speculative features.
+- **Name methods as verb plus object** (`openProject`, `deleteProject`). `remove` takes an element out of a list; `delete` destroys an entity.
+- **Don't fake English with Of/For names** (`idsOf`, `pathFor`). Name the value.
+- **Don't type-narrow thrown errors.** Use `catch (error: any)` and read `error?.message`.
+- **Never collapse multi-key object literals onto one line.**
+- **Always fix lint errors.** A long-method warning means the method has two jobs.
+- **Fix inconsistencies you notice**, or add them to `TODO.md`. When two ways exist, follow the dominant one and never add a third.
 
-- Do not commit unless explicitly instructed.
-- Use Conventional Commits.
-- Format: `type: short summary` (lowercase, no trailing period).
-- Allowed types: `feat`, `fix`, `docs`, `chore`, `style`, `refactor`, `build`.
+## Process
 
-## Package Purposes
+- Don't commit unless asked. Use Conventional Commits (`type: short summary`).
+- Don't test in a browser unless asked. Code, tests, lint and reading the source are enough.
+- Run `tsc -b`, the linter and the package tests before reporting done.
+
+## House rules
+
+- Always lead with a joke when providing updates. It has to be funny.
+
+## Flexent
+
+Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC building blocks for backend, frontend and CLI apps. Its packages follow Codeshade, and `@flexent/eslint-config` enforces the parts of Codeshade that a linter can check.
+
+### Repository rules
+
+- Scope each change to the correct package. Export surfaces stay explicit and stable.
+- Don't add external runtime dependencies unless absolutely necessary.
+- Keep Markdown concise and scannable, with fenced code blocks that carry language hints.
+
+### Package purposes
 
 - `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message, and status code.
 - `@flexent/ensemble` (`packages/ensemble`): YAML-driven process manager for local development.
-- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config.
+- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config, including the `flexent/module-kind` rule and `restrictImports()` that enforce Codeshade.
 - `@flexent/eslint-config-vue` (`packages/eslint-config-vue`): `vueRules` for `.vue` files, merged with shared rules as `{ ...sharedRules, ...vueRules }`.
 - `@flexent/http-proxy` (`packages/http-proxy`): Modular HTTP/HTTPS proxy components with routing and SSL bumping.
 - `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP servers.
@@ -65,10 +79,10 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/stack-vue` (`packages/stack-vue`): Default Vue stack setup.
 - `@flexent/ws-proxy` (`packages/ws-proxy`): Transparent WebSocket upgrade relay for Node.js HTTP servers.
 
-## Package-Specific Rules
+### Package-specific rules
 
 - `@flexent/errors`: Keep class hierarchies simple and understandable.
-- `@flexent/eslint-config`: Keep the existing rule groups, do not add more.
+- `@flexent/eslint-config`: Keep the existing rule groups. A new rule goes in only when it enforces a Codeshade guideline, and then into `rules/` with a matching entry in Codeshade.
 - `@flexent/http-proxy`: Keep proxy components modular and transport-focused; prefer hooks over baked-in application logic.
 - `@flexent/http-router`: Keep decorators aligned with standard HTTP methods and routing conventions.
 - `@flexent/http-server`: Keep server integration clean with the DI container.
@@ -80,13 +94,9 @@ Flexent is a frameworkless toolkit built around Object Oriented Programming and 
 - `@flexent/protocomm`: Keep protocol logic highly optimized and tested.
 - `@flexent/ws-proxy`: Keep relay logic highly optimized and tested.
 
-## Completion Checklist
+### Completion checklist
 
-- [ ] Change scope is limited to the intended package(s).
-- [ ] OOP and DI constraints are followed.
+- [ ] Change scope is limited to the intended packages.
+- [ ] `npm run lint`, `npm run compile:ts` and the tests of touched packages pass.
 - [ ] Export surfaces remain explicit and stable.
-- [ ] Documentation rules are followed.
-- [ ] Runtime dependency policy is respected.
 - [ ] Package-specific rules for touched packages are satisfied.
-- [ ] Relevant checks have been run (`npm run build` or package-specific scripts).
-- [ ] Commit rules are followed when committing is requested.

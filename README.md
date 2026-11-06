@@ -14,6 +14,14 @@ Flexent is a toolkit for building scalable applications using the powers of Obje
 
 - **Convention-optional.** Flexent recognizes that conventions are useful, but does not enforce them. It ships micro-libraries for addressing specific common concerns (e.g. logging, metrics) and "stack" modules that encapsulate common conventions for a specific runtime (e.g. Node.js backend, Vue frontend, etc). Stack modules are optional: they simply compose existing primitives into a conventional setup and thus can be easily re-created or extended to accommodate specific needs.
 
+## Flexent and Codeshade
+
+Codeshade is the *seed*: a design system for code that sets out the guidelines (module kinds, layers, state ownership, naming). It contains no code.
+
+Flexent is the *core* that grows from that seed. It provides the building blocks that make the guidelines cheap to follow: the IoC stacks, the HTTP and Protocomm layers, and `@flexent/eslint-config`, which enforces the parts of Codeshade a linter can check. It is still not a framework. An application picks the 10% it needs, and its own system grows on top.
+
+Nightshade does the same for UI: its conventions and variables are the seed, and its components are the core.
+
 ## Why?
 
 Flexent is built on decades of experience in building _different_ kinds of applications and observing overarching similarities in how complexity grows and how efficient patterns emerge.
@@ -28,152 +36,161 @@ While there is no silver bullet, Flexent embraces universal ideas that have surv
 
 > Instead of thousands of words,
 
-The following snippets show you the feel of how your application looks like.
+The following snippets show the feel of a Flexent application. They follow Codeshade: one class per module, a directory per role, and schemas at every boundary.
 
-### Node.js Backend
+### Node.js backend
 
 ```ts
-// src/storage/UserStorage.ts
+// src/main/storage/UserStorage.ts
 export class UserStorage {
 
-  @dep() private sql!: SqlClient;
+    @dep() private sql!: SqlClient;
 
-  async listUsers(limit: number, offset: number): Promise<User> {
-    const users = await this.sql.query('SELECT * FROM users LIMIT ? OFFSET ?', [limit, offset]);
-    return users.map(user => UserSchema.parse(user));
-  }
+    async listUsers(limit: number, offset: number): Promise<User[]> {
+        const rows = await this.sql.query('SELECT * FROM users LIMIT ? OFFSET ?', [limit, offset]);
+        return rows.map(row => UserSchema.decode(row));
+    }
 
-  async createUser(user: User): Promise<void> {
-    const newUser = await this.sql.query('INSERT INTO users (id, name, email) VALUES (?, ?, ?)', [user.id, user.name, user.email]);
-    return UserSchema.parse(newUser);
-  }
+    async createUser(user: User): Promise<void> {
+        await this.sql.query('INSERT INTO users (id, name, email) VALUES (?, ?, ?)', [user.id, user.name, user.email]);
+    }
+
 }
 ```
 
 ```ts
-// src/routes/UserRouter.ts
+// src/main/http/UserRouter.ts
 export class UserRouter {
 
-  @dep() private userStorage!: UserStorage;
+    @dep() private userStorage!: UserStorage;
 
-  @Get({ path: '/users' })
-  async listUsers(
-    @QueryParam('limit', {
-      schema: { type: 'number', default: 10 },
-    }) limit: number,
-    @QueryParam('offset', {
-      schema: { type: 'number', default: 0 },
-    }) offset: number,
-  ) {
-    const users = await this.userStorage.listUsers(limit, offset);
-    return { users };
-  }
-
-  @Post({ path: '/users' })
-  async createUser(
-    @BodyParam('name', { schema: { type: 'string' } }) name: string,
-    @BodyParam('email', { schema: { type: 'string' }) email: string,
-  ) {
-    const id = randomUUID();
-    await this.userStorage.createUser({ id, name, email });
-    return { id };
-  }
-
-}
-```
-
-```ts
-// src/App.ts
-export class App {
-
-  mesh = new Mesh();
-
-  constructor() {
-    this.mesh.service(HttpServer);
-    this.mesh.service(UserRouter);
-    this.mesh.service(UserStorage);
-  }
-
-  async start() {
-    await this.mesh.resolve(HttpServer).start();
-  }
-
-  async stop() {
-    await this.mesh.resolve(HttpServer).stop();
-  }
-}
-```
-
-### Vue 3 Frontend
-
-```ts
-// src/App.ts
-import { createApp } from 'vue';
-import { reactive } from '@vue/reactivity';
-import { RootView } from './views/RootView.vue';
-
-export class App {
-
-  mesh = new Mesh();
-  vue = createApp(RootView);
-
-  constructor() {
-    this.mesh.use(instance => reactive(instance));
-    this.mesh.constant('VueApp', this.vue);
-    this.mesh.service(UserService);
-  }
-}
-```
-
-```ts
-// src/services/UserService.ts
-@provide('userService')
-export class UserService {
-
-  @dep() private notifications!: NotificationsService;
-
-  users: User[] = [];
-  loading = false;
-
-  async refreshUsers() {
-    try {
-      const res = await fetch('/users');
-      const data = await res.json();
-      this.users = data.users;
-    } catch (error) {
-      this.users = [];
-      this.notifications.addNotification('error', 'Failed to refresh users');
-    } finally {
-      this.loading = false;
+    @Get({ path: '/users' })
+    async listUsers(
+        @QueryParam('limit', { schema: { type: 'number', default: 10 } }) limit: number,
+        @QueryParam('offset', { schema: { type: 'number', default: 0 } }) offset: number,
+    ) {
+        const users = await this.userStorage.listUsers(limit, offset);
+        return { users };
     }
-  }
+
+    @Post({ path: '/users' })
+    async createUser(
+        @BodyParam('name', { schema: { type: 'string' } }) name: string,
+        @BodyParam('email', { schema: { type: 'string' } }) email: string,
+    ) {
+        const id = randomUUID();
+        await this.userStorage.createUser({
+            id,
+            name,
+            email,
+        });
+        return { id };
+    }
 
 }
 ```
 
 ```ts
-// src/services/NotificationsService.ts
+// src/main/App.ts
+export class App extends BaseApp {
+
+    constructor() {
+        super();
+        this.mesh.service(UserStorage);
+        this.mesh.service(UserRouter);
+    }
+
+}
+```
+
+### Vue 3 frontend
+
+```ts
+// src/App.ts
+export class App extends BaseApp {
+
+    constructor(vue: VueApp) {
+        super(vue);
+        this.mesh.service(NotificationsManager);
+        this.mesh.service(UserManager);
+    }
+
+}
+```
+
+`BaseApp` from `@flexent/stack-vue` makes every service reactive and provides each `@provide`d class to Vue.
+
+```ts
+// src/managers/UserManager.ts
+@provide('userManager')
+export class UserManager {
+
+    private notifications = dependency(this, NotificationsManager);
+
+    users: User[] = [];
+    loading = false;
+
+    async refreshUsers() {
+        this.loading = true;
+        try {
+            const res = await fetch('/users');
+            this.users = UserListSchema.decode(await res.json()).users;
+        } catch (error: any) {
+            this.notifications.addNotification('error', `Failed to refresh users: ${error?.message}`);
+        } finally {
+            this.loading = false;
+        }
+    }
+
+}
+```
+
+```ts
+// src/managers/NotificationsManager.ts
 export interface Notification {
-  id: string;
-  level: 'info' | 'warn' | 'error';
-  message: string;
+    id: string;
+    level: 'info' | 'warn' | 'error';
+    message: string;
 }
 
 @provide('notifications')
-export class NotificationsService {
+export class NotificationsManager {
 
-  notifications: Notification[] = [];
+    notifications: Notification[] = [];
 
-  addNotification(level: Notification['level'], message: string, timeout: number = 5000) {
-    const id = Math.random().toString(36).substring(2);
-    this.notifications.push({ id, level, message });
-    setTimeout(() => {
-      this.notifications = this.notifications.filter(n => n.id !== id);
-    }, timeout);
-  }
+    addNotification(level: Notification['level'], message: string, timeout = 5000) {
+        const id = crypto.randomUUID();
+        this.notifications.push({
+            id,
+            level,
+            message,
+        });
+        setTimeout(() => this.removeNotification(id), timeout);
+    }
+
+    removeNotification(id: string) {
+        this.notifications = this.notifications.filter(notification => notification.id !== id);
+    }
 
 }
 ```
+
+```vue
+<!-- src/views/UsersView.vue -->
+<script>
+export default {
+
+    inject: ['userManager'],
+
+    mounted() {
+        this.userManager.refreshUsers();
+    },
+
+};
+</script>
+```
+
+Vite (esbuild) doesn't emit decorator metadata, so frontend code injects with `dependency(this, X)`. Node backends use `@dep()`.
 
 ## Is this the right fit?
 
