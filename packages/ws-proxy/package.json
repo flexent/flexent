@@ -1,6 +1,6 @@
 {
     "name": "@flexent/ws-proxy",
-    "version": "2.19.1",
+    "version": "2.20.0",
     "description": "Transparent WebSocket upgrade relay for Node.js HTTP servers",
     "author": "Boris Okunskiy",
     "license": "MIT",
