@@ -1,6 +1,6 @@
 {
     "name": "@flexent/http-proxy",
-    "version": "2.18.0",
+    "version": "2.19.0",
     "description": "Modular HTTP/HTTPS proxy components with routing and SSL bumping",
     "author": "Boris Okunskiy",
     "license": "MIT",
