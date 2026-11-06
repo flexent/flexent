@@ -35,7 +35,7 @@ A directory is named after the role of its modules, and only modules of that rol
 | Directory | Holds | Kind |
 |-----------|-------|------|
 | `managers/` | App-scoped frontend services (`@provide`) | class |
-| `controllers/` | View-scoped frontend state, created with `mesh.connect` | class |
+| `controllers/` | Per-instance frontend state, created by a manager with `mesh.connect` | class |
 | `scenes/` | Three.js `SceneSetup`s, loaded lazily | class |
 | `views/` | IoC-aware Vue components | vue |
 | `components/` | Props-and-events Vue components | vue |

@@ -45,7 +45,7 @@ export default {
 
 ## What it does
 
-- `BaseApp` creates the mesh, binds the Vue app as `'vue'`, and installs middleware that wraps every service in `reactive()`.
+- `BaseApp` creates the mesh, binds the Vue app as `'vue'`, and installs middleware that wraps every service in `reactive()`. Meshes (the app mesh and any child scope) and the Vue app stay raw.
 - `@provide('alias')` registers a class to be provided to Vue under that alias.
 - `start()` resolves every provided service, provides it to Vue, runs `@init()` handlers, and mounts the app (`#root` by default; override `mount()` for SSG).
 

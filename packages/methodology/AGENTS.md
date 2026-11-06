@@ -16,12 +16,13 @@ These are the always-on rules. For the reasoning, patterns, recipes and the stru
 - **One source of truth per fact.** A setting has one shape: the shape its form produces. Don't mirror it, and don't restate its defaults elsewhere.
 - **Decode at the boundary.** Storage, files, clipboard and HTTP input are `unknown` until a schema or form decodes them. Past the boundary, trust the types.
 - **Single ownership.** Instances deep-copy what they're given and hand out copies (`toData()`). Nothing keeps a live reference into another instance's data.
+- **Use scopes sparingly.** Use a scope only when several classes share state bound to one lifecycle instance (request, connection, session, spawned process); otherwise keep it a plain object, a field on the owner, or an instance the owner connects with `mesh.connect`. A scope is a `<Unit>Scope extends Mesh`, registered with `mesh.scope()` and created through an injected `@scope()` provider.
 - **Derived engines are raw.** Scenes, simulations and Three.js or Manifold objects are stored with `markRaw` and never persisted.
 
 ## Frontend
 
 - Use the Vue Options API. Never use `<script setup>`, and don't write composables.
-- Logic lives in classes: app-scoped `@provide`d managers, or view-scoped controllers created with `mesh.connect`. In Vite apps, inject with `dependency(this, X)`. In Node, use `@dep()`.
+- Logic lives in classes: app-scoped `@provide`d managers, or controllers a manager creates with `mesh.connect` (views never construct them). In Vite apps, inject with `dependency(this, X)`. In Node, use `@dep()`.
 - Views `inject` managers. Components use props and events only. Pages are thin.
 - Managers never watch each other. A coordinating manager sequences actions that touch several.
 - Three.js and Manifold code lives in lazily loaded `scenes/` (or workbench chunks) and never in pages, views, components or managers.

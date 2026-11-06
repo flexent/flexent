@@ -1,6 +1,6 @@
 import { invokeInitHandlers } from '@flexent/init-decorator';
 import { Mesh } from 'mesh-ioc';
-import { App as VueApp, reactive } from 'vue';
+import { App as VueApp, markRaw, reactive } from 'vue';
 
 import { provideAll } from './utils/provide.js';
 
@@ -13,8 +13,8 @@ export abstract class BaseApp {
     constructor(vue: VueApp) {
         this.vue = vue;
         this.mesh = new Mesh();
-        this.mesh.use(instance => reactive(instance));
-        this.mesh.constant('vue', this.vue);
+        this.mesh.use(instance => instance instanceof Mesh ? markRaw(instance) : reactive(instance));
+        this.mesh.constant('vue', markRaw(this.vue));
     }
 
     async start() {

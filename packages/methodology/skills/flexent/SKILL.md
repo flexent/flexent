@@ -31,16 +31,18 @@ The Flexent methodology is a small set of conventions that keeps OOP-first TypeS
 3. Look for god-classes: a class that is at once a scene, a store, a persistence layer and an engine.
 4. Report findings ranked by risk. Fix only what was asked, and add the rest to the project's `TODO.md`.
 
-## Picking the right frontend piece
+## Picking the right piece
 
 | You need | Use | Reference |
 |----------|-----|-----------|
 | App-wide state or actions | `@provide('x')` manager, registered in `App.ts` | [frontend.md](references/frontend.md) |
-| Several live instances of one stateful thing | Controller, created with `mesh.connect` | [frontend.md](references/frontend.md) |
+| Several live instances of one stateful thing | Controller, created by a manager with `mesh.connect` | [frontend.md](references/frontend.md#controllers) |
 | Three.js or Manifold rendering | `SceneSetup` in `scenes/`, loaded lazily | [frontend.md](references/frontend.md) |
 | A form-plus-preview experiment | Workbench | [recipes/workbench.md](references/recipes/workbench.md) |
 | Saved projects, an editor and a live preview | Studio | [recipes/studio.md](references/recipes/studio.md) |
 | An HTTP or WebSocket backend | Flexent backend scopes | [backend.md](references/backend.md) |
+| One backend instance with a few `@dep()`s | `mesh.connect`, owned by a manager | [backend.md](references/backend.md#connected-instances) |
+| Several backend classes sharing a request, connection, process or session | `<Unit>Scope extends Mesh`, created through `@scope()` | [backend.md](references/backend.md#scopes) |
 
 ## Non-negotiables
 
