@@ -6,6 +6,7 @@
         { "path": "./packages/ensemble" },
         { "path": "./packages/jwt" },
         { "path": "./packages/logger" },
+        { "path": "./packages/methodology" },
         { "path": "./packages/metrics" },
         { "path": "./packages/pathmatcher" },
         { "path": "./packages/pointer" },

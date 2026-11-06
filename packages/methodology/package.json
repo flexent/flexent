@@ -1,0 +1,29 @@
+{
+    "name": "@flexent/methodology",
+    "version": "2.18.0",
+    "description": "Flexent code guidelines for people and coding agents: always-on rules, an Agent Skill, and an installer",
+    "author": "Boris Okunskiy",
+    "license": "MIT",
+    "type": "module",
+    "sideEffects": false,
+    "exports": {
+        ".": "./out/main/index.js"
+    },
+    "bin": {
+        "flexent-methodology": "./cli/flexent-methodology.mjs"
+    },
+    "files": [
+        "out/main",
+        "cli",
+        "AGENTS.md",
+        "skills",
+        "rules",
+        ".claude-plugin",
+        ".cursor-plugin"
+    ],
+    "scripts": {
+        "postinstall": "node cli/postinstall.mjs",
+        "rules": "node cli/build-rules.mjs",
+        "test": "NODE_ENV=test mocha"
+    }
+}

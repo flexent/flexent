@@ -4,7 +4,7 @@ import { basename } from 'node:path';
 const NEUTRAL = new Set(['index', 'types', 'constants', 'errors', 'main', 'entrypoint', 'cli']);
 
 /**
- * Codeshade module kinds.
+ * Module kinds from the Flexent methodology.
  * A PascalCase module is a class module: no top-level functions, one class named after the file.
  * A kebab-case module is a helper module: functions only, no classes.
  * Error classes may accompany the class they belong to.
@@ -13,7 +13,7 @@ export const moduleKind = {
     meta: {
         type: 'suggestion',
         docs: {
-            description: 'Keep class modules and helper modules apart (Codeshade module kinds).',
+            description: 'Keep class modules and helper modules apart (Flexent methodology module kinds).',
         },
         schema: [],
         messages: {

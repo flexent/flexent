@@ -1,0 +1,8 @@
+{
+    "name": "flexent",
+    "description": "Flexent methodology: always-on rules plus a skill with patterns, recipes and a structure checker for TypeScript, Vue and mesh-ioc codebases.",
+    "author": {
+        "name": "Boris Okunskiy"
+    },
+    "keywords": ["conventions", "architecture", "typescript", "vue", "mesh-ioc"]
+}

@@ -1,0 +1,13 @@
+{
+    "name": "flexent",
+    "owner": {
+        "name": "Boris Okunskiy"
+    },
+    "plugins": [
+        {
+            "name": "flexent",
+            "source": "./packages/methodology",
+            "description": "Flexent methodology: code guidelines and skill"
+        }
+    ]
+}

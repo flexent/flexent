@@ -14,13 +14,15 @@ Flexent is a toolkit for building scalable applications using the powers of Obje
 
 - **Convention-optional.** Flexent recognizes that conventions are useful, but does not enforce them. It ships micro-libraries for addressing specific common concerns (e.g. logging, metrics) and "stack" modules that encapsulate common conventions for a specific runtime (e.g. Node.js backend, Vue frontend, etc). Stack modules are optional: they simply compose existing primitives into a conventional setup and thus can be easily re-created or extended to accommodate specific needs.
 
-## Flexent and Codeshade
+## Methodology
 
-Codeshade is the *seed*: a design system for code that sets out the guidelines (module kinds, layers, state ownership, naming). It contains no code.
+Frameworkless doesn't mean structureless. [`@flexent/methodology`](./packages/methodology/README.md) describes how Flexent applications are organized: module kinds, directory roles, package layers, state ownership, naming, and recipes for common app shapes. `@flexent/eslint-config` enforces the parts a linter can check.
 
-Flexent is the *core* that grows from that seed. It provides the building blocks that make the guidelines cheap to follow: the IoC stacks, the HTTP and Protocomm layers, and `@flexent/eslint-config`, which enforces the parts of Codeshade a linter can check. It is still not a framework. An application picks the 10% it needs, and its own system grows on top.
+The methodology ships in a form coding agents can use directly: always-on rules for `AGENTS.md`, plus an Agent Skill that agents load on demand.
 
-Nightshade does the same for UI: its conventions and variables are the seed, and its components are the core.
+```sh
+npm i --save-dev @flexent/methodology
+```
 
 ## Why?
 
@@ -36,7 +38,7 @@ While there is no silver bullet, Flexent embraces universal ideas that have surv
 
 > Instead of thousands of words,
 
-The following snippets show the feel of a Flexent application. They follow Codeshade: one class per module, a directory per role, and schemas at every boundary.
+The following snippets show the feel of a Flexent application. They follow the methodology: one class per module, a directory per role, and schemas at every boundary.
 
 ### Node.js backend
 

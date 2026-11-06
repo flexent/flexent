@@ -1,13 +1,11 @@
 ---
-name: codeshade
-description: Codeshade code design system for TypeScript, Vue 3 Options API, mesh-ioc and Flexent codebases. Use when writing, refactoring, reviewing or organizing code in a repository whose AGENTS.md or CLAUDE.md mentions Codeshade, or when the user asks to apply Codeshade or audit a codebase for code-organization drift. Covers module kinds, directory roles, package layers, state ownership and persisted formats, managers, views and components, backend scopes, naming, and the workbench and studio app recipes.
-metadata:
-  version: "0.1.0"
+name: flexent
+description: Flexent methodology, the code guidelines for TypeScript, Vue 3 Options API, mesh-ioc and Flexent codebases. Use when writing, refactoring, reviewing or organizing code in a repository whose AGENTS.md or CLAUDE.md mentions the Flexent methodology, or when the user asks to apply it or audit a codebase for code-organization drift. Covers module kinds, directory roles, package layers, state ownership and persisted formats, managers, views and components, backend scopes, naming, and the workbench and studio app recipes.
 ---
 
-# Codeshade
+# Flexent methodology
 
-Codeshade is a small set of conventions that keeps OOP-first TypeScript codebases coherent. The short form lives in the project's `AGENTS.md`. This skill adds the reasoning, the patterns and a checker.
+The Flexent methodology is a small set of conventions that keeps OOP-first TypeScript codebases coherent. The short form lives in the project's `AGENTS.md`. This skill adds the reasoning, the patterns and a checker.
 
 ## Workflow: writing or changing code
 

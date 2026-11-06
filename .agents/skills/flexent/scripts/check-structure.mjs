@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Codeshade structure check: flags module kinds and directory roles that drifted.
+// Flexent methodology structure check: flags module kinds and directory roles that drifted.
 // Usage: node check-structure.mjs [root=.]   Exit code 1 when anything is flagged.
 import { readdirSync, readFileSync } from 'node:fs';
 import { basename, join, relative } from 'node:path';

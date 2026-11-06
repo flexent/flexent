@@ -13,7 +13,7 @@ import { restrictImports } from './rules/restrict-imports.mjs';
 
 export { restrictImports };
 
-/** Flexent's own rules: the Codeshade conventions that ESLint can check. */
+/** Flexent's own rules: the methodology guidelines that ESLint can check. */
 export const flexentPlugin = {
     meta: {
         name: '@flexent/eslint-plugin',
@@ -165,7 +165,7 @@ export const sharedConfigs = [
         },
     },
 
-    // Codeshade: module kinds
+    // Methodology: module kinds
     {
         files: ['**/*.ts', '**/*.mts'],
         ignores: ['**/*.d.ts', '**/*.test.ts', '**/*.config.ts', '**/test/**'],
@@ -177,7 +177,7 @@ export const sharedConfigs = [
         },
     },
 
-    // Codeshade: browser storage goes through one helper module that decodes and never throws
+    // Methodology: browser storage goes through one helper module that decodes and never throws
     {
         rules: {
             'no-restricted-globals': ['error', ...STORAGE_GLOBALS.map(name => ({

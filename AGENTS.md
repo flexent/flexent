@@ -1,8 +1,9 @@
-# Codeshade agent rules
+<!-- flexent-methodology:begin -->
+# Flexent methodology
 
-This repository follows Codeshade, a design system for code. Read what's around you and match it. Never invent a new approach where a local one exists.
+This repository follows the Flexent methodology: OOP-first code guidelines for TypeScript, Vue and mesh-ioc. Read what's around you and match it. Never invent a new approach where a local one exists.
 
-These are the always-on rules. For the reasoning, patterns, recipes and the structure checker, use the `codeshade` skill (installed under `.agents/skills/codeshade`).
+These are the always-on rules. For the reasoning, patterns, recipes and the structure checker, use the `flexent` skill (installed under `.agents/skills/flexent`).
 
 ## Structure
 
@@ -42,16 +43,12 @@ These are the always-on rules. For the reasoning, patterns, recipes and the stru
 ## Process
 
 - Don't commit unless asked. Use Conventional Commits (`type: short summary`).
-- Don't test in a browser unless asked. Code, tests, lint and reading the source are enough.
 - Run `tsc -b`, the linter and the package tests before reporting done.
-
-## House rules
-
-- Always lead with a joke when providing updates. It has to be funny.
+<!-- flexent-methodology:end -->
 
 ## Flexent
 
-Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC building blocks for backend, frontend and CLI apps. Its packages follow Codeshade, and `@flexent/eslint-config` enforces the parts of Codeshade that a linter can check.
+Flexent is a frameworkless OOP and IoC toolkit for backend, frontend and CLI apps. Its packages follow the methodology above (`packages/methodology`), and `@flexent/eslint-config` enforces the parts of it that a linter can check.
 
 ### Repository rules
 
@@ -63,7 +60,7 @@ Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC build
 
 - `@flexent/errors` (`packages/errors`): Generic error classes with standardized name, message, and status code.
 - `@flexent/ensemble` (`packages/ensemble`): YAML-driven process manager for local development.
-- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config, including the `flexent/module-kind` rule and `restrictImports()` that enforce Codeshade.
+- `@flexent/eslint-config` (`packages/eslint-config`): Flexent ESLint config, including the `flexent/module-kind` rule and `restrictImports()` that enforce the methodology.
 - `@flexent/eslint-config-vue` (`packages/eslint-config-vue`): `vueRules` for `.vue` files, merged with shared rules as `{ ...sharedRules, ...vueRules }`.
 - `@flexent/http-proxy` (`packages/http-proxy`): Modular HTTP/HTTPS proxy components with routing and SSL bumping.
 - `@flexent/http-router` (`packages/http-router`): Decorator-based routing for HTTP servers.
@@ -71,6 +68,7 @@ Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC build
 - `@flexent/init-decorator` (`packages/init-decorator`): `@init` decorator for `mesh-ioc`.
 - `@flexent/jwt` (`packages/jwt`): JWT signing and verification service.
 - `@flexent/logger` (`packages/logger`): Logger API with pluggable formatting and transports.
+- `@flexent/methodology` (`packages/methodology`): Code guidelines for people and agents: always-on rules, the `flexent` Agent Skill, and the `flexent-methodology` installer.
 - `@flexent/metrics` (`packages/metrics`): Metrics collection API.
 - `@flexent/pathmatcher` (`packages/pathmatcher`): Pathname matching utilities.
 - `@flexent/pointer` (`packages/pointer`): Object get/set via JSON Pointer and dot notation.
@@ -82,11 +80,12 @@ Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC build
 ### Package-specific rules
 
 - `@flexent/errors`: Keep class hierarchies simple and understandable.
-- `@flexent/eslint-config`: Keep the existing rule groups. A new rule goes in only when it enforces a Codeshade guideline, and then into `rules/` with a matching entry in Codeshade.
+- `@flexent/eslint-config`: Keep the existing rule groups. A new rule goes in only when it enforces a methodology guideline, and then into `rules/` with a matching entry in `packages/methodology/skills/flexent/references/style.md`.
 - `@flexent/http-proxy`: Keep proxy components modular and transport-focused; prefer hooks over baked-in application logic.
 - `@flexent/http-router`: Keep decorators aligned with standard HTTP methods and routing conventions.
 - `@flexent/http-server`: Keep server integration clean with the DI container.
 - `@flexent/logger`: Keep logger transports and formatters easily pluggable.
+- `@flexent/methodology`: `AGENTS.md` is the source of the always-on rules. After editing it, run `npm run rules -w @flexent/methodology` to regenerate `rules/flexent.mdc`. Keep it short; depth goes into `skills/flexent/references/`.
 - `@flexent/metrics`: Design API to fit common observability patterns.
 - `@flexent/pathmatcher`: Keep matching logic highly optimized and tested.
 - `@flexent/pointer`: Keep pointer logic highly optimized and tested.
@@ -100,3 +99,8 @@ Flexent is the core built on the Codeshade seed: frameworkless OOP and IoC build
 - [ ] `npm run lint`, `npm run compile:ts` and the tests of touched packages pass.
 - [ ] Export surfaces remain explicit and stable.
 - [ ] Package-specific rules for touched packages are satisfied.
+
+### House rules
+
+- Don't test in a browser unless asked. Code, tests, lint and reading the source are enough.
+- Always lead with a joke when providing updates. It has to be funny.

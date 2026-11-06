@@ -1,10 +1,10 @@
 # Principles
 
-These are the values. The rest of Codeshade applies them to specific situations.
+These are the values. The rest of the Flexent methodology applies them to specific situations.
 
 ## Objects own behavior, functions own math
 
-Codeshade is OOP-first. State and the behavior that changes it live together in a class, and classes are wired together by an IoC container rather than by passing context around.
+The methodology is OOP-first. State and the behavior that changes it live together in a class, and classes are wired together by an IoC container rather than by passing context around.
 
 Some things are best expressed as plain functions: arithmetic, geometry kernels, string formatting. Those live in helper modules and utility packages. The two never mix in one module (see [Modules](./modules.md)).
 

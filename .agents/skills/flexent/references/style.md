@@ -2,7 +2,7 @@
 
 Most of this is enforced by `@flexent/eslint-config` (plus `@flexent/eslint-config-vue`). Run the linter. If it complains about method length, the method has two jobs, so split it.
 
-Rules that enforce Codeshade directly:
+Rules that enforce the methodology directly:
 
 - `flexent/module-kind`: class modules have no top-level functions and one class named after the file; helper modules have no classes.
 - `no-restricted-globals` and `no-restricted-properties`: no direct `localStorage` or `sessionStorage` outside a `storage.ts` helper.

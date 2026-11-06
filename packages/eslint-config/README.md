@@ -1,6 +1,6 @@
 # @flexent/eslint-config
 
-The shared ESLint config for Flexent and Codeshade projects: TypeScript, stylistic rules, import order, and the Codeshade rules a linter can check.
+The shared ESLint config for Flexent projects: TypeScript, stylistic rules, import order, and the [methodology](../methodology/README.md) guidelines a linter can check.
 
 ## Usage
 
@@ -20,7 +20,7 @@ export default [
 ];
 ```
 
-## Codeshade rules
+## Methodology rules
 
 | Rule | What it checks |
 |------|----------------|
