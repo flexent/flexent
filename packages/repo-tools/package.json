@@ -17,6 +17,9 @@
         "out",
         "cli"
     ],
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
     "dependencies": {
         "commander": "^14.0.1"
     }
