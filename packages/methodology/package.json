@@ -1,6 +1,6 @@
 {
     "name": "@flexent/methodology",
-    "version": "2.20.0",
+    "version": "2.20.1",
     "description": "Flexent code guidelines for people and coding agents: always-on rules, an Agent Skill, and an installer",
     "author": "Boris Okunskiy",
     "license": "MIT",
