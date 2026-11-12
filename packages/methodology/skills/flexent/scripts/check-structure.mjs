@@ -38,10 +38,13 @@ function isSource(name) {
 }
 
 function checkModule(file) {
-    const name = basename(file, '.ts');
+    const name = basename(file).split('.')[0];
     const source = readFileSync(file, 'utf8');
     const classes = [...source.matchAll(/^export (?:default )?(?:abstract )?class (\w+)/gm)].map(match => match[1]);
-    const functions = [...source.matchAll(/^(?:export )?(?:async )?function\*? (\w+)/gm)].map(match => match[1]);
+    const functions = [
+        ...source.matchAll(/^(?:export )?(?:async )?function\*? (\w+)/gm),
+        ...source.matchAll(/^(?:export )?const (\w+)(?::[^=]+)? = (?:async )?(?:function\b|\([^)]*\)[^=]*=>|\w+ =>)/gm),
+    ].map(match => match[1]);
     const kind = moduleKind(name, classes, functions);
     if (kind === 'class' && functions.length > 0) {
         report(file, `top-level function${functions.length > 1 ? 's' : ''} in a class module: ${functions.join(', ')}`);

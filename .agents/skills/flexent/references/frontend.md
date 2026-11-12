@@ -4,7 +4,7 @@ Vue 3 with the Options API, Nightshade for UI, and mesh-ioc for everything that 
 
 ## No `<script setup>`, no composables
 
-The Options API keeps components declarative: `props`, `data`, `computed`, `methods`, `watch`. Logic that would become a composable is a class instead: either a manager (app-scoped) or a controller (view-scoped). That keeps one programming model from the domain package up to the template.
+The Options API keeps components declarative: `props`, `data`, `computed`, `methods`, `watch`. Logic that would become a composable is a class instead: a manager (app-scoped) or a controller (created by a manager). That keeps one programming model from the domain package up to the template.
 
 ## App composition
 
@@ -58,7 +58,27 @@ export class PreviewManager {
 
 ## Controllers
 
-A controller is view-scoped state with dependencies. Create it with `this.mesh.connect(new XController(args))` from a manager that keeps it alive for as long as needed: for example a `TransactionManager` that holds one `TransactionController` per open operation in a map. Use one when several instances of a thing exist at once. Otherwise a manager is simpler.
+A controller is per-instance state with dependencies, used when several instances of a thing live at once (one per open thread or operation). A manager creates it and connects it to the app mesh, so its `dependency(this, X)` fields reach managers directly:
+
+```ts
+@provide('threads')
+export class ThreadManager {
+
+    private mesh = dependency(this, Mesh);
+
+    createThreadController(threadId: string) {
+        const controller = new ThreadController(threadId);
+        return this.mesh.connect(controller);
+    }
+
+}
+```
+
+- Views get controllers from a manager (`this.threads.createThreadController(id)`) and never construct them. When a controller must outlive the view, the manager keeps it in a `Map` and owns its teardown.
+- Use the value `mesh.connect` returns: it is the reactive instance.
+- When several classes share one controller's state, the manager creates a scope for them instead (see [Connect or scope?](backend.md#connect-or-scope)). `BaseApp` keeps meshes raw, so a scope never becomes a reactive proxy.
+- A controller that spawns subcontrollers with `new XSubController(this)` is the old form. Prefer a scope.
+- A self-contained library, such as Nightshade's canvas, owns a parentless root mesh (`mesh = new Mesh()` plus `dependency(this, X)` facades), because it has no app mesh to attach to and must work as-is.
 
 ## Views, components, partials, pages
 

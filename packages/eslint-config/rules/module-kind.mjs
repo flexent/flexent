@@ -28,7 +28,8 @@ export const moduleKind = {
     },
     create(context) {
         const file = basename(context.filename);
-        const name = file.replace(/\.[cm]?[jt]sx?$/, '');
+        // Role suffixes (`Foo.agent.ts`, `foo.stories.ts`) don't change the module's kind or name
+        const name = file.split('.')[0];
         if (NEUTRAL.has(name)) {
             return {};
         }
@@ -73,7 +74,8 @@ function checkClassModule(context, file, name, classes, functions) {
         });
     }
     const owned = classes.filter(node => !node.id.name.endsWith('Error'));
-    if (owned.length > 0 && !owned.some(node => node.id.name === name)) {
+    const strangers = owned.filter(node => node.id.name !== name);
+    if (owned.length > 0 && strangers.length === owned.length) {
         context.report({
             node: owned[0],
             messageId: 'misnamedModule',
@@ -82,8 +84,9 @@ function checkClassModule(context, file, name, classes, functions) {
                 name: owned[0].id.name,
             },
         });
+        strangers.shift();
     }
-    for (const node of owned.filter(node => node.id.name !== name).slice(1)) {
+    for (const node of strangers) {
         context.report({
             node,
             messageId: 'extraClass',
