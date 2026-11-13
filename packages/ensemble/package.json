@@ -1,6 +1,6 @@
 {
     "name": "@flexent/ensemble",
-    "version": "2.20.2",
+    "version": "2.21.0",
     "description": "YAML-driven process manager for local development",
     "author": "Boris Okunskiy",
     "license": "MIT",
@@ -20,7 +20,7 @@
         "test": "NODE_ENV=test mocha"
     },
     "dependencies": {
-        "@flexent/errors": "^2.20.2",
+        "@flexent/errors": "^2.21.0",
         "airtight": "^5.7.2",
         "commander": "^14.0.1",
         "yaml": "^2.8.0"
