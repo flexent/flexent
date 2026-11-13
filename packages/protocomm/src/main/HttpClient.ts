@@ -114,12 +114,7 @@ export class HttpClient<P> {
             error.status = status;
             return error;
         } catch {
-            return new HttpRequestError({
-                status,
-                method: request.method,
-                url: request.url.toString(),
-                details,
-            });
+            return new HttpRequestError(status, request.method, request.url.toString(), details);
         }
     }
 

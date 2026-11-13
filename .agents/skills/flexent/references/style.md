@@ -6,7 +6,7 @@ Rules that enforce the methodology directly:
 
 - `flexent/module-kind`: class modules have no top-level functions and one class named after the file; helper modules have no classes.
 - `flexent/static-members`: static methods and fields are only `create` and `decode` (configurable with `allow`), except in `XCatalog` classes. See [Why statics are out](./rules.md#why-statics-are-out).
-- `flexent/max-params`: at most three parameters per function or method; past that, an options object. Decorated parameters (`@QueryParam('q') q`) and a TypeScript `this` don't count.
+- `flexent/max-params`: at most four parameters per function or method; past that, an options object. Decorated parameters (`@QueryParam('q') q`) and a TypeScript `this` don't count.
 - `flexent/catch-error`: a catch clause binds `catch (error: any)`, or nothing (`catch {}`) when the error is unused. Tests included.
 - `no-restricted-globals` and `no-restricted-properties`: no direct `localStorage` or `sessionStorage` outside a `storage.ts` helper.
 - `restrictImports({ files, packages, message })`: heavy runtime packages stay out of pages, views, components and managers (see [Reactivity](./frontend.md#reactivity)).
@@ -21,7 +21,7 @@ Rules that enforce the methodology directly:
 - Keep methods short (the lint limit is 50 lines; aim for under 30). Don't leave blank lines inside method bodies.
 - Loop with `for…of`. Use `.map`, `.filter` and `.some` only for simple cases. Never use `.forEach`, and never use `.reduce` as a loop.
 - No `as const`. Annotate the type instead.
-- Use few arguments. Pass an options object once there are more than three.
+- Use few arguments. Pass an options object once there are more than four.
 - Keep types readable. Don't build type-level programs, and don't create a new type for every intermediate value.
 
 ## Errors

@@ -5,13 +5,6 @@ import { MethodNotFound } from './errors.js';
 import { ProtocolIndex } from './ProtocolIndex.js';
 import { RpcEvent, RpcMethodRequest, RpcMethodResponse } from './types.js';
 
-export interface RpcHandlerOptions<P> {
-    protocolIndex: ProtocolIndex<P>;
-    protocolImpl: P;
-    sendResponse: (res: RpcMethodResponse) => void;
-    sendEvent: (evt: RpcEvent) => void;
-}
-
 /**
  * RPC message handler. Can be used to implement server side of RPC communication.
  */
@@ -20,16 +13,12 @@ export class RpcHandler<P> {
     onMethod = new Event<DomainMethodHook>();
     onEvent = new Event<DomainEventHook>();
 
-    readonly protocolIndex: ProtocolIndex<P>;
-    readonly protocolImpl: P;
-    readonly sendResponse: (res: RpcMethodResponse) => void;
-    readonly sendEvent: (evt: RpcEvent) => void;
-
-    constructor(options: RpcHandlerOptions<P>) {
-        this.protocolIndex = options.protocolIndex;
-        this.protocolImpl = options.protocolImpl;
-        this.sendResponse = options.sendResponse;
-        this.sendEvent = options.sendEvent;
+    constructor(
+        readonly protocolIndex: ProtocolIndex<P>,
+        readonly protocolImpl: P,
+        readonly sendResponse: (res: RpcMethodResponse) => void,
+        readonly sendEvent: (evt: RpcEvent) => void,
+    ) {
         this.registerEvents();
     }
 

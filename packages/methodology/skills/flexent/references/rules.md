@@ -90,7 +90,7 @@ Rules come in four kinds:
 | one action must touch several managers | a coordinating manager sequences them |
 | persisted data has an old shape | migrate it in a separate, idempotent step before decoding, then delete the step once nothing old remains |
 | a library is heavy (an editor, a renderer, a chart engine) | load it in a lazy chunk, store its instances with `markRaw`, and keep it out of pages, views, components and managers with `restrictImports()` |
-| a method takes more than three arguments | pass an options object |
+| a method takes more than four arguments | pass an options object |
 | a fourth similar call site appears | abstract, now that the shape is known |
 | a family directory grows past a dozen modules | split it into subdirectories by family |
 | a registry maps kinds to classes or loaders | an `XCatalog` class |

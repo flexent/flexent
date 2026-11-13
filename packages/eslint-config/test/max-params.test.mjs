@@ -12,33 +12,33 @@ const ruleTester = new RuleTester({
 ruleTester.run('max-params', maxParams, {
     valid: [
         {
-            code: 'function move(x, y, z) {}',
+            code: 'function move(x, y, z, w) {}',
         },
         {
-            code: 'function move(this: Point, x, y, z) {}',
+            code: 'function move(this: Point, x, y, z, w) {}',
         },
         {
-            code: 'class Router { find(@Query("a") a, @Query("b") b, @Query("c") c, @Query("d") d) {} }',
+            code: 'class Router { find(@Query("a") a, @Query("b") b, @Query("c") c, @Query("d") d, @Query("e") e) {} }',
         },
         {
-            code: 'const move = ({ x, y, z, w }) => {}',
+            code: 'const move = ({ x, y, z, w, v }) => {}',
         },
     ],
     invalid: [
         {
-            code: 'function move(x, y, z, w) {}',
+            code: 'function move(x, y, z, w, v) {}',
             errors: [{ messageId: 'maxParams' }],
         },
         {
-            code: 'const move = (x, y, z, w) => {}',
+            code: 'const move = (x, y, z, w, v) => {}',
             errors: [{ messageId: 'maxParams' }],
         },
         {
-            code: 'class Point { constructor(readonly x, readonly y, readonly z, readonly w) {} }',
+            code: 'class Point { constructor(readonly x, readonly y, readonly z, readonly w, readonly v) {} }',
             errors: [{ messageId: 'maxParams' }],
         },
         {
-            code: 'abstract class Shape { abstract move(x, y, z, w): void; }',
+            code: 'abstract class Shape { abstract move(x, y, z, w, v): void; }',
             errors: [{ messageId: 'maxParams' }],
         },
     ],
