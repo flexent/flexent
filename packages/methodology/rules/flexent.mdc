@@ -13,8 +13,15 @@ These are the always-on rules. For the reasoning, patterns, recipes and the stru
 
 - **Never mix top-level functions and classes in one module.** A class module is `PascalCase.ts`, named after its class. Functions live in kebab-case helper modules (`helpers/`, or the `util` package when generic).
 - **One role per directory.** `managers/`, `controllers/`, `scenes/`, `views/`, `components/`, `pages/`, domain family directories (`objects/`, `generators/`, …), `forms/`, `helpers/`. Don't drop a helper into a class directory or a class into a helper directory.
-- **Don't add ad hoc helper modules.** Put the behavior on the class that owns it, or in an existing helper that already does that job. Create a new helper module only when asked.
+- **Helpers are the last resort.** Find the owning class first. When nothing owns a pure function, it goes to `helpers/`: the one place for code that hasn't found its home yet.
 - **Dependencies point down:** apps → framework packages → domain packages → utility packages. Domain packages are framework-free.
+
+## Objects
+
+- **A class needs a reason to exist: state, collaborators or a lifecycle.** Behavior alone isn't one. Never write a one-method class with no fields.
+- **Find the owner first.** A function that reads an object's data is a method on that object. Values threaded through several functions are a missing entity: they become its fields.
+- **Collaborators come from the container**, never from a static, a module global or `process.env` read in place.
+- **Static is for named constructors only** (`create`, `decode`), plus `XCatalog` registries. Statics escape IoC: no test, scope or subclass can replace them.
 
 ## State
 

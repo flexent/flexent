@@ -3,7 +3,8 @@
 Open work on the methodology itself.
 
 - [ ] Lint rule for view roles: components must not `inject`, and views must not take managers as props.
-- [ ] Validate the skill with `skills-ref validate` in CI, and add a few eval prompts ("add a manager", "persist this setting") that check where an agent puts things.
+- [ ] Validate the skill with `skills-ref validate` in CI, and add a few eval prompts ("add a manager", "persist this setting", "extract this calculation from the manager") that check where an agent puts things, including whether it reaches for a `static`.
+- [ ] Decide whether `XCatalog` registries should become container-bound instances, so tests and scopes can bind their own. Today they're the one static-only exception (`flexent/static-members` skips them).
 - [ ] Write a recipe for a full-stack app: a Protocomm `proto` package, server domains, and a typed frontend client.
 - [ ] Write a recipe for a CLI (`commands/` plus `services/`).
 - [ ] Decide whether `controllers/` deserves more guidance, or whether keyed manager maps are the only pattern.

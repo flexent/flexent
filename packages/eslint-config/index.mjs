@@ -10,6 +10,7 @@ import typescriptEslint from 'typescript-eslint';
 
 import { moduleKind } from './rules/module-kind.mjs';
 import { restrictImports } from './rules/restrict-imports.mjs';
+import { staticMembers } from './rules/static-members.mjs';
 
 export { restrictImports };
 
@@ -20,6 +21,7 @@ export const flexentPlugin = {
     },
     rules: {
         'module-kind': moduleKind,
+        'static-members': staticMembers,
     },
 };
 
@@ -165,7 +167,7 @@ export const sharedConfigs = [
         },
     },
 
-    // Methodology: module kinds
+    // Methodology: module kinds and static members
     {
         files: ['**/*.ts', '**/*.mts'],
         ignores: ['**/*.d.ts', '**/*.test.ts', '**/*.config.ts', '**/test/**'],
@@ -174,6 +176,7 @@ export const sharedConfigs = [
         },
         rules: {
             'flexent/module-kind': 'error',
+            'flexent/static-members': 'error',
         },
     },
 

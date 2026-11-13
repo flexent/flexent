@@ -1,6 +1,6 @@
 ---
 name: flexent
-description: Flexent methodology, the code guidelines for TypeScript, Vue 3 Options API, mesh-ioc and Flexent codebases. Use when writing, refactoring, reviewing or organizing code in a repository whose AGENTS.md or CLAUDE.md mentions the Flexent methodology, or when the user asks to apply it or audit a codebase for code-organization drift. Covers module kinds, directory roles, package layers, state ownership and persisted formats, managers, views and components, backend scopes, naming, and the workbench and studio app recipes.
+description: Flexent methodology, the code guidelines for TypeScript, Vue 3 Options API, mesh-ioc and Flexent codebases. Use when writing, refactoring, reviewing or organizing code in a repository whose AGENTS.md or CLAUDE.md mentions the Flexent methodology, or when the user asks to apply it or audit a codebase for code-organization drift. Covers objects and IoC (where behavior goes, what earns a class, statics, helpers), module kinds, directory roles, package layers, state ownership and persisted formats, managers, views and components, backend scopes, naming, and the workbench and studio app recipes.
 ---
 
 # Flexent methodology
@@ -11,8 +11,9 @@ The Flexent methodology is a small set of conventions that keeps OOP-first TypeS
 
 1. **Orient.** Read the project `AGENTS.md` and look at two or three neighbouring modules in the directory you're about to touch. Local precedent wins over everything below, and you must never introduce a third way of doing something.
 2. **Classify what you're adding**, then put it where that kind of thing lives:
+   - Behavior goes to its owner first: an instance method on the class whose data it reads, an instance with injected collaborators, or a missing entity named after the data clump it removes. A new class needs state, collaborators or a lifecycle. Never a `static`, never a one-method class with no fields. Details: [references/objects.md](references/objects.md).
    - Behavior plus state is a **class module** (`PascalCase.ts`) in a directory of its role: `managers/`, `controllers/`, `scenes/`, `storage/`, or a domain family such as `objects/` or `effects/`.
-   - Pure math or formatting is a **helper**: a function in an existing kebab-case module under `helpers/` or the utility package. Don't create a new helper module for one function.
+   - A pure function with no owner is a **helper**, the last resort: a function in a kebab-case module under `helpers/` or the utility package, added to an existing module on the same topic when there is one.
    - A schema or form is a **definition module** named after its export (`RingGrowthForm.ts`).
    - UI is a **view** (`views/`, injects managers), a **component** (`components/`, props and events only), or a **page** (`pages/`, thin).
    Details: [references/modules.md](references/modules.md) and [references/layers.md](references/layers.md).
@@ -29,7 +30,20 @@ The Flexent methodology is a small set of conventions that keeps OOP-first TypeS
 1. Run `scripts/check-structure.mjs` at the repository root to list module-kind and directory-role drift.
 2. Read the managers or services and the persisted formats. Look for the four ownership smells from [references/state.md](references/state.md): two shapes of one fact, hand-written field parsing, live references handed across instances, and mutation inside `computed`.
 3. Look for god-classes: a class that is at once a scene, a store, a persistence layer and an engine.
-4. Report findings ranked by risk. Fix only what was asked, and add the rest to the project's `TODO.md`.
+4. Look for the object smells from [references/objects.md](references/objects.md): statics other than `create`/`decode`, data clumps threaded through calls, one-method classes with no fields, and collaborators read from globals.
+5. Report findings ranked by risk. Fix only what was asked, and add the rest to the project's `TODO.md`.
+
+## Workflow: refactoring helpers
+
+`helpers/` holds code that had no owner when it was written. Revisit it when asked, or when a change touches a helper's callers.
+
+1. List each helper function with its call sites.
+2. Move a function out when it has found its owner:
+   - it reads or builds one class's data, or only one class calls it: make it a method on that class;
+   - several helpers take the same values: those values are a missing entity, so name it and move the functions onto it;
+   - it is generic: move it to the utility package.
+3. Leave pure, shared, domain math where it is. A helper module that keeps a clear topic is healthy.
+4. Keep behavior identical, run the tests, and delete helper modules that end up empty.
 
 ## Picking the right piece
 
@@ -47,6 +61,7 @@ The Flexent methodology is a small set of conventions that keeps OOP-first TypeS
 ## Non-negotiables
 
 - Never put top-level functions in a class module, or classes in a helper module.
+- Static is for `create` and `decode` (plus `XCatalog` registries). Collaborators come from the container.
 - One role per directory.
 - Dependencies point down: apps → framework packages → domain packages → utility packages. Domain packages stay framework-free.
 - Use the Vue Options API only. No `<script setup>`, no composables.
@@ -57,4 +72,4 @@ The Flexent methodology is a small set of conventions that keeps OOP-first TypeS
 
 ## Principles
 
-When none of the above settles a question, go back to [references/principles.md](references/principles.md): objects own behavior and functions own math; one source of truth per fact; contracts carry invariants; fewer is better; consistency beats cleverness; fix drift on sight.
+When none of the above settles a question, go back to [references/principles.md](references/principles.md): objects own behavior and functions own math, and statics are neither; one source of truth per fact; contracts carry invariants; fewer is better; consistency beats cleverness; fix drift on sight.

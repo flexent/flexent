@@ -8,6 +8,8 @@ The methodology is OOP-first. State and the behavior that changes it live togeth
 
 Some things are best expressed as plain functions: arithmetic, geometry kernels, string formatting. Those live in helper modules and utility packages. The two never mix in one module (see [Modules](./modules.md)).
 
+Statics are neither: they're functions that escape the container. A class earns its place with state, collaborators or a lifecycle, and code with no owner goes to `helpers/` until it finds one (see [Objects](./objects.md)).
+
 ## One source of truth per fact
 
 Every piece of data has exactly one owner and one shape.

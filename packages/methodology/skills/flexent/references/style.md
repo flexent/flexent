@@ -5,6 +5,7 @@ Most of this is enforced by `@flexent/eslint-config` (plus `@flexent/eslint-conf
 Rules that enforce the methodology directly:
 
 - `flexent/module-kind`: class modules have no top-level functions and one class named after the file; helper modules have no classes.
+- `flexent/static-members`: static methods and fields are only `create` and `decode` (configurable with `allow`), except in `XCatalog` classes. See [Objects](./objects.md#why-not-statics).
 - `no-restricted-globals` and `no-restricted-properties`: no direct `localStorage` or `sessionStorage` outside a `storage.ts` helper.
 - `restrictImports({ files, packages, message })`: heavy runtime packages stay out of pages, views, components and managers.
 - `vue/component-api-style`: Options API only.

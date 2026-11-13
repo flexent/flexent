@@ -23,7 +23,7 @@ Names are short, conventional and honest. An awkward name is the earliest signal
 | `XView` | IoC-aware Vue view |
 | `XForm` | Form definition constant; `XSpec` is its inferred value |
 | `XSchema` | Airtight schema constant |
-| `XCatalog` | Static registry of kinds |
+| `XCatalog` | Static registry of kinds (the only static-only class) |
 | `XGenerator`, `XObject`, `XPush`, … | Members of a domain family. One suffix per directory. |
 
 ## Files and identifiers

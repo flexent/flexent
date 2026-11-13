@@ -17,16 +17,17 @@ Every module is exactly one of a few kinds. Each directory holds modules of a si
 
 ### Class modules
 
-- Never define top-level functions in a class module. A function either becomes a method (`private` or `static`) or moves to a helper module.
+- Never define top-level functions in a class module. A function becomes an instance method on the class whose data it reads or, as a last resort, moves to a helper module. Never park it as a `static` (see [Objects](./objects.md)).
 - Constants and types that belong to the class may sit next to it: `SLOTTED_TRAY_MAX_SLOTS`, `interface SlottedTrayGeneratorSpec`.
 - A domain class may sit with its form when the form is only consumed through that class: `effects/RadialPush.ts` exports `RadialPushForm`, `RadialPushSpec` and `RadialPush`. The same goes for an `objects/*Object.ts` family that pairs a form with a generator.
-- A small static-only class is the right home for a registry or catalog: `EffectCatalog`, `ProjectCatalog`, `WorkbenchCatalog`. Don't use an object literal of functions for this.
+- A small static-only `XCatalog` class is the right home for a registry of kinds: `EffectCatalog`, `ProjectCatalog`, `WorkbenchCatalog`. It is the only static-only class allowed. Don't use an object literal of functions for this.
 
 ### Helper modules
 
 - Pure functions with no hidden state.
 - Generic ones go to the `util` package. Domain-specific ones go to a `helpers/` (or a role-named, kebab-case, function-only directory such as `geometry/` or `math/`) inside their package.
-- Do not create a helper module to park a single function. First look for the class that owns the behavior, or for an existing helper that already does that job.
+- Helpers are the last resort, after [Objects](./objects.md#where-behavior-goes) found no owner. Prefer an existing helper module on the same topic; otherwise create one named after the topic, not the caller.
+- `helpers/` is where unowned code is kept in one visible place. Revisit it as the code grows (see [Refactoring helpers](../SKILL.md#workflow-refactoring-helpers)).
 
 ## Directory roles
 
