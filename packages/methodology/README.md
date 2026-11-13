@@ -2,7 +2,7 @@
 
 How Flexent applications are organized, written for people and for coding agents.
 
-Flexent is frameworkless: it doesn't decide your application's structure. The methodology does, at least as a shared default. It covers module kinds, directory roles, package layers, state ownership, naming, and recipes for common app shapes, so that a codebase stays coherent as it grows and as more people and agents work on it.
+Flexent is frameworkless: it doesn't decide your application's structure. The methodology does, at least as a shared default. It covers where code goes, state ownership, naming, module kinds, directories and package layers, so that a codebase stays coherent as it grows and as more people and agents work on it.
 
 ## Install
 
@@ -15,7 +15,7 @@ On install, the package writes into the project that ran `npm install`:
 | Path | What | Read by |
 |------|------|---------|
 | `AGENTS.md` | always-on rules, in a managed block between `<!-- flexent-methodology:begin -->` and `<!-- flexent-methodology:end -->`; the rest of the file is yours | Codex, Cursor, GitHub Copilot, Gemini CLI, and most other agents |
-| `.agents/skills/flexent/` | the `flexent` Agent Skill: reasoning, patterns, recipes, structure checker | Codex, Cursor, GitHub Copilot, and other Agent Skills tools |
+| `.agents/skills/flexent/` | the `flexent` Agent Skill: the full rule set, reasoning, conventions, structure checker | Codex, Cursor, GitHub Copilot, and other Agent Skills tools |
 | `.claude/skills/flexent` | a link to the skill above | Claude Code |
 | `CLAUDE.md` | `@AGENTS.md`, created only when missing | Claude Code, which doesn't read `AGENTS.md` on its own |
 
@@ -47,19 +47,19 @@ A plugin installs the skill for one person. The npm package is what makes the ru
 
 ## Guidelines
 
-- [Principles](./skills/flexent/references/principles.md): the values behind every other rule.
-- [Modules](./skills/flexent/references/modules.md): module kinds, directory roles, and what may sit next to what.
-- [Layers](./skills/flexent/references/layers.md): packages and apps, and which way dependencies point.
-- [State](./skills/flexent/references/state.md): data versus instances, decoding at the boundary, and single ownership.
-- [Frontend](./skills/flexent/references/frontend.md): the Vue stack, managers, controllers, views, components, and scenes.
-- [Backend](./skills/flexent/references/backend.md): the backend stack, scopes, storage, and schemas.
-- [Naming](./skills/flexent/references/naming.md): how things are called.
-- [Style](./skills/flexent/references/style.md): formatting, errors, and the lint rules that enforce most of this.
-- Recipes:
-  - [Workbench](./skills/flexent/references/recipes/workbench.md): one form, one preview, one lazy chunk per experiment.
-  - [Studio](./skills/flexent/references/recipes/studio.md): a shelf of saved projects with an editor and a live preview.
+- [Principles](./skills/flexent/references/principles.md): the values behind every rule, and how projects extend the methodology.
+- [Conventions](./skills/flexent/references/conventions.md): names, module kinds, directories, layers and package layout.
+- [Rules](./skills/flexent/references/rules.md): always, never, when and when not, plus where code goes.
+- [Frontend](./skills/flexent/references/frontend.md): the Vue stack, managers, controllers, views, components and reactivity.
+- [Backend](./skills/flexent/references/backend.md): composition, contracts, storage and protocols.
+- [IoC](./skills/flexent/references/ioc.md): service keys, services, constants, aliases, injection, connected instances and scopes.
+- [Style](./skills/flexent/references/style.md): formatting, errors, comments, tests, commits, and the lint rules that enforce most of this.
 
-Examples in the guidelines come from real projects. Their names are illustrative, and nothing depends on those projects being available.
+## Extending it
+
+The methodology is a shared default. A project adds its own domain rules, stack choices and recipes in its own sections of `AGENTS.md` (outside the managed block) and in project skills under `.agents/skills/<project>/`. Those win inside the project. See [Projects extend Flexent](./skills/flexent/references/principles.md#projects-extend-flexent).
+
+Examples in the guidelines use neutral domains (notes, orders, invoices). They're illustrative.
 
 ## How it's built
 

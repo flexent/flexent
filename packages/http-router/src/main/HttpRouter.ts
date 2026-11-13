@@ -1,9 +1,8 @@
 import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
 import { Constructor, dep } from 'mesh-ioc';
 
-import { getAllRoutes } from './decorators/route.js';
 import { RouteMetrics } from './RouteMetrics.js';
-import { handleRouter } from './utils/handle.js';
+import { RouteTable } from './RouteTable.js';
 
 /**
  * A base class for HTTP routers.
@@ -24,10 +23,11 @@ export class HttpRouter implements HttpHandler {
 
     @dep({ optional: true }) private routeMetrics!: RouteMetrics;
 
+    private routeTable = new RouteTable(this.constructor as Constructor<any>);
+
     async handle(ctx: HttpContext, next: HttpNext) {
         const startedAt = Date.now();
-        const routes = getAllRoutes(this.constructor as Constructor<any>);
-        const handled = await handleRouter(this, routes, ctx);
+        const handled = await this.routeTable.handleRequest(this, ctx);
         if (handled) {
             this.routeMetrics?.logLatency(handled, startedAt);
             return;

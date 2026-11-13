@@ -56,8 +56,8 @@ describe('Retry on connect', () => {
                     ca: certificate,
                 });
                 throw new Error('UnexpectedSuccess');
-            } catch (err: unknown) {
-                assert.notStrictEqual((err as Error).message, 'UnexpectedSuccess');
+            } catch (error: any) {
+                assert.notStrictEqual(error?.message, 'UnexpectedSuccess');
                 assert.strictEqual(proxy.connectAttempts, 2);
                 assert.strictEqual(upstream.connectAttempts, 0);
             }
@@ -96,8 +96,8 @@ describe('Retry on connect', () => {
                     ca: certificate,
                 });
                 throw new Error('UnexpectedSuccess');
-            } catch (err: unknown) {
-                assert.notStrictEqual((err as Error).message, 'UnexpectedSuccess');
+            } catch (error: any) {
+                assert.notStrictEqual(error?.message, 'UnexpectedSuccess');
                 assert.strictEqual(proxy.connectAttempts, 2);
                 assert.strictEqual(upstream.connectAttempts, 0);
             }

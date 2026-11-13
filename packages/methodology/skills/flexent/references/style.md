@@ -5,9 +5,11 @@ Most of this is enforced by `@flexent/eslint-config` (plus `@flexent/eslint-conf
 Rules that enforce the methodology directly:
 
 - `flexent/module-kind`: class modules have no top-level functions and one class named after the file; helper modules have no classes.
-- `flexent/static-members`: static methods and fields are only `create` and `decode` (configurable with `allow`), except in `XCatalog` classes. See [Objects](./objects.md#why-not-statics).
+- `flexent/static-members`: static methods and fields are only `create` and `decode` (configurable with `allow`), except in `XCatalog` classes. See [Why statics are out](./rules.md#why-statics-are-out).
+- `flexent/max-params`: at most three parameters per function or method; past that, an options object. Decorated parameters (`@QueryParam('q') q`) and a TypeScript `this` don't count.
+- `flexent/catch-error`: a catch clause binds `catch (error: any)`, or nothing (`catch {}`) when the error is unused. Tests included.
 - `no-restricted-globals` and `no-restricted-properties`: no direct `localStorage` or `sessionStorage` outside a `storage.ts` helper.
-- `restrictImports({ files, packages, message })`: heavy runtime packages stay out of pages, views, components and managers.
+- `restrictImports({ files, packages, message })`: heavy runtime packages stay out of pages, views, components and managers (see [Reactivity](./frontend.md#reactivity)).
 - `vue/component-api-style`: Options API only.
 - `vue/no-side-effects-in-computed-properties`: computed properties never assign.
 
@@ -37,8 +39,7 @@ Rules that enforce the methodology directly:
 ## Tests
 
 - Domain packages carry Mocha tests in `src/test/*.test.ts`, run from compiled `out/`.
-- Test behavior through the public API (`Project.decode`, `updateSpec`, `toData`), not private helpers.
-- A refactor of a geometry pipeline should prove byte-identical output against the previous version: hash the STL before and after.
+- Test behavior through the public API (`Note.decode`, `updateNote`, `toData`). Never test private methods, and never make code public or move it out of its class so a test can reach it (see [Rules](./rules.md#always)).
 
 ## Commits
 

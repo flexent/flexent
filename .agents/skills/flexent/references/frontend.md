@@ -1,6 +1,6 @@
 # Frontend
 
-Vue 3 with the Options API, Nightshade for UI, and mesh-ioc for everything that isn't presentation.
+Vue 3 with the Options API, your design system for UI, and mesh-ioc for everything that isn't presentation.
 
 ## No `<script setup>`, no composables
 
@@ -15,12 +15,10 @@ export class App extends BaseApp {
 
     constructor(vue: VueApp) {
         super(vue);
-        this.mesh.service(SceneManager);
-        this.mesh.service(ShelfManager);
-        this.mesh.service(PreviewManager);
+        this.mesh.service(NotesManager);
         this.mesh.service(EditorManager);
-        this.mesh.service(StudioManager);
-        this.vue.provide('$nightshade', this.nightshade);
+        this.mesh.service(SearchManager);
+        this.mesh.service(WorkspaceManager);
         this.setupComponents();
     }
 
@@ -34,81 +32,71 @@ export class App extends BaseApp {
 A manager is an app-scoped class that owns one concern.
 
 ```ts
-@provide('preview')
-export class PreviewManager {
+@provide('editor')
+export class EditorManager {
 
-    private shelf = dependency(this, ShelfManager);
+    private notes = dependency(this, NotesManager);
 
-    frame = 0;
+    draft = '';
     errorMessage: string | null = null;
 
-    private preview: ProjectPreview | null = null;
-
-    setFrame(frame: number) { … }
+    saveDraft() { … }
 
 }
 ```
 
-- Name it `XManager`, and give it a short provide alias (`'preview'`, `'shelf'`).
-- Use `dependency(this, X)` for injection in Vite apps, since esbuild does not emit decorator metadata. Use `@dep()` in Node backends and CLIs.
+- Name it `XManager`, and give it a short provide alias (`'editor'`, `'notes'`).
+- Use `dependency(this, X)` in Vite apps, since esbuild doesn't emit decorator metadata.
 - Public fields are the view model. Views read them directly.
 - Methods are verbs. Views call them directly from templates.
-- Managers never watch each other. When one action must touch several managers, a coordinating manager sequences them (`StudioManager.openProject` → `shelf`, `editor`, `preview`).
-- Persist preferences with a `readStored`/`writeStored` helper in your utility package (see [Storage helper](#storage-helper)). Never call `localStorage` with hand-rolled try/catch.
+- Managers never watch each other. When one action must touch several managers, a coordinating manager sequences them (`WorkspaceManager.openNote` → `notes`, `editor`, `search`).
+- Persist preferences with the [storage helper](#storage-helper). Never call `localStorage` with hand-rolled try/catch.
 
 ## Controllers
 
-A controller is per-instance state with dependencies, used when several instances of a thing live at once (one per open thread or operation). A manager creates it and connects it to the app mesh, so its `dependency(this, X)` fields reach managers directly:
+A controller is per-instance state with dependencies, for things that live several at once (one per open upload, chat or document). A manager creates it and connects it to the app mesh, so its `dependency(this, X)` fields reach managers directly:
 
 ```ts
-@provide('threads')
-export class ThreadManager {
+@provide('uploads')
+export class UploadManager {
 
     private mesh = dependency(this, Mesh);
 
-    createThreadController(threadId: string) {
-        const controller = new ThreadController(threadId);
+    createUploadController(fileId: string) {
+        const controller = new UploadController(fileId);
         return this.mesh.connect(controller);
     }
 
 }
 ```
 
-- Views get controllers from a manager (`this.threads.createThreadController(id)`) and never construct them. When a controller must outlive the view, the manager keeps it in a `Map` and owns its teardown.
-- Use the value `mesh.connect` returns: it is the reactive instance.
-- When several classes share one controller's state, the manager creates a scope for them instead (see [Connect or scope?](backend.md#connect-or-scope)). `BaseApp` keeps meshes raw, so a scope never becomes a reactive proxy.
-- A controller that spawns subcontrollers with `new XSubController(this)` is the old form. Prefer a scope.
-- A self-contained library, such as Nightshade's canvas, owns a parentless root mesh (`mesh = new Mesh()` plus `dependency(this, X)` facades), because it has no app mesh to attach to and must work as-is.
+- Views get controllers from a manager (`this.uploads.createUploadController(id)`) and never construct them. When a controller must outlive the view, the manager keeps it in a `Map` and owns its teardown.
+- Use the value `mesh.connect` returns: it's the reactive instance.
+- When several classes share one controller's state, the manager creates a [scope](./ioc.md#scopes) for them instead. `BaseApp` keeps meshes raw, so a scope never becomes a reactive proxy.
+- A controller that builds subcontrollers with `new XSubController(this)` is faking a scope. Use a scope.
+- A self-contained UI library (a canvas, a chart) owns a parentless root mesh (`mesh = new Mesh()` plus `dependency(this, X)` facades), because it has no app mesh to attach to.
 
 ## Views, components, partials, pages
 
 | Kind | Directory | Talks to | Example |
 |------|-----------|----------|---------|
-| Page | `pages/` | the router | `pages/ring-growth.vue` → `<StudioView kind="ring-growth" />` |
-| View | `views/` | managers via `inject` | `views/ProjectSidebar.vue` |
-| Component | `components/` | props and events only | `components/ChoiceGroup.vue` |
-| Partial | `views/` | managers, and is reused across views | `views/WorkbenchPresets.vue` |
+| Page | `pages/` | the router | `pages/notes/[id].vue` → `<NoteView :id="id" />` |
+| View | `views/` | managers via `inject` | `views/NoteSidebar.vue` |
+| Component | `components/` | props and events only | `components/TagPicker.vue` |
+| Partial | `views/` | managers, and is reused across views | `views/NoteToolbar.vue` |
 
 - Pages stay thin: route metadata plus one view.
-- A view never receives a manager or a "studio" object as a prop. It injects it.
+- A view never receives a manager as a prop. It injects it.
 - A component never injects app services. When it needs data, the view passes it in.
-- Vue files use Nightshade components (`Btn`, `InputText`, `InputGroup`, `HGroup`, `VGroup`, `ContextMenu`) and tokens (`--sp*`, `--color-*`) before any custom CSS.
+- Prefer the design system's components and tokens over native elements and custom CSS.
 
-## Scenes and lazy chunks
+## Reactivity
 
-Three.js and Manifold never reach the main bundle.
-
-- A `SceneSetup` subclass lives in `scenes/` and is loaded with `lazySceneSetup(() => import('../scenes/X.js'), 'X')`.
-- `SceneHost` emits `ready` with the instance, and a manager keeps it (`markRaw`) and pushes meshes into it.
-- A scene draws what it is handed. It never decides what to draw.
-- `restrictImports()` from `@flexent/eslint-config` forbids `three`, `manifold-3d` and the scene builder in `pages/`, `views/`, `components/` and `managers/`.
-
-## Reactivity rules
-
-- Managers are reactive by construction. Instances reachable from them, such as projects, become reactive proxies. That's what you want for data.
-- Heavy or foreign objects (scenes, simulations, workbench instances, Three.js objects) are stored with `markRaw`.
+- Managers are reactive by construction. Instances reachable from them become reactive proxies. That's what you want for data.
+- Heavy or foreign objects (editors, renderers, chart instances, workers) are stored with `markRaw` and rebuilt when their source changes. They're never persisted.
+- Heavy libraries load in lazy chunks. `restrictImports()` from `@flexent/eslint-config` keeps them out of `pages/`, `views/`, `components/` and `managers/`.
 - Never mutate state inside a `computed`.
-- Key form components by the identity they edit (`:key="project.id"`), so switching identity remounts them.
+- Key editing components by the identity they edit (`:key="note.id"`), so switching identity remounts them.
 
 ## Storage helper
 
@@ -128,9 +116,9 @@ export function writeStored(key: string, value: unknown) {
     try {
         globalThis.localStorage?.setItem(key, JSON.stringify(value));
     } catch {
-        // Quota or private browsing: the value just does not persist.
+        // Quota or private browsing: the value just doesn't persist.
     }
 }
 ```
 
-The value still has to be decoded by a schema after `readStored`, because localStorage is outside the boundary.
+The value still has to be decoded by a schema after `readStored`, because browser storage is outside the boundary.

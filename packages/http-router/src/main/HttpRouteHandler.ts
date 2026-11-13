@@ -2,9 +2,12 @@ import { HttpContext, HttpHandler, HttpNext } from '@flexent/http-server';
 import { dep, Mesh } from 'mesh-ioc';
 
 import { RouteMetrics } from './RouteMetrics.js';
-import { handleRouter } from './utils/handle.js';
-import { matchEndpoint } from './utils/match.js';
-import { resolveRouterBindings } from './utils/resolve.js';
+import { RouteTable } from './RouteTable.js';
+
+interface RouterBinding {
+    bindingKey: string;
+    routeTable: RouteTable;
+}
 
 /**
  * Resolves and matches all routers in the same mesh where this handler is added.
@@ -24,22 +27,37 @@ export class HttpRouteHandler implements HttpHandler {
     @dep({ optional: true }) private routeMetrics!: RouteMetrics;
 
     async handle(ctx: HttpContext, next: HttpNext) {
-        const routerBindings = resolveRouterBindings(this.mesh);
-        for (const router of routerBindings) {
+        for (const { bindingKey, routeTable } of this.listRouterBindings()) {
             // Only instantiate matching routers
-            const match = matchEndpoint(router.routes, ctx.method, ctx.path);
-            if (!match) {
+            if (!routeTable.matchEndpoint(ctx.method, ctx.path)) {
                 continue;
             }
             const startedAt = Date.now();
-            const instance = this.mesh.resolve(router.bindingKey);
-            const handled = await handleRouter(instance, router.routes, ctx);
+            const router = this.mesh.resolve(bindingKey);
+            const handled = await routeTable.handleRequest(router, ctx);
             if (handled) {
                 this.routeMetrics?.logLatency(handled, startedAt);
                 return;
             }
         }
         return await next();
+    }
+
+    private listRouterBindings() {
+        const bindings: RouterBinding[] = [];
+        for (const [bindingKey, binding] of this.mesh.allBindings()) {
+            if (binding.type !== 'service') {
+                continue;
+            }
+            const routeTable = new RouteTable(binding.class);
+            if (!routeTable.isEmpty) {
+                bindings.push({
+                    bindingKey,
+                    routeTable,
+                });
+            }
+        }
+        return bindings;
     }
 
 }

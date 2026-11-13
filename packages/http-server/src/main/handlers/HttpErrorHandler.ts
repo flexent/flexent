@@ -8,11 +8,11 @@ export class HttpErrorHandler implements HttpHandler {
     @dep() private logger!: Logger;
 
     async handle(ctx: HttpContext, next: HttpNext): Promise<void> {
-        let error: any = null;
+        let failure: any = null;
         try {
             await next();
-        } catch (err: any) {
-            error = err;
+        } catch (error: any) {
+            failure = error;
             const hasStatus = typeof error.status === 'number' &&
                 error.status >= 100 && error.status < 599;
             ctx.status = hasStatus ? error.status : 500;
@@ -24,7 +24,7 @@ export class HttpErrorHandler implements HttpHandler {
             };
         } finally {
             if (ctx.log) {
-                this.log(ctx, error);
+                this.log(ctx, failure);
             }
         }
     }

@@ -34,12 +34,12 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
     abstract get eventBus(): Event<RpcEvent<Target>>;
 
     init() {
-        this.handler = new RpcHandler(
-            this.protocol,
-            this.protocolImpl,
-            res => this.sendResponse(res),
-            evt => this.sendEvent(evt),
-        );
+        this.handler = new RpcHandler({
+            protocolIndex: this.protocol,
+            protocolImpl: this.protocolImpl,
+            sendResponse: res => this.sendResponse(res),
+            sendEvent: evt => this.sendEvent(evt),
+        });
         this.eventBus.on(event => this.onRpcEvent(event), this);
         this.ws.on('message', data => this.onMessage(data));
         this.ws.on('close', () => this.onClose());
@@ -53,7 +53,7 @@ export abstract class WsProtocolHandler<P, Target = unknown> {
     protected async onMessage(data: string | Buffer) {
         try {
             await this.handler.processMessage(data.toString());
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error('Failed to process WS message', { error });
         }
     }

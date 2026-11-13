@@ -14,13 +14,20 @@ export class RequestFailedError extends Error {
 
 }
 
+export interface HttpRequestErrorOptions {
+    status: number;
+    method: string;
+    url: string;
+    details: any;
+}
+
 export class HttpRequestError extends Error {
 
     override name = this.constructor.name;
     status: number;
     details: any;
 
-    constructor(status: number, method: string, url: string, details: any) {
+    constructor({ status, method, url, details }: HttpRequestErrorOptions) {
         super(`${status} - ${method} ${url}`);
         this.status = status;
         this.details = details;

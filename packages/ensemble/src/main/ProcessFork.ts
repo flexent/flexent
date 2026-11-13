@@ -68,10 +68,9 @@ export class ProcessFork {
         }
         try {
             child.kill(signal);
-        } catch (err: any) {
-            const code = err?.code;
-            if (!['ESRCH', 'EPERM'].includes(code)) {
-                throw err;
+        } catch (error: any) {
+            if (!['ESRCH', 'EPERM'].includes(error?.code)) {
+                throw error;
             }
         }
     }
@@ -97,7 +96,7 @@ export class ProcessFork {
                     connect(port, '127.0.0.1', () => resolve()).once('error', reject);
                 });
                 return;
-            } catch (_err) {
+            } catch {
                 await new Promise(resolve => setTimeout(resolve, 10));
             }
         }

@@ -1,6 +1,6 @@
 export * from './domain.js';
 export * from './errors.js';
-export * from './helpers/http-client.js';
+export * from './HttpClient.js';
 export * from './ProtocolIndex.js';
 export * from './RpcClient.js';
 export * from './RpcEventProducer.js';

@@ -1,16 +1,8 @@
 import { glob, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export interface RootWorkspacePackage {
-    name?: string;
-    version: string;
-    workspaces: string[];
-}
-
-export interface WorkspacePackage {
-    name: string;
-    private?: boolean;
-}
+import { RootWorkspacePackage, RootWorkspacePackageSchema } from './schema/RootWorkspacePackage.js';
+import { WorkspacePackage, WorkspacePackageSchema } from './schema/WorkspacePackage.js';
 
 export interface WorkspacePackageEntry {
     path: string;
@@ -24,7 +16,7 @@ interface ListOptions {
 export async function readRootWorkspacePackage(rootDir: string): Promise<RootWorkspacePackage> {
     const packagePath = join(rootDir, 'package.json');
     const packageText = await readFile(packagePath, 'utf-8');
-    return JSON.parse(packageText) as RootWorkspacePackage;
+    return RootWorkspacePackageSchema.decode(JSON.parse(packageText), { strictRequired: true });
 }
 
 export async function *listWorkspacePackagePaths(rootDir: string, workspaces: string[]): AsyncGenerator<string> {
@@ -35,7 +27,7 @@ export async function *listWorkspacePackagePaths(rootDir: string, workspaces: st
 
 export async function readWorkspacePackage(packagePath: string): Promise<WorkspacePackage> {
     const packageText = await readFile(packagePath, 'utf-8');
-    return JSON.parse(packageText) as WorkspacePackage;
+    return WorkspacePackageSchema.decode(JSON.parse(packageText), { strictRequired: true });
 }
 
 export async function readWorkspacePackageText(packagePath: string): Promise<string> {

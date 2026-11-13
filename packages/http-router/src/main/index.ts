@@ -3,7 +3,5 @@ export * from './decorators/route.js';
 export * from './HttpRouteHandler.js';
 export * from './HttpRouter.js';
 export * from './RouteMetrics.js';
+export * from './RouteTable.js';
 export * from './types.js';
-export * from './utils/handle.js';
-export * from './utils/match.js';
-export * from './utils/resolve.js';

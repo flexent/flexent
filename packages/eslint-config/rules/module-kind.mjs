@@ -38,12 +38,17 @@ export const moduleKind = {
             Program(program) {
                 const declarations = program.body.map(node => node.declaration ?? node);
                 const classes = declarations.filter(node => node?.type === 'ClassDeclaration' && node.id);
-                const functions = declarations.flatMap(node => topLevelFunctions(node));
+                const module = {
+                    file,
+                    name,
+                    classes,
+                    functions: declarations.flatMap(node => topLevelFunctions(node)),
+                };
                 if (isClassModule) {
-                    checkClassModule(context, file, name, classes, functions);
+                    checkClassModule(context, module);
                     return;
                 }
-                checkHelperModule(context, file, name, classes, functions);
+                checkHelperModule(context, module);
             },
         };
     },
@@ -62,7 +67,7 @@ function topLevelFunctions(node) {
     });
 }
 
-function checkClassModule(context, file, name, classes, functions) {
+function checkClassModule(context, { file, name, classes, functions }) {
     for (const node of functions) {
         context.report({
             node,
@@ -98,7 +103,7 @@ function checkClassModule(context, file, name, classes, functions) {
     }
 }
 
-function checkHelperModule(context, file, name, classes, functions) {
+function checkHelperModule(context, { file, name, classes, functions }) {
     for (const node of classes) {
         context.report({
             node,

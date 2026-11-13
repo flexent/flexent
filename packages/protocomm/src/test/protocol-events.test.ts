@@ -26,7 +26,12 @@ describe('RpcEventProducer', () => {
 
     it('produces typed protocol events', async () => {
         const events = new TestEventProducer();
-        await events.broadcast('Test', 'updated', { id: 'one' }, 'client:one');
+        await events.broadcast({
+            domain: 'Test',
+            event: 'updated',
+            data: { id: 'one' },
+            target: 'client:one',
+        });
         assert.deepStrictEqual(events.events, [{
             domain: 'Test',
             event: 'updated',

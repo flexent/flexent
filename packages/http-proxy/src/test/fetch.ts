@@ -56,13 +56,12 @@ async function fetchViaProxy(
     const target = new URL(url);
     const proxy = new URL(proxyUrl);
     if (target.protocol === 'http:') {
-        return fetchHttpViaProxy(url, target, proxy, options);
+        return fetchHttpViaProxy(target, proxy, options);
     }
     return fetchHttpsViaProxy(target, proxy, options);
 }
 
 async function fetchHttpViaProxy(
-    url: string,
     target: URL,
     proxy: URL,
     options: TestFetchOptions,
@@ -76,7 +75,7 @@ async function fetchHttpViaProxy(
     const request = http.request({
         hostname: proxy.hostname,
         port: proxy.port,
-        path: url,
+        path: target.href,
         method: options.method ?? 'GET',
         headers,
     });

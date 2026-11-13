@@ -5,6 +5,5 @@ export * from './MetaRouter.js';
 export * from './ProcessMetrics.js';
 export * from './ProcessSignals.js';
 export * from './StandardLogger.js';
-export * from './utils/deps.js';
 export * from './utils/env.js';
 export * from './utils/status.js';

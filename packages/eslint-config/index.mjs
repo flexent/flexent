@@ -8,6 +8,8 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import globals from 'globals';
 import typescriptEslint from 'typescript-eslint';
 
+import { catchError } from './rules/catch-error.mjs';
+import { maxParams } from './rules/max-params.mjs';
 import { moduleKind } from './rules/module-kind.mjs';
 import { restrictImports } from './rules/restrict-imports.mjs';
 import { staticMembers } from './rules/static-members.mjs';
@@ -20,6 +22,8 @@ export const flexentPlugin = {
         name: '@flexent/eslint-plugin',
     },
     rules: {
+        'catch-error': catchError,
+        'max-params': maxParams,
         'module-kind': moduleKind,
         'static-members': staticMembers,
     },
@@ -177,6 +181,23 @@ export const sharedConfigs = [
         rules: {
             'flexent/module-kind': 'error',
             'flexent/static-members': 'error',
+        },
+    },
+
+    // Methodology: arguments everywhere, thrown errors in TypeScript; tests included
+    {
+        plugins: {
+            flexent: flexentPlugin,
+        },
+        rules: {
+            'flexent/max-params': 'error',
+        },
+    },
+    {
+        files: ['**/*.ts', '**/*.mts'],
+        ignores: ['**/*.d.ts'],
+        rules: {
+            'flexent/catch-error': 'error',
         },
     },
 

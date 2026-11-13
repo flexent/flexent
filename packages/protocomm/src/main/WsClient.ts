@@ -87,7 +87,7 @@ export abstract class WsClient<P> {
                 this.connected.emit();
                 this.flushPendingRequests();
                 return ws;
-            } catch (_err) {
+            } catch {
                 attempts++;
                 if (!this.shouldRetry(attempts)) {
                     this.connectPromise = null;

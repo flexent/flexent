@@ -16,12 +16,12 @@ const rpcClient = new RpcClient(
     req => transport.emit('request', req),
 );
 
-const rpcHandler = new RpcHandler(
+const rpcHandler = new RpcHandler({
     protocolIndex,
     protocolImpl,
-    res => transport.emit('response', res),
-    evt => transport.emit('response', evt),
-);
+    sendResponse: res => transport.emit('response', res),
+    sendEvent: evt => transport.emit('response', evt),
+});
 
 transport.on('request', req => rpcHandler.processMessage(req));
 transport.on('response', res => rpcClient.processMessage(res));

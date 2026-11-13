@@ -33,15 +33,11 @@ export abstract class HttpProtocolHandler<P> extends HttpHandler {
         if (ctx.method !== expectedMethod) {
             return await next();
         }
-        await this.handleProtocolMethod(ctx, domainName, methodName, methodDesc);
+        await this.handleProtocolMethod(ctx, methodDesc);
     }
 
-    protected async handleProtocolMethod(
-        ctx: HttpContext,
-        domainName: string,
-        methodName: string,
-        methodDesc: ProtocolMethodDesc,
-    ): Promise<void> {
+    protected async handleProtocolMethod(ctx: HttpContext, methodDesc: ProtocolMethodDesc): Promise<void> {
+        const { domainName, methodName } = methodDesc;
         const startedAt = Date.now();
         let decodedParams: any;
         try {

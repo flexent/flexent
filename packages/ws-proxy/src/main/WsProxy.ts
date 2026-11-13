@@ -29,7 +29,7 @@ export abstract class WsProxy {
             socket.pause();
             this.assertWebSocketUpgrade(ctx);
             await this.runRelay(ctx);
-        } catch (error) {
+        } catch (error: any) {
             this.onError(error, ctx);
         }
     }
@@ -41,9 +41,9 @@ export abstract class WsProxy {
         _outbound: Duplex,
     ): void {}
 
-    protected onError(error: unknown, ctx: WsProxyContext): void {
+    protected onError(error: any, ctx: WsProxyContext): void {
         const status = error instanceof WsProxyError ? error.status : 502;
-        const message = error instanceof Error ? error.message : 'WebSocket proxy failed';
+        const message = error?.message ?? 'WebSocket proxy failed';
         ctx.socket.resume();
         this.reject(ctx.socket, status, message);
     }

@@ -4,6 +4,8 @@ import { DomainDef, DomainEventDef, DomainMethodDef } from './domain.js';
 import { EventNotFound, MethodNotFound } from './errors.js';
 
 export interface ProtocolMethodDesc {
+    domainName: string;
+    methodName: string;
     domainDef: DomainDef<any>;
     methodDef: DomainMethodDef<any, any>;
     reqSchema: Schema<any>;
@@ -73,6 +75,8 @@ export class ProtocolIndex<P> {
                     properties: methodDef.returns,
                 });
                 this.methodCache.set(key, {
+                    domainName,
+                    methodName,
                     domainDef,
                     methodDef,
                     reqSchema,

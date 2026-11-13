@@ -24,7 +24,7 @@ export async function main() {
                 };
                 process.once('SIGINT', shutdown);
                 process.once('SIGTERM', shutdown);
-            } catch (error: unknown) {
+            } catch (error: any) {
                 console.error(error);
                 process.exit(1);
             }

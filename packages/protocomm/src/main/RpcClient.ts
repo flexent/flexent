@@ -70,9 +70,9 @@ export class RpcClient<P> {
                 });
                 try {
                     this.sendRequest(rpcPayload);
-                } catch (err) {
+                } catch (error: any) {
                     this.awaitingCommands.delete(this.id);
-                    reject(err instanceof Error ? err : new Error(String(err)));
+                    reject(error);
                 }
             });
         };

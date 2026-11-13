@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 
+import { InitializationError } from '@flexent/errors';
 import { RouteMetrics } from '@flexent/http-router';
 import { HttpCorsHandler, HttpErrorHandler, HttpHandler, HttpServer } from '@flexent/http-server';
 import { Logger } from '@flexent/logger';
@@ -12,7 +13,6 @@ import { MetaRouter } from './MetaRouter.js';
 import { ProcessMetrics } from './ProcessMetrics.js';
 import { ProcessSignals } from './ProcessSignals.js';
 import { StandardLogger } from './StandardLogger.js';
-import { assertMissingDeps } from './utils/deps.js';
 import { assertEnv, configureEnv, getEnvName } from './utils/env.js';
 
 const process = global.process;
@@ -72,7 +72,7 @@ export abstract class BaseApp {
         assertEnv();
         this.processEnvConfig.refresh();
         this.logger.info('Starting application', { env });
-        assertMissingDeps(this.mesh);
+        this.assertDeps();
     }
 
     /**
@@ -92,7 +92,7 @@ export abstract class BaseApp {
             this.processSignals.installSignalHandlers();
             this.processSignals.onStopRequested.on(() => this.shutdown(), this);
             await this.start();
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error(`Failed to start ${this.constructor.name}`, { error });
             process.exit(1);
         }
@@ -108,9 +108,17 @@ export abstract class BaseApp {
             this.processSignals.onStopRequested.removeAll(this);
             await this.stop();
             process.exit(0);
-        } catch (error) {
+        } catch (error: any) {
             this.logger.error(`Failed to stop ${this.constructor.name}`, { error });
             process.exit(1);
+        }
+    }
+
+    private assertDeps() {
+        const missingKeys = [...this.mesh.missingDeps()].map(_ => _.key);
+        if (missingKeys.length > 0) {
+            throw new InitializationError(
+                `The following class dependencies are not found in application global scope: ${missingKeys}`);
         }
     }
 

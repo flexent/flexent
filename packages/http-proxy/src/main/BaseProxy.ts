@@ -214,9 +214,9 @@ export class BaseProxy extends EventEmitter {
                 pipeline(remoteConn.socket, clientSocket),
                 pipeline(clientSocket, remoteConn.socket),
             ]);
-        } catch (error) {
+        } catch (error: any) {
             this.onError(error, { method: req.method, url: req.url });
-            const statusCode = (error as { status?: number }).status ?? 502;
+            const statusCode = error?.status ?? 502;
             const statusText = STATUS_CODES[statusCode];
             try {
                 clientSocket.write(`HTTP/${req.httpVersion} ${statusCode} ${statusText}\r\n\r\n`);
@@ -297,7 +297,7 @@ export class BaseProxy extends EventEmitter {
                     }
                     state.complete(connection.socket);
                     resolve(connection);
-                } catch (error) {
+                } catch (error: any) {
                     state.failures += 1;
                     if (!state.completed && state.failures >= totalAttempts) {
                         state.cancel();
@@ -408,10 +408,10 @@ export class BaseProxy extends EventEmitter {
             });
             res.writeHead(fwdRes.statusCode ?? 599, fwdRes.headers);
             await pipeline(fwdRes, res);
-        } catch (error) {
+        } catch (error: any) {
             this.onError(error, { method: req.method, url: req.url });
             if (!res.headersSent) {
-                const statusCode = (error as { status?: number }).status ?? 502;
+                const statusCode = error?.status ?? 502;
                 res.writeHead(statusCode);
             }
             res.end();
