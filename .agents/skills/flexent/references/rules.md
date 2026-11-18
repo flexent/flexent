@@ -37,7 +37,7 @@ Rules come in four kinds:
 - **Follow local precedent.** Read two or three neighbouring modules before adding one, and follow the dominant way.
 - **Fix lint errors** instead of suppressing them. A long-method warning means the method has two jobs.
 - **Fix drift you notice,** or add it to `TODO.md`.
-- **Run the type-check (`tsc -b`, plus `vue-tsc` for Vue apps), the linter and the tests of every package you touched** before reporting done.
+- **Run the type-check (`tsc -b`), the linter and the tests of every package you touched** before reporting done.
 
 ## Never
 

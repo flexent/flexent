@@ -26,7 +26,7 @@ Flexent is a small set of conventions that keeps OOP-first TypeScript codebases 
 3. **Own the data.** Before writing any state, find its one owner and one shape. Decode untrusted input once, and copy at boundaries ([rules.md](references/rules.md#state)).
 4. **Write it in the house style** ([conventions.md](references/conventions.md#names), [style.md](references/style.md)).
 5. **Check before you report done:**
-   - type-check (`tsc -b`, plus `vue-tsc` for Vue apps),
+   - type-check (`tsc -b`),
    - lint (`eslint`), and fix what it reports instead of suppressing it,
    - run the tests of every package you touched,
    - run `node <this-skill>/scripts/check-structure.mjs <dir>` on the directories you touched, and fix findings you introduced.
