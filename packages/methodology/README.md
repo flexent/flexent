@@ -14,12 +14,17 @@ On install, the package writes into the project that ran `npm install`:
 
 | Path | What | Read by |
 |------|------|---------|
-| `AGENTS.md` | always-on rules, in a managed block between `<!-- flexent-methodology:begin -->` and `<!-- flexent-methodology:end -->`; the rest of the file is yours | Codex, Cursor, GitHub Copilot, Gemini CLI, and most other agents |
+| `.agents/flexent/RULES.md` | the always-on rules, the one document the others point to; rewritten on every sync | (through the entries below) |
+| `AGENTS.md` | one line, `[Flexent] Follow .agents/flexent/RULES.md`, appended near the end (or updated where you moved it); the rest of the file is yours | Codex, GitHub Copilot, Gemini CLI, and most other agents |
+| `.claude/rules/flexent.md` | a link to `RULES.md`, loaded on every session | Claude Code |
+| `.cursor/rules/flexent.mdc` | `RULES.md` as an always-on rule | Cursor |
 | `.agents/skills/flexent/` | the `flexent` Agent Skill: the full rule set, reasoning, conventions, structure checker | Codex, Cursor, GitHub Copilot, and other Agent Skills tools |
 | `.claude/skills/flexent` | a link to the skill above | Claude Code |
 | `CLAUDE.md` | `@AGENTS.md`, created only when missing | Claude Code, which doesn't read `AGENTS.md` on its own |
 
 Commit these files. Agents that read the repository without installing anything (cloud agents, fresh clones) then see the same rules as everyone else.
+
+Each methodology package (`@nightshadeui/methodology` too) upserts only its own line in `AGENTS.md`, and the lines sit together. Projects that installed an earlier version get its managed block removed from `AGENTS.md` on the next sync.
 
 The install step is skipped in CI, for global installs, and when `FLEXENT_METHODOLOGY_SKIP=1` is set. pnpm and Yarn don't run install scripts by default; with those, run `npx flexent-methodology sync` once after installing or upgrading.
 
@@ -31,7 +36,7 @@ npx flexent-methodology check [root]      # exit 1 if they are missing or stale 
 npx flexent-methodology structure [dir]   # report module kinds and directory roles that drifted
 ```
 
-Upgrading the package and running `sync` refreshes the skill and the managed block, and leaves your own `AGENTS.md` sections and `CLAUDE.md` untouched.
+Upgrading the package and running `sync` refreshes `RULES.md`, the Cursor rule and the skill. It touches `AGENTS.md` only to add its line, and never rewrites `CLAUDE.md`.
 
 ## Other tools
 
@@ -57,7 +62,7 @@ A plugin installs the skill for one person. The npm package is what makes the ru
 
 ## Extending it
 
-The methodology is a shared default. A project adds its own domain rules, stack choices and recipes in its own sections of `AGENTS.md` (outside the managed block) and in project skills under `.agents/skills/<project>/`. Those win inside the project. See [Projects extend Flexent](./skills/flexent/references/principles.md#projects-extend-flexent).
+The methodology is a shared default. A project adds its own domain rules, stack choices and recipes in its own sections of `AGENTS.md` and in project skills under `.agents/skills/<project>/`. Those win inside the project. See [Projects extend Flexent](./skills/flexent/references/principles.md#projects-extend-flexent).
 
 Examples in the guidelines use neutral domains (notes, orders, invoices). They're illustrative.
 

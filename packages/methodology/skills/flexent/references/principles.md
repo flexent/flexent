@@ -44,7 +44,7 @@ If you notice an inconsistency, fix it, or write it down in `TODO.md`. Leaving i
 
 Flexent is the shared default. A project adds what's specific to it, such as its domain, rendering stack, design system or app shapes, in two places:
 
-- **its own section of `AGENTS.md`**, outside the managed block, for rules that always apply;
+- **its own section of `AGENTS.md`** for rules that always apply;
 - **a project skill** (`.agents/skills/<project>/`) for recipes and reference material that agents load on demand.
 
 Inside that project, its own rules win over Flexent's. They extend the methodology: they don't fork it, and they don't restate it.
